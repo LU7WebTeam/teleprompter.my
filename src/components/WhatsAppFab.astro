@@ -7,7 +7,7 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm5.3 14.2c-.2.6-1.2 1.2-1.7 1.2-.4.1-1 .1-1.6-.1-.4-.1-.8-.2-1.4-.5-2.5-1.1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2.1c.2-.2.4-.3.6-.3h.5c.2 0 .4 0 .6.5.2.5.7 1.7.8 1.8.1.2.1.3 0 .5l-.4.5c-.2.2-.3.4-.1.6.1.2.6 1 1.4 1.7 1 .8 1.6 1 1.9 1.2.2.1.4.1.6-.1.2-.3.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.4.7 1.7.8.2.1.4.2.5.3.1.2.1.6-.1 1.2z"/></svg>
 </a>
 
-<style>
+<style is:global>
   .wa-fab { position: fixed; right: 24px; bottom: 24px; z-index: 90; width: 62px; height: 62px; border-radius: 50%; background: #25D366; color: #fff; display: grid; place-items: center; cursor: pointer; box-shadow: 0 12px 36px -8px rgba(37,211,102,.6); transition: transform .25s var(--ease); }
   .wa-fab:hover { transform: scale(1.08); }
   .wa-fab svg { width: 32px; height: 32px; }

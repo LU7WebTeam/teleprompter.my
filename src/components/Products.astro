@@ -41,7 +41,7 @@ import { products } from '../data/products';
   </div>
 </section>
 
-<style>
+<style is:global>
   .products-section { background: var(--smoke); }
   .products-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; }
   .product-card { background: #fff; border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; transition: transform .3s var(--ease), box-shadow .3s var(--ease); border: 1px solid var(--border); }
