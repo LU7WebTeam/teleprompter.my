@@ -24,12 +24,12 @@ export const site = {
   nav: {
     products: {
       onCamera: [
-        { label: "iPad Teleprompter", href: "https://teleprompter.my/ultralight-ipad-teleprompter/" },
-        { label: "Monitor Teleprompter", href: "https://teleprompter.my/monitor-teleprompter/" },
+        { label: "iPad Teleprompter", href: "/ipad-teleprompter/" },
+        { label: "Monitor Teleprompter", href: "/monitor-teleprompter/" },
       ],
       onStage: [
-        { label: "Presidential Teleprompter", href: "https://teleprompter.my/presidential-teleprompter/" },
-        { label: "Stage TV Teleprompter", href: "https://teleprompter.my/stage-tv-teleprompter/" },
+        { label: "Presidential Teleprompter", href: "/presidential-teleprompter/" },
+        { label: "Stage TV Teleprompter", href: "/stage-tv-teleprompter/" },
       ],
     },
     links: [
