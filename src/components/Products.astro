@@ -74,7 +74,7 @@ import { products } from '../data/products';
     height: 100%; padding: 28px; justify-content: flex-end; color: #fff;
   }
   .product-card .p-top {
-    transition: transform .45s var(--ease);
+    transition: transform .7s var(--ease);
   }
   .product-card:hover .p-top {
     transform: translateY(-20px);
@@ -82,16 +82,16 @@ import { products } from '../data/products';
   .product-card h3 { font-size: 1.6rem; color: #fff; }
   .product-card .p-desc {
     color: rgba(255,255,255,.75); font-size: .88rem; margin: 10px 0 0; line-height: 1.5;
-    transition: opacity .35s var(--ease);
+    transition: opacity .6s var(--ease);
   }
   .product-card .p-footer {
     display: flex; align-items: flex-end; justify-content: space-between; gap: 20px;
-    border-top: 1px solid rgba(255,255,255,.15); padding-top: 18px; margin-top: 20px;
+    border-top: 1px solid rgba(255,255,255,.15);
     max-height: 0; opacity: 0; overflow: hidden;
-    transition: max-height .45s var(--ease), opacity .35s var(--ease) .1s, margin-top .45s var(--ease);
+    transition: max-height .7s var(--ease), opacity .6s var(--ease) .15s;
   }
   .product-card:hover .p-footer {
-    max-height: 300px; opacity: 1; margin-top: 20px;
+    max-height: 300px; opacity: 1;
   }
   .p-rate .p-label { font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); }
   .p-rate .p-price { font-family: var(--font-display); font-weight: 700; font-size: 2.1rem; line-height: 1; margin-top: 6px; color: #fff; }
@@ -107,7 +107,7 @@ import { products } from '../data/products';
     .products-grid { grid-template-columns: 1fr; }
     .product-card { height: 480px; }
     .product-card:hover .p-top { transform: none; }
-    .product-card .p-footer { max-height: none; opacity: 1; margin-top: 20px; overflow: visible; }
+    .product-card .p-footer { max-height: none; opacity: 1; overflow: visible; }
     .p-footer { flex-direction: column; align-items: stretch; }
     .p-btns { flex-direction: row; width: 100%; }
     .p-btns .btn { flex: 1; }
