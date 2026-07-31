@@ -5,7 +5,7 @@ import Footer from '../../components/Footer.astro';
 import WhatsAppFab from '../../components/WhatsAppFab.astro';
 import Terms from '../../components/Terms.astro';
 import Contact from '../../components/Contact.astro';
-import ProductGallery from '../../components/ProductGallery.astro';
+import Gallery from '../../components/Gallery.astro';
 import { getProduct } from '../../data/products';
 import { site } from '../../data/site';
 
@@ -26,6 +26,9 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
       <p class="pd-lead reveal">{product.longDesc}</p>
     </div>
   </section>
+
+  <!-- Gallery -->
+  <Gallery />
 
   <!-- Specs + Pricing -->
   <section class="space pd-specs-section" data-od-id="section-product-specs">
@@ -58,9 +61,6 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
       </div>
     </div>
   </section>
-
-  <!-- Gallery -->
-  <ProductGallery product={product} />
 
   <!-- Terms -->
   <Terms />
