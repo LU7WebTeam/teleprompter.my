@@ -1,0 +1,75 @@
+/* ============================================================
+   BRAND TOKENS — single source of truth
+   Brand blue sampled from logo (#182B9E). Dark premium canvas.
+   modern-minimal posture inverted to dark per Frisk reference.
+   ============================================================ */
+:root {
+  --bg:            oklch(15% 0.010 264);
+  --surface:       oklch(19% 0.012 264);
+  --surface-2:     oklch(23% 0.014 264);
+  --fg:            oklch(97% 0.004 264);
+  --muted:         oklch(66% 0.012 264);
+  --border:        oklch(30% 0.012 264);
+  --accent:        oklch(40% 0.190 264);   /* brand blue #182B9E */
+  --accent-bright: oklch(63% 0.170 262);   /* glow / active / bright text */
+  --status:        oklch(72% 0.140 151);   /* restrained green for rates */
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  --maxw: 1200px;
+  --radius: 14px;
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--accent); color: #fff; }
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+/* layout helpers */
+.section { padding: clamp(72px, 10vw, 130px) 0; position: relative; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: .75rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--accent-bright); display: inline-flex; align-items: center; gap: 10px;
+}
+.eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent-bright); }
+.section-head { max-width: 720px; margin-bottom: 56px; }
+.section-head h2 { font-size: clamp(2rem, 4.5vw, 3.4rem); margin: 18px 0 0; }
+.section-head p { color: var(--muted); margin-top: 18px; max-width: 60ch; }
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--font-body); font-weight: 600; font-size: .95rem;
+  padding: 14px 26px; border-radius: 100px; cursor: pointer; border: 1px solid transparent;
+  transition: transform .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
+  min-height: 44px; white-space: nowrap;
+}
+.btn-primary {
+  background: var(--accent); color: #fff;
+  box-shadow: 0 8px 30px -8px oklch(40% 0.19 264 / .8), inset 0 1px 0 oklch(100% 0 0 / .15);
+}
+.btn-primary:hover { background: oklch(46% 0.19 264 / 1); transform: translateY(-2px); box-shadow: 0 14px 40px -10px oklch(40% 0.19 264 / .9); }
+.btn-ghost { background: transparent; color: var(--fg); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--accent-bright); color: var(--accent-bright); transform: translateY(-2px); }
+.btn svg { width: 16px; height: 16px; }
+
+/* scroll reveal */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }

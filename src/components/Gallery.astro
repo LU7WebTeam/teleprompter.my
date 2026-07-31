@@ -1,0 +1,52 @@
+---
+const galleryItems = [
+  { img: "/assets/gallery-1.jpg", alt: "PMX at a podium using transparent teleprompter screens during a formal event.", caption: "Presidential teleprompter at a formal address" },
+  { img: "/assets/gallery-2.jpg", alt: "Close-up of a professional iPad teleprompter setup mounted on a tripod.", caption: "iPad teleprompter on tripod" },
+  { img: "/assets/gallery-3.jpg", alt: "Monitor Teleprompter system in a modern office setting.", caption: '22" Monitor teleprompter in studio' },
+  { img: "/assets/gallery-4.jpg", alt: "Large angled stage TV teleprompter displaying colorful text at an event.", caption: "Stage TV teleprompter at an event" },
+  { img: "/assets/gallery-5.jpg", alt: "Stage TV Teleprompter screen on the floor showing countdown numbers.", caption: "Stage TV floor prompter — countdown" },
+  { img: "/assets/gallery-6.jpg", alt: "Podium with dual Presidential Teleprompters set up for a speech at a formal event.", caption: "Dual Presidential teleprompters" },
+  { img: "/assets/gallery-7.jpg", alt: "Speaker wearing a green batik shirt delivering a speech using Presidential Teleprompter screens at a conference.", caption: "Presidential prompter — conference" },
+  { img: "/assets/gallery-8.jpg", alt: "iPad teleprompter setup at a show with a woman panel speaker seated nearby.", caption: "Panel session with iPad prompter" },
+];
+---
+<section class="section" data-od-id="section-gallery" id="gallery">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">From the field</span>
+      <h2>Real setups, real stages</h2>
+      <p>A look at our teleprompter systems deployed across corporate events, broadcasts, and live productions nationwide.</p>
+    </div>
+    <div class="gallery-grid">
+      {galleryItems.map(item => (
+        <figure class="gitem reveal">
+          <img src={item.img} alt={item.alt} width="600" height="450">
+          <figcaption class="cap">{item.caption}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .gitem {
+    position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
+    aspect-ratio: 4/3; cursor: pointer; background: var(--surface);
+  }
+  .gitem img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+  .gitem:hover img { transform: scale(1.06); }
+  .gitem .cap {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 16px 16px 14px;
+    background: linear-gradient(to top, oklch(10% 0.01 264 / .9), transparent);
+    font-size: .82rem; color: #fff; transform: translateY(8px); opacity: 0; transition: all .3s var(--ease);
+  }
+  .gitem:hover .cap { transform: translateY(0); opacity: 1; }
+
+  @media (max-width: 980px) {
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+  }
+</style>

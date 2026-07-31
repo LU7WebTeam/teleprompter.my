@@ -1,0 +1,64 @@
+---
+import { site } from '../data/site';
+---
+<section class="hero" data-od-id="section-hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="eyebrow">Professional Teleprompter Rental · Malaysia</span>
+      <h1>Rent a Teleprompter<br><em>Anywhere in Malaysia</em></h1>
+      <p class="lead">Deliver your message with confidence using our professional teleprompter solutions. From Presidential and Stage TV Teleprompters to iPad Teleprompters, we cater to corporate events, live broadcasts, video shoots, and more.</p>
+      <div class="cta-row">
+        <a href="#our-teleprompters" class="btn btn-primary" data-od-id="cta-view-teleprompters">View Teleprompters</a>
+        <a href="#book" class="btn btn-ghost" data-od-id="cta-book-now-hero">Book Now</a>
+      </div>
+      <p class="managed">Proudly managed by <a href={site.footer.managedByHref} target="_blank" rel="noopener">{site.footer.managedBy}</a></p>
+    </div>
+    <div class="hero-visual">
+      <div class="frame">
+        <img src="/assets/hero-1.webp" alt="iPad teleprompter mounted on a tripod with a professional camera, ready for video production." width="800" height="1000">
+      </div>
+      <div class="badge">
+        <div class="b-label">Operator included</div>
+        <div class="b-val">Setup → Tear down</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; padding: clamp(60px, 9vw, 120px) 0 clamp(70px, 8vw, 110px); overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; top: -20%; right: -10%; width: 60vw; height: 70vw; max-width: 800px; max-height: 800px;
+    background: radial-gradient(circle, oklch(40% 0.19 264 / .28), transparent 65%);
+    filter: blur(20px); z-index: 0; pointer-events: none;
+  }
+  .hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .hero h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); line-height: 1.02; font-weight: 700; }
+  .hero h1 em { font-style: normal; color: var(--accent-bright); }
+  .hero .lead { color: var(--muted); font-size: clamp(1.02rem, 1.6vw, 1.2rem); margin: 26px 0 34px; max-width: 54ch; }
+  .hero .cta-row { display: flex; flex-wrap: wrap; gap: 14px; }
+  .hero .managed { margin-top: 30px; font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
+  .hero .managed a { color: var(--accent-bright); border-bottom: 1px solid oklch(63% 0.17 262 / .4); }
+  .hero-visual { position: relative; }
+  .hero-visual .frame {
+    border-radius: 20px; overflow: hidden; border: 1px solid var(--border);
+    box-shadow: 0 40px 90px -30px #000, inset 0 1px 0 oklch(100% 0 0 / .06); aspect-ratio: 4/5;
+  }
+  .hero-visual .frame img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-visual .badge {
+    position: absolute; left: 18px; bottom: 18px; background: oklch(15% 0.010 264 / .82);
+    backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px;
+    box-shadow: 0 14px 30px -12px #000;
+  }
+  .hero-visual .badge .b-label { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .hero-visual .badge .b-val { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; margin-top: 2px; }
+
+  @media (max-width: 980px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+    .hero-visual { max-width: 460px; }
+  }
+  @media (max-width: 420px) {
+    .hero .cta-row { flex-direction: column; align-items: stretch; }
+    .hero .cta-row .btn { width: 100%; }
+  }
+</style>

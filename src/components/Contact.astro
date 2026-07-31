@@ -1,0 +1,103 @@
+---
+import { site } from '../data/site';
+import { products } from '../data/products';
+
+const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(site.contact.whatsapp.prefill)}`;
+---
+<section class="section" data-od-id="section-contact" id="contact-us">
+  <div class="wrap">
+    <div class="section-head reveal" style="text-align:center; margin-inline:auto;">
+      <span class="eyebrow" style="justify-content:center;">Get in touch</span>
+      <h2>Book your teleprompter</h2>
+    </div>
+    <div class="contact-grid" id="book">
+      <div class="contact-info reveal">
+        <div class="ci-block">
+          <div class="ci-label">Address</div>
+          <div class="ci-val">
+            {site.contact.address.line1}<br>
+            {site.contact.address.line2}<br>
+            {site.contact.address.line3}<br>
+            {site.contact.address.line4}
+          </div>
+        </div>
+        <div class="ci-block">
+          <div class="ci-label">Email</div>
+          <div class="ci-val"><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></div>
+        </div>
+        <div class="ci-block">
+          <div class="ci-label">WhatsApp — preferred</div>
+          <div class="ci-val">{site.contact.whatsapp.number}</div>
+          <a class="wa-pill" href={whatsappHref} target="_blank" rel="noopener" data-od-id="cta-whatsapp-contact">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm0 2a8 8 0 11-4.2 14.8l-.3-.2-2.8.8.8-2.7-.2-.3A8 8 0 0112 4zm-2.8 4c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.8 2.1.8 2.6.7 3 .6.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.3-.2-.6-.3-.4-.2-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1-.4-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.2-.5 0-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2-.2-.4-.4-.4-.6-.4z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+        <div class="ci-block">
+          <div class="ci-label">Mobile</div>
+          <div class="ci-val"><a href={site.contact.mobileHref}>{site.contact.mobile}</a></div>
+        </div>
+      </div>
+      <form class="enquiry-form reveal" data-od-id="enquiry-form" action="#" method="post">
+        <h3>Enquiry form</h3>
+        <p class="f-sub">Tell us about your event and we'll respond with availability and a quote.</p>
+        <div class="form-row">
+          <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" type="text" placeholder="Your full name" required></div>
+          <div class="field"><label for="f-contact">Email / Phone</label><input id="f-contact" name="contact" type="text" placeholder="you@email.com or +60…" required></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="f-date">Event Date</label><input id="f-date" name="event_date" type="date"></div>
+          <div class="field"><label for="f-product">Product of interest</label>
+            <select id="f-product" name="product">
+              <option value="" selected> Select a package</option>
+              {products.map((p, i) => {
+                const ids = ['presidential', 'stage-tv', 'monitor', 'ipad'];
+                return <option value={ids[i]}>{p.name} — {p.currency} {p.price.toLocaleString()}{p.unit}</option>;
+              })}
+            </select>
+          </div>
+        </div>
+        <div class="field full" style="margin-bottom:16px;"><label for="f-msg">Message</label><textarea id="f-msg" name="message" placeholder="Event details, location, duration, any special requirements…"></textarea></div>
+        <button type="submit" class="btn btn-primary" data-od-id="cta-submit-enquiry">Send Enquiry</button>
+        <p class="f-note">We'll confirm availability and send a quote within one business day.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(28px, 4vw, 56px); }
+  .contact-info .ci-block { margin-bottom: 26px; }
+  .contact-info .ci-label { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+  .contact-info .ci-val { font-size: 1.05rem; margin-top: 6px; }
+  .contact-info .ci-val a { color: var(--accent-bright); }
+  .wa-pill {
+    display: inline-flex; align-items: center; gap: 10px; margin-top: 16px; padding: 12px 22px; border-radius: 100px;
+    background: oklch(40% 0.19 264 / .14); border: 1px solid oklch(40% 0.19 264 / .4); color: var(--fg); font-weight: 600; font-size: .9rem;
+    transition: all .25s var(--ease);
+  }
+  .wa-pill:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
+  .wa-pill svg { width: 18px; height: 18px; }
+  .enquiry-form { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: clamp(24px, 3vw, 36px); }
+  .enquiry-form h3 { font-size: 1.5rem; margin-bottom: 6px; }
+  .enquiry-form .f-sub { color: var(--muted); font-size: .9rem; margin-bottom: 26px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .field input, .field select, .field textarea {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 13px 14px;
+    color: var(--fg); font-family: var(--font-body); font-size: .95rem; transition: border-color .2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent-bright); }
+  .field textarea { resize: vertical; min-height: 110px; }
+  .enquiry-form .btn { width: 100%; margin-top: 8px; }
+  .f-note { font-size: .78rem; color: var(--muted); margin-top: 14px; text-align: center; }
+
+  @media (max-width: 980px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>

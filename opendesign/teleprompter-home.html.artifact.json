@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "teleprompter-home.html",
+  "entry": "teleprompter-home.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-07-31T04:09:45.322Z",
+  "updatedAt": "2026-07-31T04:09:45.322Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

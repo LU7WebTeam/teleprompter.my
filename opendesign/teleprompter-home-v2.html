@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TelePrompter.my — Rent a Teleprompter Anywhere in Malaysia</title>
+<meta name="description" content="Rent professional teleprompters anywhere in Malaysia. Presidential, Stage TV, 22\" Monitor and iPad teleprompter rental for corporate events, broadcasts and video shoots. Operated by Video Production KL Sdn Bhd.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   BRAND TOKENS — single source of truth → Astro src/styles/tokens.css
+   Brand blue sampled from logo (#182B9E). Dark premium canvas (Q1).
+   modern-minimal posture inverted to dark per Frisk reference.
+   ============================================================ */
+:root {
+  --bg:            oklch(15% 0.010 264);
+  --surface:       oklch(19% 0.012 264);
+  --surface-2:     oklch(23% 0.014 264);
+  --fg:            oklch(97% 0.004 264);
+  --muted:         oklch(66% 0.012 264);
+  --border:        oklch(30% 0.012 264);
+  --accent:        oklch(40% 0.190 264);   /* brand blue #182B9E */
+  --accent-bright: oklch(63% 0.170 262);   /* glow / active / bright text */
+  --status:        oklch(72% 0.140 151);   /* restrained green for rates */
+
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  --maxw: 1200px;
+  --radius: 14px;
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--accent); color: #fff; }
+
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; }
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+.wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+/* layout helpers */
+.section { padding: clamp(72px, 10vw, 130px) 0; position: relative; }
+.eyebrow {
+  font-family: var(--font-mono); font-size: .75rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--accent-bright); display: inline-flex; align-items: center; gap: 10px;
+}
+.eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent-bright); }
+.section-head { max-width: 720px; margin-bottom: 56px; }
+.section-head h2 { font-size: clamp(2rem, 4.5vw, 3.4rem); margin: 18px 0 0; }
+.section-head p { color: var(--muted); margin-top: 18px; max-width: 60ch; }
+
+/* buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--font-body); font-weight: 600; font-size: .95rem;
+  padding: 14px 26px; border-radius: 100px; cursor: pointer; border: 1px solid transparent;
+  transition: transform .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
+  min-height: 44px; white-space: nowrap;
+}
+.btn-primary {
+  background: var(--accent); color: #fff;
+  box-shadow: 0 8px 30px -8px oklch(40% 0.19 264 / .8), inset 0 1px 0 oklch(100% 0 0 / .15);
+}
+.btn-primary:hover { background: oklch(46% 0.19 264 / 1); transform: translateY(-2px); box-shadow: 0 14px 40px -10px oklch(40% 0.19 264 / .9); }
+.btn-ghost { background: transparent; color: var(--fg); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--accent-bright); color: var(--accent-bright); transform: translateY(-2px); }
+.btn svg { width: 16px; height: 16px; }
+
+/* ============================================================ HEADER → Header.astro */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  background: oklch(15% 0.010 264 / .72);
+  border-bottom: 1px solid var(--border);
+}
+.site-header .inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+.brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.03em; }
+.brand img { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; }
+.nav { display: flex; align-items: center; gap: 8px; }
+.nav a, .nav .nav-drop > button {
+  font-size: .92rem; color: var(--muted); padding: 8px 14px; border-radius: 8px; transition: color .2s;
+  background: none; border: none; cursor: pointer; font-family: var(--font-body);
+}
+.nav a:hover, .nav .nav-drop > button:hover { color: var(--fg); }
+.nav-drop { position: relative; }
+.nav-drop .menu {
+  position: absolute; top: calc(100% + 8px); left: 0; min-width: 240px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 8px;
+  opacity: 0; visibility: hidden; transform: translateY(-6px); transition: all .2s var(--ease);
+  box-shadow: 0 24px 50px -20px #000;
+}
+.nav-drop:hover .menu, .nav-drop:focus-within .menu { opacity: 1; visibility: visible; transform: translateY(0); }
+.menu .group-label { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 6px; }
+.menu a { display: block; padding: 10px 12px; border-radius: 8px; color: var(--fg); font-size: .9rem; }
+.menu a:hover { background: var(--surface-2); color: var(--accent-bright); }
+.nav .btn { margin-left: 10px; }
+.burger { display: none; background: none; border: 1px solid var(--border); border-radius: 10px; width: 44px; height: 44px; cursor: pointer; color: var(--fg); }
+.burger svg { width: 20px; height: 20px; }
+
+/* mobile nav drawer */
+.mobile-nav { display: none; }
+
+/* ============================================================ HERO → Hero.astro */
+.hero { position: relative; padding: clamp(60px, 9vw, 120px) 0 clamp(70px, 8vw, 110px); overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; top: -20%; right: -10%; width: 60vw; height: 70vw; max-width: 800px; max-height: 800px;
+  background: radial-gradient(circle, oklch(40% 0.19 264 / .28), transparent 65%);
+  filter: blur(20px); z-index: 0; pointer-events: none;
+}
+.hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+.hero h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); line-height: 1.02; font-weight: 700; }
+.hero h1 em { font-style: normal; color: var(--accent-bright); }
+.hero .lead { color: var(--muted); font-size: clamp(1.02rem, 1.6vw, 1.2rem); margin: 26px 0 34px; max-width: 54ch; }
+.hero .cta-row { display: flex; flex-wrap: wrap; gap: 14px; }
+.hero .managed { margin-top: 30px; font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
+.hero .managed a { color: var(--accent-bright); border-bottom: 1px solid oklch(63% 0.17 262 / .4); }
+.hero-visual { position: relative; }
+.hero-visual .frame {
+  border-radius: 20px; overflow: hidden; border: 1px solid var(--border);
+  box-shadow: 0 40px 90px -30px #000, inset 0 1px 0 oklch(100% 0 0 / .06); aspect-ratio: 4/5;
+}
+.hero-visual .frame img { width: 100%; height: 100%; object-fit: cover; }
+.hero-visual .badge {
+  position: absolute; left: 18px; bottom: 18px; background: oklch(15% 0.010 264 / .82);
+  backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px;
+  box-shadow: 0 14px 30px -12px #000;
+}
+.hero-visual .badge .b-label { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.hero-visual .badge .b-val { font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; margin-top: 2px; }
+
+/* ============================================================ LOGO MARQUEE → LogoMarquee.astro (placeholder slots) */
+.marquee-band { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 30px 0; overflow: hidden; background: var(--surface); }
+.marquee-band .m-label { text-align: center; font-family: var(--font-mono); font-size: .72rem; letter-spacing: .25em; text-transform: uppercase; color: var(--muted); margin-bottom: 24px; }
+.marquee { display: flex; gap: 64px; width: max-content; animation: scrollx 32s linear infinite; }
+.marquee:hover { animation-play-state: paused; }
+.marquee-track { display: flex; gap: 64px; flex-shrink: 0; }
+.logo-slot {
+  display: flex; align-items: center; gap: 12px; color: var(--muted); flex-shrink: 0;
+  font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; letter-spacing: -.02em; opacity: .6;
+  transition: opacity .2s, color .2s;
+}
+.logo-slot:hover { opacity: 1; color: var(--fg); }
+.logo-slot .mark {
+  width: 38px; height: 38px; border-radius: 9px; background: var(--surface-2); border: 1px solid var(--border);
+  display: grid; place-items: center; color: var(--accent-bright);
+}
+.logo-slot .mark svg { width: 20px; height: 20px; }
+@keyframes scrollx { to { transform: translateX(-50%); } }
+
+/* ============================================================ WHY CHOOSE → WhyChoose.astro (numbered 01-05) */
+.features { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+.feature-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px;
+  transition: transform .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease);
+  position: relative; overflow: hidden;
+}
+.feature-card:hover { transform: translateY(-6px); border-color: oklch(40% 0.19 264 / .5); background: var(--surface-2); }
+.feature-card .num { font-family: var(--font-mono); font-size: .95rem; font-weight: 600; color: var(--accent-bright); letter-spacing: .05em; }
+.feature-card .ic { width: 44px; height: 44px; border-radius: 10px; background: oklch(40% 0.19 264 / .14); color: var(--accent-bright); display: grid; place-items: center; margin: 18px 0 18px; }
+.feature-card .ic svg { width: 22px; height: 22px; }
+.feature-card h3 { font-size: 1.18rem; margin-bottom: 10px; }
+.feature-card p { color: var(--muted); font-size: .92rem; }
+
+/* ============================================================ ABOUT → About.astro */
+.about { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 5vw, 72px); align-items: center; }
+.about .media { position: relative; }
+.about .media .frame { border-radius: 18px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 30px 70px -30px #000; aspect-ratio: 5/4; }
+.about .media .frame img { width: 100%; height: 100%; object-fit: cover; }
+.about h2 { font-size: clamp(2rem, 4vw, 3rem); }
+.about p { color: var(--muted); margin-top: 22px; max-width: 52ch; }
+.about .managed-line { margin-top: 26px; font-family: var(--font-mono); font-size: .85rem; color: var(--muted); }
+.about .managed-line a { color: var(--accent-bright); border-bottom: 1px solid oklch(63% 0.17 262 / .4); }
+
+/* ============================================================ GALLERY → Gallery.astro */
+.gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.gitem {
+  position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
+  aspect-ratio: 4/3; cursor: pointer; background: var(--surface);
+}
+.gitem img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.gitem:hover img { transform: scale(1.06); }
+.gitem .cap {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 16px 16px 14px;
+  background: linear-gradient(to top, oklch(10% 0.01 264 / .9), transparent);
+  font-size: .82rem; color: #fff; transform: translateY(8px); opacity: 0; transition: all .3s var(--ease);
+}
+.gitem:hover .cap { transform: translateY(0); opacity: 1; }
+
+/* ============================================================ PRODUCTS → ProductCard.astro */
+.products { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.product-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+  display: flex; flex-direction: column; transition: border-color .3s var(--ease), transform .3s var(--ease);
+}
+.product-card:hover { border-color: oklch(40% 0.19 264 / .5); transform: translateY(-4px); }
+.product-card .p-media { aspect-ratio: 16/10; overflow: hidden; }
+.product-card .p-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.product-card:hover .p-media img { transform: scale(1.05); }
+.product-card .tag {
+  position: absolute; top: 16px; left: 16px; font-family: var(--font-mono); font-size: .68rem; letter-spacing: .18em;
+  text-transform: uppercase; background: oklch(15% 0.010 264 / .8); backdrop-filter: blur(8px);
+  border: 1px solid var(--border); padding: 6px 12px; border-radius: 100px; color: var(--accent-bright);
+}
+.p-media { position: relative; }
+.product-card .p-body { padding: 28px 26px; display: flex; flex-direction: column; flex: 1; }
+.product-card h3 { font-size: 1.5rem; }
+.product-card .p-desc { color: var(--muted); font-size: .9rem; margin: 10px 0 18px; }
+.spec-list { list-style: none; display: grid; gap: 7px; margin-bottom: 20px; }
+.spec-list li { display: flex; gap: 10px; font-size: .85rem; color: var(--muted); }
+.spec-list li::before { content: ""; flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-bright); margin-top: 9px; }
+.p-footer { margin-top: auto; padding-top: 18px; border-top: 1px solid var(--border); display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.price-block .p-label { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.price-block .p-price { font-family: var(--font-display); font-weight: 700; font-size: 2rem; line-height: 1; margin-top: 4px; }
+.price-block .p-price .cur { color: var(--muted); font-size: 1.1rem; vertical-align: top; margin-right: 2px; }
+.price-block .p-price .unit { color: var(--muted); font-size: .9rem; font-weight: 500; }
+.transport { font-size: .8rem; color: var(--status); margin-top: 8px; display: flex; align-items: center; gap: 6px; }
+.transport svg { width: 14px; height: 14px; }
+.p-btns { display: flex; flex-direction: column; gap: 8px; min-width: 140px; }
+.p-btns .btn { padding: 11px 18px; font-size: .85rem; }
+
+/* ============================================================ TERMS → Terms.astro */
+.terms-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+.term-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.term-card .tn { font-family: var(--font-mono); font-size: .8rem; color: var(--accent-bright); letter-spacing: .05em; }
+.term-card h4 { font-family: var(--font-display); font-size: 1.1rem; margin: 10px 0 12px; font-weight: 600; }
+.term-card p, .term-card li { color: var(--muted); font-size: .9rem; }
+.term-card ul { list-style: none; display: grid; gap: 8px; }
+.term-card ul li { padding-left: 18px; position: relative; }
+.term-card ul li::before { content: "—"; position: absolute; left: 0; color: var(--accent-bright); }
+.hl { color: var(--accent-bright); font-weight: 600; font-family: var(--font-mono); }
+.pay-split { display: flex; gap: 24px; margin-top: 12px; }
+.pay-split .seg { flex: 1; }
+.pay-split .seg .pct { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--accent-bright); }
+.pay-split .seg .lab { font-size: .82rem; color: var(--muted); }
+
+/* ============================================================ CONTACT → Contact.astro */
+.contact-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: clamp(28px, 4vw, 56px); }
+.contact-info .ci-block { margin-bottom: 26px; }
+.contact-info .ci-label { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.contact-info .ci-val { font-size: 1.05rem; margin-top: 6px; }
+.contact-info .ci-val a { color: var(--accent-bright); }
+.wa-pill {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 16px; padding: 12px 22px; border-radius: 100px;
+  background: oklch(40% 0.19 264 / .14); border: 1px solid oklch(40% 0.19 264 / .4); color: var(--fg); font-weight: 600; font-size: .9rem;
+  transition: all .25s var(--ease);
+}
+.wa-pill:hover { background: var(--accent); color: #fff; transform: translateY(-2px); }
+.wa-pill svg { width: 18px; height: 18px; }
+.enquiry-form { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: clamp(24px, 3vw, 36px); }
+.enquiry-form h3 { font-size: 1.5rem; margin-bottom: 6px; }
+.enquiry-form .f-sub { color: var(--muted); font-size: .9rem; margin-bottom: 26px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field.full { grid-column: 1 / -1; }
+.field label { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.field input, .field select, .field textarea {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 13px 14px;
+  color: var(--fg); font-family: var(--font-body); font-size: .95rem; transition: border-color .2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent-bright); }
+.field textarea { resize: vertical; min-height: 110px; }
+.enquiry-form .btn { width: 100%; margin-top: 8px; }
+.f-note { font-size: .78rem; color: var(--muted); margin-top: 14px; text-align: center; }
+
+/* ============================================================ FOOTER → Footer.astro */
+.site-footer { border-top: 1px solid var(--border); padding: clamp(60px, 7vw, 90px) 0 36px; background: oklch(13% 0.008 264); }
+.foot-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: 40px; padding-bottom: 50px; border-bottom: 1px solid var(--border); }
+.foot-brand p { color: var(--muted); font-size: .9rem; margin-top: 18px; max-width: 36ch; }
+.foot-col h5 { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.foot-col a, .foot-col p { display: block; color: var(--muted); font-size: .9rem; margin-bottom: 10px; transition: color .2s; }
+.foot-col a:hover { color: var(--accent-bright); }
+.foot-cta { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; }
+.foot-cta h5 { color: var(--fg); font-family: var(--font-display); font-size: 1.2rem; letter-spacing: -.02em; text-transform: none; margin-bottom: 8px; }
+.foot-cta p { color: var(--muted); font-size: .85rem; margin-bottom: 16px; }
+.foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; flex-wrap: wrap; gap: 12px; }
+.foot-bottom .copy { font-size: .82rem; color: var(--muted); }
+.foot-bottom .copy a { color: var(--accent-bright); }
+
+/* ============================================================ WHATSAPP FAB → WhatsAppFab.astro */
+.wa-fab {
+  position: fixed; right: 22px; bottom: 22px; z-index: 90; width: 60px; height: 60px; border-radius: 50%;
+  background: var(--accent); color: #fff; display: grid; place-items: center; cursor: pointer;
+  box-shadow: 0 12px 36px -8px oklch(40% 0.19 264 / .9), inset 0 1px 0 oklch(100% 0 0 / .2);
+  transition: transform .25s var(--ease); border: 2px solid oklch(100% 0 0 / .1);
+}
+.wa-fab:hover { transform: scale(1.08); }
+.wa-fab svg { width: 30px; height: 30px; }
+.wa-fab::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid oklch(40% 0.19 264 / .35); animation: pulse 2.4s ease-out infinite; }
+@keyframes pulse { 0% { transform: scale(.9); opacity: .8; } 100% { transform: scale(1.5); opacity: 0; } }
+
+/* scroll reveal */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ============================================================ RESPONSIVE */
+@media (max-width: 980px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .hero-visual { max-width: 460px; }
+  .features { grid-template-columns: repeat(2, 1fr); }
+  .about { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .products { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .foot-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 720px) {
+  .nav, .nav-drop { display: none; }
+  .burger { display: grid; place-items: center; }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav {
+    position: fixed; inset: 72px 0 auto 0; flex-direction: column; gap: 4px; padding: 16px 24px 24px;
+    background: var(--surface); border-bottom: 1px solid var(--border); z-index: 99;
+  }
+  .mobile-nav a { padding: 12px 8px; border-bottom: 1px solid var(--border); color: var(--fg); }
+  .mobile-nav .btn { margin-top: 10px; }
+  .features { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .terms-grid { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .foot-top { grid-template-columns: 1fr; }
+  .p-footer { flex-direction: column; align-items: stretch; }
+  .p-btns { flex-direction: row; min-width: 0; }
+  .p-btns .btn { flex: 1; }
+}
+@media (max-width: 420px) {
+  .hero .cta-row { flex-direction: column; align-items: stretch; }
+  .hero .cta-row .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     DATA SCHEMA (documentation for Astro port → src/data/)
+     This HTML is hand-written for fidelity/stable preview. The shape
+     below documents products.ts / features.ts / site.ts for the agent.
+     PRODUCTS: [{name, price, currency:'RM', unit:'/day', img, tag,
+       specs:[], transport, detail_link}]
+     FEATURES: [{num, title, desc, icon}]
+     GALLERY: [{img, caption}]
+     SITE: {address, email, whatsapp{number,href,prefill}, mobile, links}
+     ============================================================ -->
+
+<!-- HEADER -->
+<header class="site-header" data-od-id="site-header">
+  <div class="wrap inner">
+    <a href="#" class="brand" data-od-id="brand-logo">
+      <img src="assets/logo.png" alt="TelePrompter.my logo">
+      <span>TelePrompter<span style="color:var(--accent-bright)">.my</span></span>
+    </a>
+    <nav class="nav" data-od-id="main-nav" aria-label="Primary">
+      <div class="nav-drop">
+        <button aria-haspopup="true">On Camera ▾</button>
+        <div class="menu">
+          <div class="group-label">On Camera</div>
+          <a href="https://teleprompter.my/ultralight-ipad-teleprompter/">iPad Teleprompter</a>
+          <a href="https://teleprompter.my/monitor-teleprompter/">Monitor Teleprompter</a>
+        </div>
+      </div>
+      <div class="nav-drop">
+        <button aria-haspopup="true">On Stage ▾</button>
+        <div class="menu">
+          <div class="group-label">On Stage</div>
+          <a href="https://teleprompter.my/presidential-teleprompter/">Presidential Teleprompter</a>
+          <a href="https://teleprompter.my/stage-tv-teleprompter/">Stage TV Teleprompter</a>
+        </div>
+      </div>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact-us">Contact</a>
+      <a href="#book" class="btn btn-primary" data-od-id="cta-book-now">Book Now</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+<nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+  <a href="https://teleprompter.my/ultralight-ipad-teleprompter/">iPad Teleprompter</a>
+  <a href="https://teleprompter.my/monitor-teleprompter/">Monitor Teleprompter</a>
+  <a href="https://teleprompter.my/presidential-teleprompter/">Presidential Teleprompter</a>
+  <a href="https://teleprompter.my/stage-tv-teleprompter/">Stage TV Teleprompter</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#contact-us">Contact</a>
+  <a href="#book" class="btn btn-primary">Book Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" data-od-id="section-hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="eyebrow">Professional Teleprompter Rental · Malaysia</span>
+      <h1>Rent a Teleprompter<br><em>Anywhere in Malaysia</em></h1>
+      <p class="lead">Deliver your message with confidence using our professional teleprompter solutions. From Presidential and Stage TV Teleprompters to iPad Teleprompters, we cater to corporate events, live broadcasts, video shoots, and more.</p>
+      <div class="cta-row">
+        <a href="#our-teleprompters" class="btn btn-primary" data-od-id="cta-view-teleprompters">View Teleprompters</a>
+        <a href="#book" class="btn btn-ghost" data-od-id="cta-book-now-hero">Book Now</a>
+      </div>
+      <p class="managed">Proudly managed by <a href="https://www.videoproductionkl.com" target="_blank" rel="noopener">Video Production KL Sdn Bhd</a></p>
+    </div>
+    <div class="hero-visual">
+      <div class="frame">
+        <img src="assets/hero-1.webp" alt="iPad teleprompter mounted on a tripod with a professional camera, ready for video production.">
+      </div>
+      <div class="badge">
+        <div class="b-label">Operator included</div>
+        <div class="b-val">Setup → Tear down</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGO MARQUEE (placeholder slots — replace with real client logos) -->
+<div class="marquee-band" data-od-id="client-logo-marquee" aria-label="Client logo marquee (placeholder)">
+  <div class="m-label">Trusted by teams across Malaysia · <span style="color:var(--muted)">placeholder logos — to be replaced</span></div>
+  <div class="marquee">
+    <div class="marquee-track">
+      <div class="logo-slot" data-od-id="client-logo-slot-1"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6-6.3 4.6L7.8 14 2 9.4h7.6z"/></svg></span>Client Logo</div>
+      <div class="logo-slot" data-od-id="client-logo-slot-2"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></span>Client Logo</div>
+      <div class="logo-slot" data-od-id="client-logo-slot-3"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/></svg></span>Client Logo</div>
+      <div class="logo-slot" data-od-id="client-logo-slot-4"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></span>Client Logo</div>
+      <div class="logo-slot" data-od-id="client-logo-slot-5"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20L12 4l9 16z"/></svg></span>Client Logo</div>
+      <div class="logo-slot" data-od-id="client-logo-slot-6"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg></span>Client Logo</div>
+      <div class="logo-slot" data-od-id="client-logo-slot-7"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M5 6h14M5 18h14"/></svg></span>Client Logo</div>
+      <div class="logo-slot" data-od-id="client-logo-slot-8"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12c4-6 16-6 20 0-4 6-16 6-20 0z"/></svg></span>Client Logo</div>
+    </div>
+    <div class="marquee-track" aria-hidden="true">
+      <div class="logo-slot"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6-6.3 4.6L7.8 14 2 9.4h7.6z"/></svg></span>Client Logo</div>
+      <div class="logo-slot"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg></span>Client Logo</div>
+      <div class="logo-slot"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/></svg></span>Client Logo</div>
+      <div class="logo-slot"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></span>Client Logo</div>
+      <div class="logo-slot"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 20L12 4l9 16z"/></svg></span>Client Logo</div>
+      <div class="logo-slot"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg></span>Client Logo</div>
+      <div class="logo-slot"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M5 6h14M5 18h14"/></svg></span>Client Logo</div>
+      <div class="logo-slot"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12c4-6 16-6 20 0-4 6-16 6-20 0z"/></svg></span>Client Logo</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY CHOOSE -->
+<section class="section" data-od-id="section-why-choose">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Why choose us</span>
+      <h2>Built for flawless delivery, end to end</h2>
+    </div>
+    <div class="features">
+      <article class="feature-card reveal" data-od-id="feature-card-coverage">
+        <span class="num">01</span>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-5.7 7-11a7 7 0 10-14 0c0 5.3 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+        <h3>Nationwide Coverage</h3>
+        <p>We bring our services to you, no matter where you are in Malaysia.</p>
+      </article>
+      <article class="feature-card reveal" data-od-id="feature-card-equipment">
+        <span class="num">02</span>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <h3>Professional Equipment</h3>
+        <p>Enjoy crystal-clear displays and seamless functionality.</p>
+      </article>
+      <article class="feature-card reveal" data-od-id="feature-card-custom">
+        <span class="num">03</span>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="19" cy="14" r="2"/></svg></div>
+        <h3>Custom Solutions</h3>
+        <p>Tailored setups to fit your specific needs.</p>
+      </article>
+      <article class="feature-card reveal" data-od-id="feature-card-rates">
+        <span class="num">04</span>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+        <h3>Affordable Rates</h3>
+        <p>High-quality services that won't break the bank.</p>
+      </article>
+      <article class="feature-card reveal" data-od-id="feature-card-support">
+        <span class="num">05</span>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2 0 4 .7 5.5 2"/></svg></div>
+        <h3>Expert Support</h3>
+        <p>Our team ensures everything runs smoothly from setup to tear down.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section" data-od-id="section-about" style="background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="wrap about">
+    <div class="media reveal">
+      <div class="frame"><img src="assets/hero-2.webp" alt="Dual Presidential Teleprompter setup at a formal event."></div>
+    </div>
+    <div class="about-copy reveal">
+      <span class="eyebrow">Who we are</span>
+      <h2>Professional teleprompter rental, tailored to your production</h2>
+      <p>TelePrompter.my specializes in providing professional teleprompter rental services designed to ensure seamless delivery for speeches, presentations, and productions.</p>
+      <p>We offer reliable and user-friendly solutions tailored to meet the needs of events, broadcasts, and video shoots of any scale.</p>
+      <p class="managed-line">Proudly managed by <a href="https://www.videoproductionkl.com" target="_blank" rel="noopener">Video Production KL Sdn Bhd</a></p>
+      <a href="https://www.videoproductionkl.com" target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:24px;" data-od-id="cta-learn-more">Learn More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="section" data-od-id="section-gallery" id="gallery">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">From the field</span>
+      <h2>Real setups, real stages</h2>
+      <p>A look at our teleprompter systems deployed across corporate events, broadcasts, and live productions nationwide.</p>
+    </div>
+    <div class="gallery-grid">
+      <figure class="gitem reveal"><img src="assets/gallery-1.jpg" alt="PMX at a podium using transparent teleprompter screens during a formal event."><figcaption class="cap">Presidential teleprompter at a formal address</figcaption></figure>
+      <figure class="gitem reveal"><img src="assets/gallery-2.jpg" alt="Close-up of a professional iPad teleprompter setup mounted on a tripod."><figcaption class="cap">iPad teleprompter on tripod</figcaption></figure>
+      <figure class="gitem reveal"><img src="assets/gallery-3.jpg" alt="Monitor Teleprompter system in a modern office setting."><figcaption class="cap">22" Monitor teleprompter in studio</figcaption></figure>
+      <figure class="gitem reveal"><img src="assets/gallery-4.jpg" alt="Large angled stage TV teleprompter displaying colorful text at an event."><figcaption class="cap">Stage TV teleprompter at an event</figcaption></figure>
+      <figure class="gitem reveal"><img src="assets/gallery-5.jpg" alt="Stage TV Teleprompter screen on the floor showing countdown numbers."><figcaption class="cap">Stage TV floor prompter — countdown</figcaption></figure>
+      <figure class="gitem reveal"><img src="assets/gallery-6.jpg" alt="Podium with dual Presidential Teleprompters set up for a speech at a formal event."><figcaption class="cap">Dual Presidential teleprompters</figcaption></figure>
+      <figure class="gitem reveal"><img src="assets/gallery-7.jpg" alt="Speaker wearing a green batik shirt delivering a speech using Presidential Teleprompter screens at a conference."><figcaption class="cap">Presidential prompter — conference</figcaption></figure>
+      <figure class="gitem reveal"><img src="assets/gallery-8.jpg" alt="iPad teleprompter setup at a show with a woman panel speaker seated nearby."><figcaption class="cap">Panel session with iPad prompter</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- OUR TELEPROMPTERS / PRODUCTS -->
+<section class="section" data-od-id="section-products" id="our-teleprompters" style="background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Our teleprompters</span>
+      <h2>Four setups for every stage and screen</h2>
+      <p>Fully operated packages with free transport within Klang Valley. Same-day quotes available.</p>
+    </div>
+    <div class="products">
+
+      <article class="product-card reveal" data-od-id="product-card-presidential">
+        <div class="p-media"><span class="tag">On Stage</span><img src="assets/product-presidential.jpg" alt="Presidential Teleprompter setup"></div>
+        <div class="p-body">
+          <h3>Presidential Teleprompter</h3>
+          <p class="p-desc">Step onto the stage with confidence. Seamless delivery that lets you maintain eye contact while following your script, commanding the room with precision and authenticity.</p>
+          <ul class="spec-list">
+            <li>2x TSP2-19 Teleprompters</li><li>2x 19" LCD Monitors · 2x 6' Stands</li>
+            <li>2x 16"×17" Beamsplitter Mirrors</li><li>1x 4-Port HDMI Splitter · 3x 25' HDMI Cables</li>
+            <li>1x Laptop with Teleprompter Software</li><li>2x Teleprompter Operators</li>
+          </ul>
+          <div class="p-footer">
+            <div class="price-block">
+              <div class="p-label">Rate</div>
+              <div class="p-price mono"><span class="cur">RM</span>2,500<span class="unit"> /day</span></div>
+              <div class="transport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13l2-5h11l2 5M5 13h14v5H5z"/><circle cx="8" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg>Transport FOC · Klang Valley</div>
+            </div>
+            <div class="p-btns">
+              <a href="#book" class="btn btn-primary" data-od-id="cta-book-presidential">Book Now</a>
+              <a href="https://teleprompter.my/presidential-teleprompter/" class="btn btn-ghost" data-od-id="read-presidential">Read More</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-od-id="product-card-stage-tv">
+        <div class="p-media"><span class="tag">On Stage</span><img src="assets/product-stage-tv.jpg" alt="Stage TV Teleprompter setup"></div>
+        <div class="p-body">
+          <h3>Stage TV Teleprompter</h3>
+          <p class="p-desc">Designed to enhance live presentations with seamless, real-time script delivery. Discreetly positioned on stage so speakers stay on point and engaged with the audience.</p>
+          <ul class="spec-list">
+            <li>2x 43" Stage TV Teleprompter</li><li>2x TV Stage Bracket Mount</li>
+            <li>1x Laptop with Teleprompter Software</li><li>1x 20m HDMI Cable · 1x HDMI Splitter</li>
+            <li>1x Operator · 1x Crew</li>
+          </ul>
+          <div class="p-footer">
+            <div class="price-block">
+              <div class="p-label">Rate</div>
+              <div class="p-price mono"><span class="cur">RM</span>2,100<span class="unit"> /day</span></div>
+              <div class="transport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13l2-5h11l2 5M5 13h14v5H5z"/><circle cx="8" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg>Transport FOC · Klang Valley</div>
+            </div>
+            <div class="p-btns">
+              <a href="#book" class="btn btn-primary" data-od-id="cta-book-stage-tv">Book Now</a>
+              <a href="https://teleprompter.my/stage-tv-teleprompter/" class="btn btn-ghost" data-od-id="read-stage-tv">Read More</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-od-id="product-card-monitor">
+        <div class="p-media"><span class="tag">On Camera</span><img src="assets/product-monitor.jpg" alt="22 inch Monitor Teleprompter setup"></div>
+        <div class="p-body">
+          <h3>22" Monitor Teleprompter</h3>
+          <p class="p-desc">Ideal for content creators, anchors, and speakers. A sleek device that attaches to your existing monitor, transforming it into a discreet teleprompter for effortless delivery on camera.</p>
+          <ul class="spec-list">
+            <li>1x 22" Monitor Teleprompter</li><li>1x Coated Beam Splitter · 1x Frame + Hood</li>
+            <li>1x Monitor Adjustable Mounting Tray · 1x 22" Monitor</li>
+            <li>1x 20m HDMI Cable · 1x Heavy Duty Tripod</li>
+            <li>1x Laptop with Teleprompter Software · 1x Operator</li>
+          </ul>
+          <div class="p-footer">
+            <div class="price-block">
+              <div class="p-label">Rate</div>
+              <div class="p-price mono"><span class="cur">RM</span>2,000<span class="unit"> /day</span></div>
+              <div class="transport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13l2-5h11l2 5M5 13h14v5H5z"/><circle cx="8" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg>Transport FOC · Klang Valley</div>
+            </div>
+            <div class="p-btns">
+              <a href="#book" class="btn btn-primary" data-od-id="cta-book-monitor">Book Now</a>
+              <a href="https://teleprompter.my/monitor-teleprompter/" class="btn btn-ghost" data-od-id="read-monitor">Read More</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="product-card reveal" data-od-id="product-card-ipad">
+        <div class="p-media"><span class="tag">On Camera</span><img src="assets/product-ipad.jpg" alt="Ultralight iPad Teleprompter setup"></div>
+        <div class="p-body">
+          <h3>Ultralight iPad Teleprompter</h3>
+          <p class="p-desc">The compact solution for polished presentations. Lightweight and portable, ideal for on-the-go professionals, content creators, and educators who need clarity on the move.</p>
+          <ul class="spec-list">
+            <li>1x Teleprompter · 1x iPad with Teleprompter App</li>
+            <li>1x Clear Beam Splitter · 1x Frame + Hood</li>
+            <li>1x Monitor Adjustable Mounting Tray · 1x Tripod</li>
+            <li>1x Operator</li>
+          </ul>
+          <div class="p-footer">
+            <div class="price-block">
+              <div class="p-label">Rate</div>
+              <div class="p-price mono"><span class="cur">RM</span>1,200<span class="unit"> /day</span></div>
+              <div class="transport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 13l2-5h11l2 5M5 13h14v5H5z"/><circle cx="8" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/></svg>Transport FOC · Klang Valley</div>
+            </div>
+            <div class="p-btns">
+              <a href="#book" class="btn btn-primary" data-od-id="cta-book-ipad">Book Now</a>
+              <a href="https://teleprompter.my/ultralight-ipad-teleprompter/" class="btn btn-ghost" data-od-id="read-ipad">Read More</a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE TERMS -->
+<section class="section" data-od-id="section-terms">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Service terms</span>
+      <h2>Clear terms before you book</h2>
+      <p>The essentials of how our rentals operate. Full terms available on request.</p>
+    </div>
+    <div class="terms-grid">
+      <div class="term-card reveal" data-od-id="term-payment">
+        <span class="tn">01 · Payment</span>
+        <h4>Split payment, secured booking</h4>
+        <div class="pay-split">
+          <div class="seg"><div class="pct mono">70%</div><div class="lab">Booking fee — <span class="hl">12 hours</span> before event</div></div>
+          <div class="seg"><div class="pct mono">30%</div><div class="lab">Remaining — before event start</div></div>
+        </div>
+        <ul style="margin-top:14px;">
+          <li>Weekend / Public Holiday work: <span class="hl">+20%</span> surcharge applies</li>
+          <li>Outside Klang Valley: transport by mileage; accommodation added if required</li>
+        </ul>
+      </div>
+      <div class="term-card reveal" data-od-id="term-rehearsal">
+        <span class="tn">02 · Rehearsal</span>
+        <h4>Day-before rehearsal</h4>
+        <p>Rehearsals scheduled for the day before the event carry an additional <span class="hl">+50%</span> charge of the selected package.</p>
+      </div>
+      <div class="term-card reveal" data-od-id="term-cancellation">
+        <span class="tn">03 · Cancellation</span>
+        <h4>No refunds issued</h4>
+        <p>Please note that there will be no refunds issued for any cancellations. We recommend confirming your schedule before booking.</p>
+      </div>
+      <div class="term-card reveal" data-od-id="term-damage-availability">
+        <span class="tn">04 · Damage & availability</span>
+        <h4>Equipment care & booking ahead</h4>
+        <ul>
+          <li>Any damages to items result in additional costs, borne by the client</li>
+          <li>All teleprompters are subject to availability — book in advance to secure one</li>
+          <li>TelePrompter.my reserves the right to withhold all products and services if payment is not received in full</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT + ENQUIRY FORM -->
+<section class="section" data-od-id="section-contact" id="contact-us">
+  <div class="wrap">
+    <div class="section-head reveal" style="text-align:center; margin-inline:auto;">
+      <span class="eyebrow" style="justify-content:center;">Get in touch</span>
+      <h2>Book your teleprompter</h2>
+    </div>
+    <div class="contact-grid" id="book">
+      <div class="contact-info reveal">
+        <div class="ci-block">
+          <div class="ci-label">Address</div>
+          <div class="ci-val">West Wing 1st Floor,<br>Bangunan ECM Libra,<br>8, Jalan Damansara Endah,<br>50490 Kuala Lumpur, Malaysia.</div>
+        </div>
+        <div class="ci-block">
+          <div class="ci-label">Email</div>
+          <div class="ci-val"><a href="mailto:info@teleprompter.my">info@teleprompter.my</a></div>
+        </div>
+        <div class="ci-block">
+          <div class="ci-label">WhatsApp — preferred</div>
+          <div class="ci-val">+6011-3307 8724</div>
+          <a class="wa-pill" href="https://wa.me/601133078724?text=Hi%2C%20I%E2%80%99m%20interested%20in%20your%20teleprompter%20service.%20Can%20I%20book%20your%20services%3F" target="_blank" rel="noopener" data-od-id="cta-whatsapp-contact">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm0 2a8 8 0 11-4.2 14.8l-.3-.2-2.8.8.8-2.7-.2-.3A8 8 0 0112 4zm-2.8 4c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.8 2.1.8 2.6.7 3 .6.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.3-.2-.6-.3-.4-.2-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1-.4-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.2-.5 0-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2-.2-.4-.4-.4-.6-.4z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+        <div class="ci-block">
+          <div class="ci-label">Mobile</div>
+          <div class="ci-val"><a href="tel:+601133078724">+6011-3307 8724</a></div>
+        </div>
+      </div>
+      <form class="enquiry-form reveal" data-od-id="enquiry-form" action="#" method="post">
+        <h3>Enquiry form</h3>
+        <p class="f-sub">Tell us about your event and we'll respond with availability and a quote.</p>
+        <div class="form-row">
+          <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" type="text" placeholder="Your full name" required></div>
+          <div class="field"><label for="f-contact">Email / Phone</label><input id="f-contact" name="contact" type="text" placeholder="you@email.com or +60…" required></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="f-date">Event Date</label><input id="f-date" name="event_date" type="date"></div>
+          <div class="field"><label for="f-product">Product of interest</label>
+            <select id="f-product" name="product">
+              <option value="" selected> Select a package</option>
+              <option value="presidential">Presidential Teleprompter — RM 2,500/day</option>
+              <option value="stage-tv">Stage TV Teleprompter — RM 2,100/day</option>
+              <option value="monitor">22" Monitor Teleprompter — RM 2,000/day</option>
+              <option value="ipad">Ultralight iPad Teleprompter — RM 1,200/day</option>
+            </select>
+          </div>
+        </div>
+        <div class="field full" style="margin-bottom:16px;"><label for="f-msg">Message</label><textarea id="f-msg" name="message" placeholder="Event details, location, duration, any special requirements…"></textarea></div>
+        <button type="submit" class="btn btn-primary" data-od-id="cta-submit-enquiry">Send Enquiry</button>
+        <p class="f-note">We'll confirm availability and send a quote within one business day.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer" data-od-id="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brand">
+        <a href="#" class="brand"><img src="assets/logo.png" alt="TelePrompter.my logo"><span>TelePrompter<span style="color:var(--accent-bright)">.my</span></span></a>
+        <p>Professional teleprompter rental services designed to ensure seamless delivery for speeches, presentations, and productions — reliable and user-friendly solutions for events, broadcasts, and video shoots of any scale.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Products</h5>
+        <a href="https://teleprompter.my/presidential-teleprompter/">Presidential Teleprompter</a>
+        <a href="https://teleprompter.my/stage-tv-teleprompter/">Stage TV Teleprompter</a>
+        <a href="https://teleprompter.my/monitor-teleprompter/">Monitor Teleprompter</a>
+        <a href="https://teleprompter.my/ultralight-ipad-teleprompter/">iPad Teleprompter</a>
+      </div>
+      <div class="foot-col">
+        <h5>Contact</h5>
+        <p>West Wing 1st Floor,<br>Bangunan ECM Libra,<br>8, Jalan Damansara Endah,<br>50490 Kuala Lumpur</p>
+        <a href="mailto:info@teleprompter.my">info@teleprompter.my</a>
+        <a href="https://wa.me/601133078724">+6011-3307 8724</a>
+      </div>
+      <div class="foot-cta">
+        <h5>Have an inquiry?</h5>
+        <p>Get a quote for your next event — we respond fast.</p>
+        <a href="#book" class="btn btn-primary" data-od-id="cta-get-quote" style="width:100%;">Get a Quote</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="copy">© 2026 TelePrompter.my by <a href="https://www.videoproductionkl.com" target="_blank" rel="noopener">Video Production KL Sdn Bhd</a> | All Rights Reserved.</div>
+      <div class="copy" style="display:flex; gap:18px;">
+        <a href="https://teleprompter.my/terms-services/">Terms and Services</a>
+        <a href="https://teleprompter.my/privacy-policy/">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FAB -->
+<a class="wa-fab" href="https://wa.me/601133078724?text=Hi%2C%20I%E2%80%99m%20interested%20in%20your%20teleprompter%20service.%20Can%20I%20book%20your%20services%3F" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" data-od-id="whatsapp-fab">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm5.3 14.2c-.2.6-1.2 1.2-1.7 1.2-.4.1-1 .1-1.6-.1-.4-.1-.8-.2-1.4-.5-2.5-1.1-4.1-3.6-4.2-3.8-.1-.2-1-1.3-1-2.5s.6-1.8.9-2.1c.2-.2.4-.3.6-.3h.5c.2 0 .4 0 .6.5.2.5.7 1.7.8 1.8.1.2.1.3 0 .5l-.4.5c-.2.2-.3.4-.1.6.1.2.6 1 1.4 1.7 1 .8 1.6 1 1.9 1.2.2.1.4.1.6-.1.2-.3.7-.8.9-1.1.2-.3.4-.2.6-.1.2.1 1.4.7 1.7.8.2.1.4.2.5.3.1.2.1.6-.1 1.2z"/></svg>
+</a>
+
+<script>
+  // Mobile nav toggle
+  const burger = document.getElementById('burger');
+  const mobileNav = document.getElementById('mobileNav');
+  burger.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileNav.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  }));
+
+  // Scroll reveal (minimal vanilla — Astro-portable)
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Smooth-offset for sticky header on anchor jumps
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (ev) => {
+      const id = a.getAttribute('href').slice(1);
+      if (!id) return;
+      const t = document.getElementById(id);
+      if (t) { ev.preventDefault(); window.scrollTo({ top: t.getBoundingClientRect().top + window.scrollY - 64, behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
