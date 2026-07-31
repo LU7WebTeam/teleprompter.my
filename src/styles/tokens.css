@@ -54,7 +54,7 @@ h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; line-height: 1
   transition: all .3s var(--ease); min-height: 52px; position: relative; overflow: hidden;
 }
 .btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { background: var(--accent-2); transform: translateY(-2px); box-shadow: 0 14px 30px -10px oklch(40% 0.19 264 / .55); }
+.btn-primary:hover { background: #000; transform: translateY(-2px); box-shadow: 0 14px 30px -10px oklch(40% 0.19 264 / .55); }
 .btn-dark { background: var(--dark); color: #fff; }
 .btn-dark:hover { background: #000; transform: translateY(-2px); }
 .btn-outline { background: transparent; color: var(--fg); border: 1.5px solid var(--fg); }
