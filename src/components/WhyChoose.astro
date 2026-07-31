@@ -45,6 +45,10 @@ const icons: Record<string, string> = {
   .service-item .s-icon { width: 56px; height: 56px; border-radius: 14px; background: oklch(60% 0.08 264 / .12); color: var(--accent); display: grid; place-items: center; }
   .service-item .s-icon svg { width: 26px; height: 26px; }
 
+  @media (max-width: 1100px) {
+    .services-layout { grid-template-columns: 1fr; }
+    .services-layout .title-area { position: static; }
+  }
   @media (max-width: 880px) {
     .service-item { grid-template-columns: auto 1fr; gap: 16px; padding: 24px 0; }
     .service-item .s-icon { display: none; }

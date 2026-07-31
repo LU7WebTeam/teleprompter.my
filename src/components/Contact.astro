@@ -86,6 +86,9 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
   .enquiry-form .btn { width: 100%; margin-top: 8px; }
   .f-note { font-size: .78rem; color: var(--muted); margin-top: 14px; text-align: center; }
 
+  @media (max-width: 880px) {
+    .contact-grid { grid-template-columns: 1fr; }
+  }
   @media (max-width: 640px) {
     .enquiry-form { padding: 22px 20px; }
     .enquiry-form h3 { font-size: 1.3rem; }

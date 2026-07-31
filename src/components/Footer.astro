@@ -62,7 +62,11 @@ import { products } from '../data/products';
   .foot-bottom .links a { font-size: .82rem; }
   .foot-bottom .links a:hover { color: #fff; }
 
+  @media (max-width: 880px) {
+    .foot-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
   @media (max-width: 640px) {
+    .foot-top { grid-template-columns: 1fr; gap: 28px; }
     .foot-bottom { flex-direction: column; gap: 16px; text-align: center; }
     .foot-bottom .links { flex-wrap: wrap; justify-content: center; gap: 16px; }
     .foot-cta { text-align: center; }
