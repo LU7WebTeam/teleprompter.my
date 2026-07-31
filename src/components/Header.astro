@@ -23,7 +23,7 @@ import { site } from '../data/site';
         </div>
       </div>
       {site.nav.links.map(link => <a href={link.href}>{link.label}</a>)}
-      <a href="#book" class="btn btn-dark" data-od-id="cta-book-now">Book Now</a>
+      <a href="#book" class="btn btn-primary" data-od-id="cta-book-now">Book Now</a>
     </nav>
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -34,7 +34,7 @@ import { site } from '../data/site';
   {site.nav.products.onCamera.map(item => <a href={item.href}>{item.label}</a>)}
   {site.nav.products.onStage.map(item => <a href={item.href}>{item.label}</a>)}
   {site.nav.links.map(link => <a href={link.href}>{link.label}</a>)}
-  <a href="#book" class="btn btn-dark">Book Now</a>
+  <a href="#book" class="btn btn-primary">Book Now</a>
 </nav>
 
 <style is:global>
