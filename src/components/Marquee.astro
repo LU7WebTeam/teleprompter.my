@@ -1,0 +1,27 @@
+---
+const items = [
+  "Rent a Teleprompter Anywhere in Malaysia",
+  "Presidential · Stage TV · Monitor · iPad",
+  "Fully Operated · Setup to Tear Down",
+];
+---
+<div class="marquee-band" data-od-id="text-marquee" aria-label="Tagline marquee">
+  <div class="marquee">
+    <div class="marquee-track">
+      {items.map(text => <span class="marquee-item">{text}</span>)}
+    </div>
+    <div class="marquee-track" aria-hidden="true">
+      {items.map(text => <span class="marquee-item">{text}</span>)}
+    </div>
+  </div>
+</div>
+
+<style>
+  .marquee-band { background: var(--dark); color: #fff; overflow: hidden; padding: 28px 0; border-top: 4px solid var(--accent); }
+  .marquee { display: flex; gap: 60px; width: max-content; animation: scrollx 28s linear infinite; }
+  .marquee:hover { animation-play-state: paused; }
+  .marquee-track { display: flex; gap: 60px; flex-shrink: 0; align-items: center; }
+  .marquee-item { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.8rem, 3.4vw, 3rem); white-space: nowrap; display: inline-flex; align-items: center; gap: 60px; color: #fff; }
+  .marquee-item::after { content: "★"; color: var(--accent-soft); font-size: .7em; }
+  @keyframes scrollx { to { transform: translateX(-50%); } }
+</style>

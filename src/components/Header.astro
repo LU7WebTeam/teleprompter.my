@@ -1,37 +1,29 @@
 ---
 import { site } from '../data/site';
-
-const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(site.contact.whatsapp.prefill)}`;
 ---
 <header class="site-header" data-od-id="site-header">
-  <div class="wrap inner">
+  <div class="cwrap inner">
     <a href="#" class="brand" data-od-id="brand-logo">
-      <img src="/assets/logo.png" alt="TelePrompter.my logo" width="36" height="36">
-      <span>TelePrompter<span style="color:var(--accent-bright)">.my</span></span>
+      <img src="/assets/logo.png" alt="TelePrompter.my logo" width="40" height="40">
+      <span>TelePrompter<span class="dot">.my</span></span>
     </a>
     <nav class="nav" data-od-id="main-nav" aria-label="Primary">
       <div class="nav-drop">
         <button aria-haspopup="true">On Camera ▾</button>
         <div class="menu">
           <div class="group-label">On Camera</div>
-          {site.nav.products.onCamera.map(item => (
-            <a href={item.href}>{item.label}</a>
-          ))}
+          {site.nav.products.onCamera.map(item => <a href={item.href}>{item.label}</a>)}
         </div>
       </div>
       <div class="nav-drop">
         <button aria-haspopup="true">On Stage ▾</button>
         <div class="menu">
           <div class="group-label">On Stage</div>
-          {site.nav.products.onStage.map(item => (
-            <a href={item.href}>{item.label}</a>
-          ))}
+          {site.nav.products.onStage.map(item => <a href={item.href}>{item.label}</a>)}
         </div>
       </div>
-      {site.nav.links.map(link => (
-        <a href={link.href}>{link.label}</a>
-      ))}
-      <a href="#book" class="btn btn-primary" data-od-id="cta-book-now">Book Now</a>
+      {site.nav.links.map(link => <a href={link.href}>{link.label}</a>)}
+      <a href="#book" class="btn btn-dark" data-od-id="cta-book-now">Book Now</a>
     </nav>
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -39,60 +31,43 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
   </div>
 </header>
 <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
-  {site.nav.products.onCamera.map(item => (
-    <a href={item.href}>{item.label}</a>
-  ))}
-  {site.nav.products.onStage.map(item => (
-    <a href={item.href}>{item.label}</a>
-  ))}
-  {site.nav.links.map(link => (
-    <a href={link.href}>{link.label}</a>
-  ))}
-  <a href="#book" class="btn btn-primary">Book Now</a>
+  {site.nav.products.onCamera.map(item => <a href={item.href}>{item.label}</a>)}
+  {site.nav.products.onStage.map(item => <a href={item.href}>{item.label}</a>)}
+  {site.nav.links.map(link => <a href={link.href}>{link.label}</a>)}
+  <a href="#book" class="btn btn-dark">Book Now</a>
 </nav>
 
 <style>
-  .site-header {
-    position: sticky; top: 0; z-index: 100;
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    background: oklch(15% 0.010 264 / .72);
-    border-bottom: 1px solid var(--border);
-  }
-  .site-header .inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-  .brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.03em; }
-  .brand img { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; }
-  .nav { display: flex; align-items: center; gap: 8px; }
+  .site-header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
+  .site-header .inner { display: flex; align-items: center; justify-content: space-between; height: 88px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; }
+  .brand img { width: 40px; height: 40px; object-fit: contain; border-radius: 8px; }
+  .brand .dot { color: var(--accent); }
+  .nav { display: flex; align-items: center; gap: 4px; }
   .nav a, .nav .nav-drop > button {
-    font-size: .92rem; color: var(--muted); padding: 8px 14px; border-radius: 8px; transition: color .2s;
+    font-size: .8rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #333; padding: 10px 16px; border-radius: 8px; transition: color .2s;
     background: none; border: none; cursor: pointer; font-family: var(--font-body);
   }
-  .nav a:hover, .nav .nav-drop > button:hover { color: var(--fg); }
+  .nav a:hover, .nav .nav-drop > button:hover { color: var(--accent); }
   .nav-drop { position: relative; }
-  .nav-drop .menu {
-    position: absolute; top: calc(100% + 8px); left: 0; min-width: 240px;
-    background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 8px;
-    opacity: 0; visibility: hidden; transform: translateY(-6px); transition: all .2s var(--ease);
-    box-shadow: 0 24px 50px -20px #000;
-  }
+  .nav-drop .menu { position: absolute; top: calc(100% + 8px); left: 0; min-width: 260px; background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 10px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: all .2s var(--ease); box-shadow: 0 24px 50px -20px rgba(0,0,0,.15); }
   .nav-drop:hover .menu, .nav-drop:focus-within .menu { opacity: 1; visibility: visible; transform: translateY(0); }
-  .menu .group-label { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); padding: 10px 12px 6px; }
-  .menu a { display: block; padding: 10px 12px; border-radius: 8px; color: var(--fg); font-size: .9rem; }
-  .menu a:hover { background: var(--surface-2); color: var(--accent-bright); }
-  .nav .btn { margin-left: 10px; }
-  .burger { display: none; background: none; border: 1px solid var(--border); border-radius: 10px; width: 44px; height: 44px; cursor: pointer; color: var(--fg); }
-  .burger svg { width: 20px; height: 20px; }
-
+  .menu .group-label { font-family: var(--font-body); font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); padding: 8px 12px 6px; font-weight: 700; }
+  .menu a { display: block; padding: 10px 12px; border-radius: 8px; color: #333; font-size: .85rem; text-transform: none; letter-spacing: 0; }
+  .menu a:hover { background: var(--smoke); color: var(--accent); }
+  .nav .btn { margin-left: 14px; }
+  .burger { display: none; background: none; border: 1.5px solid var(--border); border-radius: 10px; width: 48px; height: 48px; cursor: pointer; color: var(--fg); }
+  .burger svg { width: 22px; height: 22px; }
   .mobile-nav { display: none; }
 
-  @media (max-width: 720px) {
+  @media (max-width: 880px) {
     .nav, .nav-drop { display: none; }
     .burger { display: grid; place-items: center; }
     .mobile-nav.open { display: flex; }
-    .mobile-nav {
-      position: fixed; inset: 72px 0 auto 0; flex-direction: column; gap: 4px; padding: 16px 24px 24px;
-      background: var(--surface); border-bottom: 1px solid var(--border); z-index: 99;
-    }
-    .mobile-nav a { padding: 12px 8px; border-bottom: 1px solid var(--border); color: var(--fg); }
+    .mobile-nav { position: fixed; inset: 88px 0 auto 0; flex-direction: column; gap: 4px; padding: 16px 24px 24px; background: #fff; border-bottom: 1px solid var(--border); z-index: 99; }
+    .mobile-nav a { padding: 14px 8px; border-bottom: 1px solid var(--border); color: #333; font-weight: 600; font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; }
     .mobile-nav .btn { margin-top: 10px; }
+    .site-header .inner { height: 72px; }
+    .mobile-nav { top: 72px; }
   }
 </style>

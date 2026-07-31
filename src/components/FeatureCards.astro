@@ -1,0 +1,42 @@
+---
+---
+<section class="cwrap" style="position:relative;" data-od-id="section-feature-cards">
+  <div class="feature-cards">
+    <a href="#our-teleprompters" class="fcard reveal" data-od-id="fcard-on-stage">
+      <img src="/assets/hero-3.webp" alt="Stage teleprompter at an event" width="640" height="480">
+      <div class="fc-body">
+        <h3 class="fc-title">On Stage — Presidential & Stage TV</h3>
+        <span class="fc-link">Explore more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H9M17 7v8"/></svg></span>
+      </div>
+    </a>
+    <a href="#our-teleprompters" class="fcard reveal" data-od-id="fcard-on-camera">
+      <img src="/assets/hero-1.webp" alt="Camera-mounted teleprompter" width="640" height="480">
+      <div class="fc-body">
+        <h3 class="fc-title">On Camera — Monitor & iPad</h3>
+        <span class="fc-link">Explore more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H9M17 7v8"/></svg></span>
+      </div>
+    </a>
+    <a href="#book" class="fcard reveal" data-od-id="fcard-nationwide">
+      <img src="/assets/hero-4.webp" alt="22 inch Monitor Teleprompter close-up" width="640" height="480">
+      <div class="fc-body">
+        <h3 class="fc-title">Nationwide — FOC Klang Valley</h3>
+        <span class="fc-link">Book now <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H9M17 7v8"/></svg></span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<style>
+  .feature-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: -80px; position: relative; z-index: 5; }
+  .fcard { position: relative; min-height: 380px; border-radius: var(--radius-lg); overflow: hidden; display: flex; align-items: flex-end; padding: 30px; color: #fff; isolation: isolate; cursor: pointer; }
+  .fcard img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; transition: transform .6s var(--ease); }
+  .fcard::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgba(8,10,30,.92), rgba(8,10,30,.1) 70%); }
+  .fcard:hover img { transform: scale(1.06); }
+  .fcard .fc-body { position: relative; z-index: 1; }
+  .fcard .fc-title { font-size: 1.3rem; line-height: 1.2; font-weight: 600; }
+  .fcard .fc-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; color: #8aa4ff; font-size: .76rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+
+  @media (max-width: 1100px) { .feature-cards { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 880px) { .feature-cards { margin-top: -40px; } }
+  @media (max-width: 640px) { .feature-cards { grid-template-columns: 1fr; margin-top: -30px; } }
+</style>

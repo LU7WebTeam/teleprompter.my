@@ -1,75 +1,75 @@
 /* ============================================================
-   BRAND TOKENS — single source of truth
-   Brand blue sampled from logo (#182B9E). Dark premium canvas.
-   modern-minimal posture inverted to dark per Frisk reference.
+   TOKENS — single source of truth
+   Brand blue sampled from logo (#182B9E). Light theme with
+   Unbounded display + Poppins body, pulled from Frisk home-17.
    ============================================================ */
 :root {
-  --bg:            oklch(15% 0.010 264);
-  --surface:       oklch(19% 0.012 264);
-  --surface-2:     oklch(23% 0.014 264);
-  --fg:            oklch(97% 0.004 264);
-  --muted:         oklch(66% 0.012 264);
-  --border:        oklch(30% 0.012 264);
-  --accent:        oklch(40% 0.190 264);   /* brand blue #182B9E */
-  --accent-bright: oklch(63% 0.170 262);   /* glow / active / bright text */
-  --status:        oklch(72% 0.140 151);   /* restrained green for rates */
+  --bg:        oklch(99% 0.002 255);
+  --smoke:     oklch(96% 0.004 255);
+  --surface:   #ffffff;
+  --dark:      oklch(16% 0.012 264);
+  --dark-2:    oklch(20% 0.012 264);
+  --fg:        oklch(18% 0.012 264);
+  --muted:     oklch(50% 0.010 264);
+  --border:    oklch(90% 0.004 264);
+  --accent:    #182B9E;
+  --accent-2:  #2b40bf;
+  --accent-soft: oklch(60% 0.13 262);
+  --status:    oklch(52% 0.16 151);
 
-  --font-display: 'Space Grotesk', system-ui, sans-serif;
-  --font-body:    'Inter', system-ui, -apple-system, sans-serif;
-  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+  --font-display: 'Unbounded', system-ui, sans-serif;
+  --font-body:    'Poppins', system-ui, -apple-system, sans-serif;
+  --font-mono:    'Poppins', ui-monospace, monospace;
 
-  --maxw: 1200px;
-  --radius: 14px;
+  --maxw: 1500px;
+  --maxw-narrow: 1200px;
+  --radius: 12px;
+  --radius-lg: 20px;
   --ease: cubic-bezier(.2,.7,.2,1);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-body {
-  font-family: var(--font-body);
-  background: var(--bg);
-  color: var(--fg);
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
+body { font-family: var(--font-body); background: var(--bg); color: var(--fg); line-height: 1.65; overflow-x: hidden; -webkit-font-smoothing: antialiased; font-weight: 400; }
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 ::selection { background: var(--accent); color: #fff; }
 
-h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; }
-.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; line-height: 1.08; letter-spacing: -0.01em; }
+.mono { font-variant-numeric: tabular-nums; }
 
-.wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+.cwrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 40px; }
+.nwrap { width: 100%; max-width: var(--maxw-narrow); margin: 0 auto; padding: 0 40px; }
 
-/* layout helpers */
-.section { padding: clamp(72px, 10vw, 130px) 0; position: relative; }
-.eyebrow {
-  font-family: var(--font-mono); font-size: .75rem; letter-spacing: .25em; text-transform: uppercase;
-  color: var(--accent-bright); display: inline-flex; align-items: center; gap: 10px;
-}
-.eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--accent-bright); }
-.section-head { max-width: 720px; margin-bottom: 56px; }
-.section-head h2 { font-size: clamp(2rem, 4.5vw, 3.4rem); margin: 18px 0 0; }
-.section-head p { color: var(--muted); margin-top: 18px; max-width: 60ch; }
+.space { padding: clamp(80px, 9vw, 130px) 0; }
+.sec-title { font-size: clamp(2rem, 4vw, 3.2rem); }
+.title-area { margin-bottom: 56px; }
+.title-area.text-center { text-align: center; }
+.title-area.text-center .sec-title { max-width: 18ch; margin: 0 auto; }
 
-/* buttons */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  font-family: var(--font-body); font-weight: 600; font-size: .95rem;
-  padding: 14px 26px; border-radius: 100px; cursor: pointer; border: 1px solid transparent;
-  transition: transform .25s var(--ease), background .25s var(--ease), box-shadow .25s var(--ease);
-  min-height: 44px; white-space: nowrap;
+  font-family: var(--font-body); font-weight: 600; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase;
+  padding: 17px 34px; border-radius: 100px; cursor: pointer; border: none;
+  transition: all .3s var(--ease); min-height: 52px; position: relative; overflow: hidden;
 }
-.btn-primary {
-  background: var(--accent); color: #fff;
-  box-shadow: 0 8px 30px -8px oklch(40% 0.19 264 / .8), inset 0 1px 0 oklch(100% 0 0 / .15);
-}
-.btn-primary:hover { background: oklch(46% 0.19 264 / 1); transform: translateY(-2px); box-shadow: 0 14px 40px -10px oklch(40% 0.19 264 / .9); }
-.btn-ghost { background: transparent; color: var(--fg); border-color: var(--border); }
-.btn-ghost:hover { border-color: var(--accent-bright); color: var(--accent-bright); transform: translateY(-2px); }
-.btn svg { width: 16px; height: 16px; }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-2); transform: translateY(-2px); box-shadow: 0 14px 30px -10px oklch(40% 0.19 264 / .55); }
+.btn-dark { background: var(--dark); color: #fff; }
+.btn-dark:hover { background: #000; transform: translateY(-2px); }
+.btn-outline { background: transparent; color: var(--fg); border: 1.5px solid var(--fg); }
+.btn-outline:hover { background: var(--fg); color: #fff; }
+.btn-light { background: #fff; color: var(--dark); }
+.btn-light:hover { background: var(--smoke); transform: translateY(-2px); }
+.link-btn { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); transition: gap .2s, color .2s; }
+.link-btn:hover { gap: 14px; color: var(--accent-2); }
+.link-btn svg { width: 16px; height: 16px; }
 
-/* scroll reveal */
+.link-effect { position: relative; display: inline-block; overflow: hidden; }
+.link-effect .effect-1 { display: inline-block; transition: transform .4s var(--ease); }
+.link-effect .effect-1 + .effect-1 { position: absolute; inset: 0; transform: translateY(110%); }
+a:hover .link-effect .effect-1 { transform: translateY(-110%); }
+a:hover .link-effect .effect-1 + .effect-1 { transform: translateY(0); }
+
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
 .reveal.in { opacity: 1; transform: none; }

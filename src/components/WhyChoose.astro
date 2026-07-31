@@ -9,43 +9,44 @@ const icons: Record<string, string> = {
   'check-circle': '<path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2 0 4 .7 5.5 2"/>',
 };
 ---
-<section class="section" data-od-id="section-why-choose">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="eyebrow">Why choose us</span>
-      <h2>Built for flawless delivery, end to end</h2>
-    </div>
-    <div class="features">
-      {features.map(f => (
-        <article class="feature-card reveal" data-od-id={`feature-card-${f.icon}`}>
-          <span class="num">{f.num}</span>
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons[f.icon]}></svg></div>
-          <h3>{f.title}</h3>
-          <p>{f.desc}</p>
-        </article>
-      ))}
+<section class="space" data-od-id="section-why-choose">
+  <div class="cwrap">
+    <div class="services-layout">
+      <div class="title-area reveal">
+        <span style="font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);">Why choose us</span>
+        <h2 class="sec-title">Built for flawless delivery, end to end</h2>
+        <p class="sec-sub">From nationwide coverage to expert operators on site — every rental is handled start to finish.</p>
+        <a href="#book" class="btn btn-dark" style="margin-top:30px;" data-od-id="cta-why-book">Book now</a>
+      </div>
+      <div class="service-list">
+        {features.map(f => (
+          <div class="service-item reveal" data-od-id={`feature-card-${f.icon}`}>
+            <span class="s-num">{f.num}</span>
+            <div class="s-body"><h4>{f.title}</h4><p>{f.desc}</p></div>
+            <div class="s-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={icons[f.icon]}></svg></div>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .features { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-  .feature-card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 24px;
-    transition: transform .3s var(--ease), border-color .3s var(--ease), background .3s var(--ease);
-    position: relative; overflow: hidden;
-  }
-  .feature-card:hover { transform: translateY(-6px); border-color: oklch(40% 0.19 264 / .5); background: var(--surface-2); }
-  .feature-card .num { font-family: var(--font-mono); font-size: .95rem; font-weight: 600; color: var(--accent-bright); letter-spacing: .05em; }
-  .feature-card .ic { width: 44px; height: 44px; border-radius: 10px; background: oklch(40% 0.19 264 / .14); color: var(--accent-bright); display: grid; place-items: center; margin: 18px 0 18px; }
-  .feature-card .ic svg { width: 22px; height: 22px; }
-  .feature-card h3 { font-size: 1.18rem; margin-bottom: 10px; }
-  .feature-card p { color: var(--muted); font-size: .92rem; }
+  .services-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 60px; align-items: start; }
+  .services-layout .title-area { position: sticky; top: 110px; }
+  .services-layout .sec-title { margin-top: 16px; }
+  .services-layout .sec-sub { color: var(--muted); margin-top: 18px; max-width: 38ch; }
+  .service-list { display: grid; gap: 0; }
+  .service-item { display: grid; grid-template-columns: auto 1fr auto; gap: 26px; align-items: start; padding: 32px 0; border-top: 1px solid var(--border); }
+  .service-item:last-child { border-bottom: 1px solid var(--border); }
+  .service-item .s-num { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--accent); padding-top: 4px; }
+  .service-item .s-body h4 { font-size: 1.35rem; margin-bottom: 8px; }
+  .service-item .s-body p { color: var(--muted); font-size: .95rem; }
+  .service-item .s-icon { width: 56px; height: 56px; border-radius: 14px; background: oklch(60% 0.08 264 / .12); color: var(--accent); display: grid; place-items: center; }
+  .service-item .s-icon svg { width: 26px; height: 26px; }
 
-  @media (max-width: 980px) {
-    .features { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 720px) {
-    .features { grid-template-columns: 1fr; }
+  @media (max-width: 1100px) {
+    .services-layout { grid-template-columns: 1fr; }
+    .services-layout .title-area { position: static; }
   }
 </style>

@@ -1,35 +1,34 @@
 ---
 import { site } from '../data/site';
 ---
-<section class="section" data-od-id="section-about" style="background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
-  <div class="wrap about">
-    <div class="media reveal">
-      <div class="frame"><img src="/assets/hero-2.webp" alt="Dual Presidential Teleprompter setup at a formal event." width="800" height="640"></div>
-    </div>
-    <div class="about-copy reveal">
-      <span class="eyebrow">Who we are</span>
-      <h2>Professional teleprompter rental, tailored to your production</h2>
-      <p>TelePrompter.my specializes in providing professional teleprompter rental services designed to ensure seamless delivery for speeches, presentations, and productions.</p>
-      <p>We offer reliable and user-friendly solutions tailored to meet the needs of events, broadcasts, and video shoots of any scale.</p>
-      <p class="managed-line">Proudly managed by <a href={site.footer.managedByHref} target="_blank" rel="noopener">{site.footer.managedBy}</a></p>
-      <a href={site.footer.managedByHref} target="_blank" rel="noopener" class="btn btn-ghost" style="margin-top:24px;" data-od-id="cta-learn-more">
-        Learn More <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
+<section class="space about-section" data-od-id="section-about">
+  <div class="cwrap">
+    <div class="about-grid">
+      <div class="media reveal">
+        <div class="frame"><img src="/assets/gallery-7.jpg" alt="Speaker delivering a speech using Presidential Teleprompter screens at a conference." width="800" height="640"></div>
+      </div>
+      <div class="about-copy reveal">
+        <span style="font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);">Who we are</span>
+        <h2 class="sec-title">Professional teleprompter rental, tailored to your production</h2>
+        <p>TelePrompter.my specializes in providing professional teleprompter rental services designed to ensure seamless delivery for speeches, presentations, and productions.</p>
+        <p>We offer reliable and user-friendly solutions tailored to meet the needs of events, broadcasts, and video shoots of any scale.</p>
+        <p class="managed-line">Proudly managed by <a href={site.footer.managedByHref} target="_blank" rel="noopener">{site.footer.managedBy}</a></p>
+        <a href={site.footer.managedByHref} target="_blank" rel="noopener" class="btn btn-dark" style="margin-top:26px;" data-od-id="cta-learn-more">Learn More</a>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
-  .about { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 5vw, 72px); align-items: center; }
-  .about .media { position: relative; }
-  .about .media .frame { border-radius: 18px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 30px 70px -30px #000; aspect-ratio: 5/4; }
-  .about .media .frame img { width: 100%; height: 100%; object-fit: cover; }
-  .about h2 { font-size: clamp(2rem, 4vw, 3rem); }
-  .about p { color: var(--muted); margin-top: 22px; max-width: 52ch; }
-  .about .managed-line { margin-top: 26px; font-family: var(--font-mono); font-size: .85rem; color: var(--muted); }
-  .about .managed-line a { color: var(--accent-bright); border-bottom: 1px solid oklch(63% 0.17 262 / .4); }
+  .about-section { background: var(--smoke); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 5vw, 80px); align-items: center; }
+  .about-grid .media { position: relative; }
+  .about-grid .media .frame { border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 5/4; box-shadow: 0 30px 70px -30px rgba(0,0,0,.25); }
+  .about-grid .media .frame img { width: 100%; height: 100%; object-fit: cover; }
+  .about-grid .sec-title { margin-top: 16px; }
+  .about-grid p { color: var(--muted); margin-top: 22px; max-width: 50ch; }
+  .about-grid .managed-line { margin-top: 24px; font-size: .85rem; color: var(--muted); }
+  .about-grid .managed-line a { color: var(--accent); border-bottom: 1px solid rgba(24,43,158,.3); }
 
-  @media (max-width: 980px) {
-    .about { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 880px) { .about-grid { grid-template-columns: 1fr; } }
 </style>
