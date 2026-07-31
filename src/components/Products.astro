@@ -61,4 +61,16 @@ import { products } from '../data/products';
   .p-rate .transport { font-size: .78rem; color: var(--status); margin-top: 8px; font-weight: 500; }
   .p-btns { display: grid; gap: 8px; }
   .p-btns .btn { padding: 13px 18px; font-size: .76rem; width: 100%; }
+
+  @media (max-width: 880px) {
+    .p-footer { grid-template-columns: 1fr; gap: 16px; }
+    .p-btns { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .products-grid { gap: 20px; }
+    .product-card .p-body { padding: 20px; }
+    .product-card h3 { font-size: 1.1rem; }
+    .p-rate .p-price { font-size: 1.6rem; }
+    .p-btns .btn { padding: 12px 14px; font-size: .72rem; }
+  }
 </style>

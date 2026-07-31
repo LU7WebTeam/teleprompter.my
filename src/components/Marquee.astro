@@ -24,4 +24,9 @@ const items = [
   .marquee-item { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.8rem, 3.4vw, 3rem); white-space: nowrap; display: inline-flex; align-items: center; gap: 60px; color: #fff; }
   .marquee-item::after { content: "★"; color: var(--accent-soft); font-size: .7em; }
   @keyframes scrollx { to { transform: translateX(-50%); } }
+
+  @media (max-width: 640px) {
+    .marquee-item { font-size: clamp(1.3rem, 6vw, 1.8rem); }
+    .marquee-band { padding: 20px 0; }
+  }
 </style>
