@@ -18,17 +18,12 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
   <!-- Product Hero -->
   <section class="pd-hero" data-od-id="section-product-hero">
     <div class="cwrap">
-      <div class="pd-hero-grid">
-        <div class="pd-hero-media reveal">
-          <span class="pd-tag">{product.tag}</span>
-          <img src={product.img} alt={product.alt} width="640" height="800">
-        </div>
-        <div class="pd-hero-copy reveal">
-          <span class="pd-eyebrow">for Events</span>
-          <h1 class="pd-title">{product.name}</h1>
-          <p class="pd-lead">{product.longDesc}</p>
-        </div>
+      <h1 class="pd-title reveal">{product.name}</h1>
+      <div class="pd-hero-media reveal">
+        <span class="pd-tag">{product.tag}</span>
+        <img src={product.img} alt={product.alt} width="640" height="360">
       </div>
+      <p class="pd-lead reveal">{product.longDesc}</p>
     </div>
   </section>
 
@@ -39,8 +34,6 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
         <div class="pd-info-left reveal">
           <span style="font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);">What's Included</span>
           <h2 class="sec-title" style="margin-top:14px;">Full Equipment List</h2>
-        </div>
-        <div class="pd-info-right reveal">
           <ul class="pd-specs">
             {product.specs.map(spec => (
               <li>
@@ -49,6 +42,8 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
               </li>
             ))}
           </ul>
+        </div>
+        <div class="pd-info-right reveal">
           <div class="pd-actions">
             <div class="pd-price-block">
               <div class="pd-price-label">Rate</div>
@@ -79,51 +74,45 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
 
 <style is:global>
   /* Product Hero */
-  .pd-hero { padding: clamp(60px, 8vw, 100px) 0 clamp(40px, 5vw, 60px); }
-  .pd-hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 5vw, 80px); align-items: center; }
-  .pd-hero-media { position: relative; }
-  .pd-hero-media img { width: 100%; aspect-ratio: 4/5; object-fit: cover; }
+  .pd-hero { padding: clamp(40px, 6vw, 80px) 0 clamp(30px, 4vw, 50px); }
+  .pd-title { font-size: clamp(2.2rem, 5vw, 4rem); margin-bottom: clamp(20px, 3vw, 36px); color: var(--fg); }
+  .pd-hero-media { position: relative; margin-bottom: clamp(24px, 4vw, 40px); }
+  .pd-hero-media img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
   .pd-tag {
     position: absolute; top: 16px; left: 16px; z-index: 1;
     font-size: .68rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
     color: #fff; background: rgba(24,43,158,.85); padding: 6px 14px; border-radius: 0;
   }
-  .pd-eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
-  .pd-title { font-size: clamp(2.2rem, 4.5vw, 3.8rem); margin-top: 16px; }
-  .pd-lead { color: var(--muted); margin-top: 24px; font-size: 1rem; line-height: 1.7; max-width: 50ch; }
+  .pd-lead { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 70ch; }
 
   /* Specs + Pricing */
   .pd-specs-section { background: var(--smoke); }
-  .pd-info-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 60px; align-items: start; }
-  .pd-info-left { position: sticky; top: 110px; }
-  .pd-specs { list-style: none; display: grid; gap: 12px; margin-bottom: 36px; }
-  .pd-specs li { display: flex; gap: 12px; align-items: flex-start; font-size: .95rem; color: var(--fg); padding: 12px 0; border-top: 1px solid var(--border); }
-  .pd-specs li:first-child { border-top: none; }
-  .pd-specs li svg { width: 22px; height: 22px; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+  .pd-info-grid { display: grid; grid-template-columns: 65fr 35fr; gap: clamp(30px, 5vw, 60px); align-items: start; }
+  .pd-specs { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 28px; }
+  .pd-specs li { display: flex; gap: 12px; align-items: flex-start; font-size: .92rem; color: var(--fg); padding: 14px 16px 14px 0; border-top: 1px solid var(--border); }
+  .pd-specs li svg { width: 20px; height: 20px; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
   .pd-actions {
-    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    display: flex; flex-direction: column; gap: 20px;
     padding: 28px; background: #fff; border: 1px solid var(--border); border-radius: 0;
+    position: sticky; top: 110px;
   }
   .pd-price-block .pd-price-label { font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-  .pd-price-block .pd-price { font-family: var(--font-display); font-weight: 700; font-size: 2.4rem; line-height: 1; margin-top: 6px; color: var(--fg); }
+  .pd-price-block .pd-price { font-family: var(--font-display); font-weight: 700; font-size: 2.4rem; line-height: 1; margin-top: 8px; color: var(--fg); }
   .pd-price-block .pd-price .cur { font-size: 1rem; color: var(--muted); margin-right: 2px; }
   .pd-price-block .pd-price .unit { font-size: .85rem; color: var(--muted); font-weight: 400; }
   .pd-price-block .pd-transport { font-size: .78rem; color: var(--status); margin-top: 10px; font-weight: 500; }
+  .pd-actions .btn { width: 100%; }
 
   /* Responsive */
-  @media (max-width: 1100px) {
-    .pd-info-grid { grid-template-columns: 1fr; }
-    .pd-info-left { position: static; }
-  }
   @media (max-width: 880px) {
-    .pd-hero-grid { grid-template-columns: 1fr; }
-    .pd-actions { flex-direction: column; align-items: stretch; }
-    .pd-actions .btn { width: 100%; }
+    .pd-info-grid { grid-template-columns: 1fr; }
+    .pd-actions { position: static; }
+    .pd-specs { grid-template-columns: 1fr; }
   }
   @media (max-width: 640px) {
     .pd-title { font-size: 1.8rem; }
     .pd-lead { font-size: .92rem; }
-    .pd-specs li { font-size: .88rem; }
+    .pd-specs li { font-size: .85rem; }
     .pd-actions { padding: 20px; }
     .pd-price-block .pd-price { font-size: 2rem; }
   }
