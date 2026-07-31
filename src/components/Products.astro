@@ -17,8 +17,10 @@ import { products } from '../data/products';
             <div class="p-overlay"></div>
             <div class="p-tag">{product.tag}</div>
             <div class="p-content">
-              <h3>{product.name}</h3>
-              <p class="p-desc">{product.desc}</p>
+              <div class="p-top">
+                <h3>{product.name}</h3>
+                <p class="p-desc">{product.desc}</p>
+              </div>
               <div class="p-footer">
                 <div class="p-rate">
                   <div class="p-label">Rate</div>
@@ -55,10 +57,14 @@ import { products } from '../data/products';
   .product-card:hover .p-bg { transform: scale(1.05); }
   .product-card .p-overlay {
     position: absolute; inset: 0; z-index: -1;
-    background: linear-gradient(to top, rgba(8,10,30,.96) 0%, rgba(8,10,30,.75) 45%, rgba(8,10,30,.15) 75%, rgba(8,10,30,.3) 100%);
+    background: linear-gradient(to top, rgba(8,10,30,.96) 0%, rgba(8,10,30,.7) 40%, rgba(8,10,30,.1) 70%, rgba(8,10,30,.2) 100%);
+    transition: background .4s var(--ease);
+  }
+  .product-card:hover .p-overlay {
+    background: linear-gradient(to top, rgba(8,10,30,.98) 0%, rgba(8,10,30,.88) 50%, rgba(8,10,30,.4) 80%, rgba(8,10,30,.3) 100%);
   }
   .product-card .p-tag {
-    position: absolute; top: 20px; left: 20px; z-index: 1;
+    position: absolute; top: 20px; left: 20px; z-index: 2;
     display: inline-block; width: fit-content; font-size: .68rem; font-weight: 700;
     letter-spacing: .14em; text-transform: uppercase; color: #fff;
     background: rgba(24,43,158,.85); padding: 6px 14px; border-radius: 0;
@@ -67,28 +73,48 @@ import { products } from '../data/products';
     position: relative; z-index: 1; display: flex; flex-direction: column;
     height: 100%; padding: 28px; justify-content: flex-end; color: #fff;
   }
+  .product-card .p-top {
+    transition: transform .45s var(--ease);
+  }
+  .product-card:hover .p-top {
+    transform: translateY(-20px);
+  }
   .product-card h3 { font-size: 1.6rem; color: #fff; }
-  .product-card .p-desc { color: rgba(255,255,255,.75); font-size: .88rem; margin: 10px 0 18px; line-height: 1.5; }
-  .p-footer { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; border-top: 1px solid rgba(255,255,255,.15); padding-top: 18px; }
+  .product-card .p-desc {
+    color: rgba(255,255,255,.75); font-size: .88rem; margin: 10px 0 0; line-height: 1.5;
+    transition: opacity .35s var(--ease);
+  }
+  .product-card .p-footer {
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 20px;
+    border-top: 1px solid rgba(255,255,255,.15); padding-top: 18px; margin-top: 20px;
+    max-height: 0; opacity: 0; overflow: hidden;
+    transition: max-height .45s var(--ease), opacity .35s var(--ease) .1s, margin-top .45s var(--ease);
+  }
+  .product-card:hover .p-footer {
+    max-height: 300px; opacity: 1; margin-top: 20px;
+  }
   .p-rate .p-label { font-size: .68rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.5); }
   .p-rate .p-price { font-family: var(--font-display); font-weight: 700; font-size: 2.1rem; line-height: 1; margin-top: 6px; color: #fff; }
   .p-rate .p-price .cur { font-size: 1rem; color: rgba(255,255,255,.6); margin-right: 2px; }
   .p-rate .p-price .unit { font-size: .85rem; color: rgba(255,255,255,.5); font-weight: 400; }
   .p-rate .transport { font-size: .76rem; color: #6bdf9e; margin-top: 8px; font-weight: 500; }
-  .p-btns { display: flex; flex-direction: column; gap: 8px; min-width: 140px; }
+  .p-btns { display: flex; flex-direction: column; gap: 8px; width: 40%; }
   .p-btns .btn { padding: 12px 18px; font-size: .76rem; }
   .p-btns .btn-ghost { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.3); }
   .p-btns .btn-ghost:hover { background: rgba(255,255,255,.1); color: #fff; }
 
   @media (max-width: 880px) {
     .products-grid { grid-template-columns: 1fr; }
+    .product-card { height: 480px; }
+    .product-card:hover .p-top { transform: none; }
+    .product-card .p-footer { max-height: none; opacity: 1; margin-top: 20px; overflow: visible; }
     .p-footer { flex-direction: column; align-items: stretch; }
-    .p-btns { flex-direction: row; min-width: 0; }
+    .p-btns { flex-direction: row; width: 100%; }
     .p-btns .btn { flex: 1; }
   }
   @media (max-width: 640px) {
     .products-grid { gap: 16px; }
-    .product-card { height: 480px; }
+    .product-card { height: 440px; }
     .product-card .p-content { padding: 22px; }
     .product-card h3 { font-size: 1.35rem; }
     .p-rate .p-price { font-size: 1.8rem; }
