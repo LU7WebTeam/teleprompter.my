@@ -41,22 +41,22 @@ import { site } from '../data/site';
   .site-header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
   .site-header .inner { display: flex; align-items: center; justify-content: space-between; height: 88px; }
   .brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; }
-  .brand img { width: 40px; height: 40px; object-fit: contain; border-radius: 8px; }
+  .brand img { width: 40px; height: 40px; object-fit: contain; border-radius: 0; }
   .brand .dot { color: var(--accent); }
   .nav { display: flex; align-items: center; gap: 4px; }
   .nav a, .nav .nav-drop > button {
-    font-size: .8rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #333; padding: 10px 16px; border-radius: 8px; transition: color .2s;
+    font-size: .8rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #333; padding: 10px 16px; border-radius: 0; transition: color .2s;
     background: none; border: none; cursor: pointer; font-family: var(--font-body);
   }
   .nav a:hover, .nav .nav-drop > button:hover { color: var(--accent); }
   .nav-drop { position: relative; }
-  .nav-drop .menu { position: absolute; top: calc(100% + 8px); left: 0; min-width: 260px; background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 10px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: all .2s var(--ease); box-shadow: 0 24px 50px -20px rgba(0,0,0,.15); }
+  .nav-drop .menu { position: absolute; top: calc(100% + 8px); left: 0; min-width: 260px; background: #fff; border: 1px solid var(--border); border-radius: 0; padding: 10px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: all .2s var(--ease); box-shadow: 0 24px 50px -20px rgba(0,0,0,.15); }
   .nav-drop:hover .menu, .nav-drop:focus-within .menu { opacity: 1; visibility: visible; transform: translateY(0); }
   .menu .group-label { font-family: var(--font-body); font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); padding: 8px 12px 6px; font-weight: 700; }
-  .menu a { display: block; padding: 10px 12px; border-radius: 8px; color: #333; font-size: .85rem; text-transform: none; letter-spacing: 0; }
+  .menu a { display: block; padding: 10px 12px; border-radius: 0; color: #333; font-size: .85rem; text-transform: none; letter-spacing: 0; }
   .menu a:hover { background: var(--smoke); color: var(--accent); }
   .nav .btn { margin-left: 14px; }
-  .burger { display: none; background: none; border: 1.5px solid var(--border); border-radius: 10px; width: 48px; height: 48px; cursor: pointer; color: var(--fg); }
+  .burger { display: none; background: none; border: 1.5px solid var(--border); border-radius: 0; width: 48px; height: 48px; cursor: pointer; color: var(--fg); }
   .burger svg { width: 22px; height: 22px; }
   .mobile-nav { display: none; }
 

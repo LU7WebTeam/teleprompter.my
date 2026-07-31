@@ -23,8 +23,8 @@
 
   --maxw: 1500px;
   --maxw-narrow: 1200px;
-  --radius: 12px;
-  --radius-lg: 20px;
+  --radius: 0px;
+  --radius-lg: 0px;
   --ease: cubic-bezier(.2,.7,.2,1);
 }
 
@@ -49,8 +49,8 @@ h1,h2,h3,h4 { font-family: var(--font-display); font-weight: 600; line-height: 1
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  font-family: var(--font-body); font-weight: 600; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase;
-  padding: 17px 34px; border-radius: 100px; cursor: pointer; border: none;
+  font-family: var(--font-display); font-weight: 600; font-size: .82rem; letter-spacing: .12em; text-transform: uppercase;
+  padding: 17px 34px; border-radius: 0; cursor: pointer; border: none;
   transition: all .3s var(--ease); min-height: 52px; position: relative; overflow: hidden;
 }
 .btn-primary { background: var(--accent); color: #fff; }
