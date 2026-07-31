@@ -65,7 +65,7 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
 </section>
 
 <style is:global>
-  .contact-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(30px, 4vw, 60px); }
+  .contact-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(30px, 4vw, 60px); max-width: 100%; overflow: hidden; }
   .contact-info .ci-block { margin-bottom: 28px; }
   .contact-info .ci-label { font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
   .contact-info .ci-val { font-size: 1.05rem; margin-top: 6px; line-height: 1.5; }
@@ -73,14 +73,14 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
   .wa-pill { display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; padding: 13px 24px; border-radius: 100px; background: var(--accent); color: #fff; font-weight: 600; font-size: .85rem; letter-spacing: .04em; transition: all .25s var(--ease); }
   .wa-pill:hover { background: var(--accent-2); transform: translateY(-2px); box-shadow: 0 14px 30px -10px oklch(40% 0.19 264 / .5); }
   .wa-pill svg { width: 18px; height: 18px; }
-  .enquiry-form { background: var(--smoke); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: clamp(28px, 3.5vw, 44px); }
+  .enquiry-form { background: var(--smoke); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: clamp(20px, 3.5vw, 44px); max-width: 100%; overflow: hidden; box-sizing: border-box; }
   .enquiry-form h3 { font-size: 1.6rem; }
   .enquiry-form .f-sub { color: var(--muted); font-size: .92rem; margin: 8px 0 28px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .field { display: flex; flex-direction: column; gap: 8px; }
   .field.full { grid-column: 1 / -1; }
   .field label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-  .field input, .field select, .field textarea { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; color: var(--fg); font-family: var(--font-body); font-size: .95rem; transition: border-color .2s; }
+  .field input, .field select, .field textarea { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; color: var(--fg); font-family: var(--font-body); font-size: .95rem; transition: border-color .2s; width: 100%; box-sizing: border-box; }
   .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
   .field textarea { resize: vertical; min-height: 120px; }
   .enquiry-form .btn { width: 100%; margin-top: 8px; }
