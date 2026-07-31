@@ -103,7 +103,7 @@ import { products } from '../data/products';
   .p-btns .btn-ghost:hover { background: rgba(255,255,255,.1); color: #fff; }
 
   @media (max-width: 880px) {
-    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .products-grid { grid-template-columns: 1fr; }
     .product-card { height: 480px; }
     .product-card:hover .p-top { transform: none; }
     .product-card .p-footer { max-height: none; opacity: 1; overflow: visible; }
@@ -112,7 +112,7 @@ import { products } from '../data/products';
     .products-grid { gap: 12px; grid-template-columns: 1fr; }
     .product-card { height: 360px; }
     .product-card .p-content { padding: 20px; }
-    .product-card h3 { font-size: 1.5rem; margin-bottom: 80px; }
+    .product-card h3 { font-size: 1.5rem; margin-bottom: 12px; }
     .product-card .p-desc { display: none; }
     .p-rate { display: none; }
     .p-btns { flex-direction: row; width: 100%; }
