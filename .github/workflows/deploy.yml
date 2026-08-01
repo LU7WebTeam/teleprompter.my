@@ -24,15 +24,20 @@ jobs:
       - name: Build Astro site
         run: npm run build
 
+      - name: List build output
+        run: ls -la dist/
+
       - name: Deploy to cPanel via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.CPANEL_FTP_SERVER }}
+          port: 21
           username: ${{ secrets.CPANEL_FTP_USERNAME }}
           password: ${{ secrets.CPANEL_FTP_PASSWORD }}
-          local-dir: dist/
-          server-dir: ${{ secrets.CPANEL_FTP_REMOTE_DIR }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.CPANEL_FTP_REMOTE_DIR }}/
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
+          dangerous-disable-ssl: true
