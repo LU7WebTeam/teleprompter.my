@@ -5,7 +5,7 @@ import Footer from '../../components/Footer.astro';
 import WhatsAppFab from '../../components/WhatsAppFab.astro';
 import Terms from '../../components/Terms.astro';
 import Contact from '../../components/Contact.astro';
-import Gallery from '../../components/Gallery.astro';
+import ProductGallery from '../../components/ProductGallery.astro';
 import { getProduct } from '../../data/products';
 import { site } from '../../data/site';
 
@@ -52,7 +52,7 @@ const productJsonLd = {
   </section>
 
   <!-- Gallery -->
-  <Gallery />
+  <ProductGallery product={product} />
 
   <!-- Specs + Pricing -->
   <section class="space pd-specs-section" data-od-id="section-product-specs">
