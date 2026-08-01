@@ -5,23 +5,92 @@ import '../styles/tokens.css';
 interface Props {
   title?: string;
   description?: string;
+  image?: string;
+  canonicalPath?: string;
+  noindex?: boolean;
+  type?: 'website' | 'article' | 'product';
+  jsonLd?: Record<string, any>;
 }
 
 const {
   title = site.title,
   description = site.description,
+  image = site.ogImage,
+  canonicalPath = '',
+  noindex = false,
+  type = 'website',
+  jsonLd,
 } = Astro.props;
+
+const canonicalURL = new URL(canonicalPath, site.url).href;
+const ogImageURL = new URL(image, site.url).href;
+
+const defaultJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": site.name,
+  "description": site.description,
+  "url": site.url,
+  "image": ogImageURL,
+  "email": site.contact.email,
+  "telephone": site.contact.mobile,
+  "priceRange": "RM 1,200 - RM 2,500 /day",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "8, Jalan Damansara Endah, Bangunan ECM Libra, West Wing 1st Floor",
+    "addressLocality": "Kuala Lumpur",
+    "postalCode": "50490",
+    "addressCountry": "MY",
+  },
+  "areaServed": "Malaysia",
+};
+
+const structuredData = jsonLd || defaultJsonLd;
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
   <title>{title}</title>
+  <meta name="title" content={title}>
   <meta name="description" content={description}>
+  <meta name="keywords" content={site.keywords}>
+  <meta name="author" content={site.footer.managedBy}>
+  <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'}>
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content={type} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImageURL} />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:locale" content={site.locale} />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content={canonicalURL} />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImageURL} />
+  {site.twitterHandle && <meta name="twitter:site" content={site.twitterHandle} />}
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logo.png" />
+  <link rel="apple-touch-icon" href="/assets/logo.png" />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 </head>
 <body>
   <slot />

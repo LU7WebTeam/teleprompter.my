@@ -4,6 +4,10 @@ export const site = {
   description:
     'Rent professional teleprompters anywhere in Malaysia. Presidential, Stage TV, 22" Monitor and iPad teleprompter rental for corporate events, broadcasts and video shoots. Operated by Video Production KL Sdn Bhd.',
   url: "https://teleprompter.my",
+  ogImage: "/assets/hero-2.webp",
+  keywords: "teleprompter rental Malaysia, presidential teleprompter, stage TV teleprompter, monitor teleprompter, iPad teleprompter, teleprompter Kuala Lumpur, event teleprompter rental, broadcast teleprompter",
+  twitterHandle: "@telepromptermy",
+  locale: "en_MY",
   contact: {
     address: {
       line1: "West Wing 1st Floor,",

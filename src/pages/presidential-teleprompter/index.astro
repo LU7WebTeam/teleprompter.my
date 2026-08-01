@@ -10,9 +10,32 @@ import { getProduct } from '../../data/products';
 import { site } from '../../data/site';
 
 const product = getProduct('presidential-teleprompter')!;
-const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(site.contact.whatsapp.prefill)}`;
+const canonicalPath = '/presidential-teleprompter/';
+
+const productJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": product.name,
+  "description": product.longDesc,
+  "image": new URL(product.img, site.url).href,
+  "brand": { "@type": "Brand", "name": site.name },
+  "offers": {
+    "@type": "Offer",
+    "price": product.price,
+    "priceCurrency": "MYR",
+    "availability": "https://schema.org/InStock",
+    "url": new URL(canonicalPath, site.url).href,
+  },
+};
 ---
-<BaseLayout title={`${product.name} Rental for Events in Malaysia — TelePrompter.my`} description={product.longDesc}>
+<BaseLayout
+  title={`${product.name} Rental for Events in Malaysia — TelePrompter.my`}
+  description={product.longDesc}
+  image={product.img}
+  canonicalPath={canonicalPath}
+  type="product"
+  jsonLd={productJsonLd}
+>
   <Header />
 
   <!-- Product Hero -->

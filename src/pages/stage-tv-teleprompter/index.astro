@@ -10,8 +10,32 @@ import { getProduct } from '../../data/products';
 import { site } from '../../data/site';
 
 const product = getProduct('stage-tv-teleprompter')!;
+const canonicalPath = '/stage-tv-teleprompter/';
+
+const productJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": product.name,
+  "description": product.longDesc,
+  "image": new URL(product.img, site.url).href,
+  "brand": { "@type": "Brand", "name": site.name },
+  "offers": {
+    "@type": "Offer",
+    "price": product.price,
+    "priceCurrency": "MYR",
+    "availability": "https://schema.org/InStock",
+    "url": new URL(canonicalPath, site.url).href,
+  },
+};
 ---
-<BaseLayout title={`${product.name} Rental for Events in Malaysia — TelePrompter.my`} description={product.longDesc}>
+<BaseLayout
+  title={`${product.name} Rental for Events in Malaysia — TelePrompter.my`}
+  description={product.longDesc}
+  image={product.img}
+  canonicalPath={canonicalPath}
+  type="product"
+  jsonLd={productJsonLd}
+>
   <Header />
 
   <!-- Product Hero -->
