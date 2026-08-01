@@ -1,13 +1,15 @@
 ---
 import { site } from '../data/site';
 import { products } from '../data/products';
+
+const base = import.meta.env.BASE_URL;
 ---
 <footer class="site-footer" data-od-id="site-footer">
   <div class="cwrap">
     <div class="foot-top">
       <div class="foot-brand">
         <a href="#" class="brand">
-          <img src="/assets/logo.png" alt="TelePrompter.my logo" width="40" height="40">
+          <img src={`${base}assets/logo.png`} alt="TelePrompter.my logo" width="40" height="40">
           <span style="color:#fff;">TelePrompter<span class="dot" style="color:var(--accent-soft);">.my</span></span>
         </a>
         <p>{site.footer.tagline}</p>

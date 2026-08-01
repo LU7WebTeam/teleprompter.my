@@ -1,13 +1,15 @@
 ---
+const base = import.meta.env.BASE_URL;
+
 const galleryItems = [
-  { img: "/assets/gallery-1.jpg", alt: "PMX at a podium using transparent teleprompter screens during a formal event.", cat: "Presidential", title: "Formal address with teleprompter screens" },
-  { img: "/assets/gallery-2.jpg", alt: "Close-up of a professional iPad teleprompter setup mounted on a tripod.", cat: "On Camera", title: "iPad teleprompter on tripod" },
-  { img: "/assets/gallery-3.jpg", alt: "Monitor Teleprompter system in a modern office setting.", cat: "Monitor", title: '22" Monitor teleprompter in studio' },
-  { img: "/assets/gallery-4.jpg", alt: "Large angled stage TV teleprompter displaying colorful text at an event.", cat: "Stage TV", title: "Stage TV teleprompter at an event" },
-  { img: "/assets/gallery-5.jpg", alt: "Stage TV Teleprompter screen on the floor showing countdown numbers.", cat: "Stage TV", title: "Floor prompter — countdown mode" },
-  { img: "/assets/gallery-6.jpg", alt: "Podium with dual Presidential Teleprompters set up for a speech.", cat: "Presidential", title: "Dual Presidential teleprompters" },
-  { img: "/assets/gallery-7.jpg", alt: "Speaker in green batik delivering a speech using Presidential Teleprompter screens.", cat: "Presidential", title: "Conference — live address" },
-  { img: "/assets/gallery-8.jpg", alt: "iPad teleprompter setup at a show with a panel speaker seated nearby.", cat: "On Camera", title: "Panel session with iPad prompter" },
+  { img: "assets/gallery-1.jpg", alt: "PMX at a podium using transparent teleprompter screens during a formal event.", cat: "Presidential", title: "Formal address with teleprompter screens" },
+  { img: "assets/gallery-2.jpg", alt: "Close-up of a professional iPad teleprompter setup mounted on a tripod.", cat: "On Camera", title: "iPad teleprompter on tripod" },
+  { img: "assets/gallery-3.jpg", alt: "Monitor Teleprompter system in a modern office setting.", cat: "Monitor", title: '22" Monitor teleprompter in studio' },
+  { img: "assets/gallery-4.jpg", alt: "Large angled stage TV teleprompter displaying colorful text at an event.", cat: "Stage TV", title: "Stage TV teleprompter at an event" },
+  { img: "assets/gallery-5.jpg", alt: "Stage TV Teleprompter screen on the floor showing countdown numbers.", cat: "Stage TV", title: "Floor prompter — countdown mode" },
+  { img: "assets/gallery-6.jpg", alt: "Podium with dual Presidential Teleprompters set up for a speech.", cat: "Presidential", title: "Dual Presidential teleprompters" },
+  { img: "assets/gallery-7.jpg", alt: "Speaker in green batik delivering a speech using Presidential Teleprompter screens.", cat: "Presidential", title: "Conference — live address" },
+  { img: "assets/gallery-8.jpg", alt: "iPad teleprompter setup at a show with a panel speaker seated nearby.", cat: "On Camera", title: "Panel session with iPad prompter" },
 ];
 
 // Clone items for infinite loop feel (enough items for smooth scrolling)
@@ -26,8 +28,8 @@ const allItems = [...galleryItems, ...galleryItems, ...galleryItems];
     <div class="gal-viewport" id="galViewport">
       <div class="gal-track" id="galTrack">
         {allItems.map((item, i) => (
-          <a href={item.img} class="pf-item" data-index={i}>
-            <img src={item.img} alt={item.alt} width="600" height="800">
+          <a href={`${base}${item.img}`} class="pf-item" data-index={i}>
+            <img src={`${base}${item.img}`} alt={item.alt} width="600" height="800">
             <div class="pf-meta">
               <span class="pf-cat">{item.cat}</span>
               <h3 class="pf-title">{item.title}</h3>

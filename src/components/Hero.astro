@@ -1,8 +1,10 @@
 ---
 import { site } from '../data/site';
+
+const base = import.meta.env.BASE_URL;
 ---
 <section class="hero" data-od-id="section-hero">
-  <div class="bg"><img src="/assets/teleprompter-hero.webp" alt="Professional teleprompter setup for events in Malaysia." width="1920" height="1080"></div>
+  <div class="bg"><img src={`${base}assets/teleprompter-hero.webp`} alt="Professional teleprompter setup for events in Malaysia." width="1920" height="1080"></div>
   <div class="cwrap">
     <div class="hero-grid">
       <div class="hero-copy">
@@ -15,7 +17,7 @@ import { site } from '../data/site';
       </div>
       <div class="hero-side">
         <div class="hero-card" data-od-id="hero-info-card">
-          <img src="/assets/hero-1.webp" alt="iPad teleprompter mounted on a tripod with a professional camera." width="640" height="400">
+          <img src={`${base}assets/hero-1.webp`} alt="iPad teleprompter mounted on a tripod with a professional camera." width="640" height="400">
           <div class="hc-body">
             <h4 class="hc-title">Fully operated packages — setup to tear down</h4>
             <a href="#our-teleprompters" class="hc-link">

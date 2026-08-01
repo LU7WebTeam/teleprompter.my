@@ -1,10 +1,12 @@
 ---
 import { site } from '../data/site';
+
+const base = import.meta.env.BASE_URL;
 ---
 <header class="site-header" data-od-id="site-header">
   <div class="cwrap inner">
     <a href="#" class="brand" data-od-id="brand-logo">
-      <img src="/assets/logo.png" alt="TelePrompter.my logo" width="40" height="40">
+      <img src={`${base}assets/logo.png`} alt="TelePrompter.my logo" width="40" height="40">
       <span>TelePrompter<span class="dot">.my</span></span>
     </a>
     <nav class="nav" data-od-id="main-nav" aria-label="Primary">

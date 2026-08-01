@@ -1,5 +1,7 @@
 ---
 import { products } from '../data/products';
+
+const base = import.meta.env.BASE_URL;
 ---
 <section class="space products-section" data-od-id="section-products" id="our-teleprompters">
   <div class="cwrap">
@@ -13,7 +15,7 @@ import { products } from '../data/products';
         const id = ids[i];
         return (
           <article class="product-card reveal" data-od-id={`product-card-${id}`}>
-            <img src={product.img} alt={product.alt} class="p-bg" width="640" height="800">
+            <img src={`${base}${product.img}`} alt={product.alt} class="p-bg" width="640" height="800">
             <div class="p-overlay"></div>
             <div class="p-tag">{product.tag}</div>
             <div class="p-content">

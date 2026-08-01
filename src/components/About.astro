@@ -1,11 +1,13 @@
 ---
 import { site } from '../data/site';
+
+const base = import.meta.env.BASE_URL;
 ---
 <section class="space about-section" data-od-id="section-about">
   <div class="cwrap">
     <div class="about-grid">
       <div class="media reveal">
-        <div class="frame"><img src="/assets/gallery-7.jpg" alt="Speaker delivering a speech using Presidential Teleprompter screens at a conference." width="800" height="640"></div>
+        <div class="frame"><img src={`${base}assets/gallery-7.jpg`} alt="Speaker delivering a speech using Presidential Teleprompter screens at a conference." width="800" height="640"></div>
       </div>
       <div class="about-copy reveal">
         <span style="font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);">Who we are</span>

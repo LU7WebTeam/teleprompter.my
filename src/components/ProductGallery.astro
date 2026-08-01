@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { product } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 <section class="space" data-od-id="section-product-gallery">
   <div class="cwrap">
@@ -15,7 +16,7 @@ const { product } = Astro.props;
     <div class="pg-grid">
       {product.gallery.map(item => (
         <figure class="pg-item reveal">
-          <img src={item.img} alt={item.alt} width="600" height="800">
+          <img src={`${base}${item.img}`} alt={item.alt} width="600" height="800">
           <figcaption class="pg-meta">
             <span class="pg-cat">{product.tag}</span>
             <h3 class="pg-title">{item.caption}</h3>
