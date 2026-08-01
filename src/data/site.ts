@@ -9,6 +9,7 @@ export const site = {
   keywords: "teleprompter rental Malaysia, presidential teleprompter, stage TV teleprompter, monitor teleprompter, iPad teleprompter, teleprompter Kuala Lumpur, event teleprompter rental, broadcast teleprompter",
   twitterHandle: "@telepromptermy",
   locale: "en_MY",
+  base: import.meta.env.BASE_URL,
   contact: {
     address: {
       line1: "West Wing 1st Floor,",
@@ -29,12 +30,12 @@ export const site = {
   nav: {
     products: {
       onCamera: [
-        { label: "iPad Teleprompter", href: "/ipad-teleprompter/" },
-        { label: "Monitor Teleprompter", href: "/monitor-teleprompter/" },
+        { label: "iPad Teleprompter", href: `${import.meta.env.BASE_URL}ipad-teleprompter/` },
+        { label: "Monitor Teleprompter", href: `${import.meta.env.BASE_URL}monitor-teleprompter/` },
       ],
       onStage: [
-        { label: "Presidential Teleprompter", href: "/presidential-teleprompter/" },
-        { label: "Stage TV Teleprompter", href: "/stage-tv-teleprompter/" },
+        { label: "Presidential Teleprompter", href: `${import.meta.env.BASE_URL}presidential-teleprompter/` },
+        { label: "Stage TV Teleprompter", href: `${import.meta.env.BASE_URL}stage-tv-teleprompter/` },
       ],
     },
     links: [

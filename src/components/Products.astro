@@ -33,7 +33,7 @@ const base = import.meta.env.BASE_URL;
                 </div>
                 <div class="p-btns">
                   <a href="#book" class="btn btn-primary" data-od-id={`cta-book-${id}`}>Book Now</a>
-                  <a href={`/${product.slug}/`} class="btn btn-ghost" data-od-id={`read-${id}`}>Read More</a>
+                  <a href={`${base}${product.slug}/`} class="btn btn-ghost" data-od-id={`read-${id}`}>Read More</a>
                 </div>
               </div>
             </div>

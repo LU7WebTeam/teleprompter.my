@@ -16,7 +16,7 @@ const base = import.meta.env.BASE_URL;
       </div>
       <div class="foot-col">
         <h5>Products</h5>
-        {products.map(p => <a href={`/${p.slug}/`}>{p.name}</a>)}
+        {products.map(p => <a href={`${base}${p.slug}/`}>{p.name}</a>)}
       </div>
       <div class="foot-col">
         <h5>Contact</h5>
