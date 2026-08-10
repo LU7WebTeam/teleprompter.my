@@ -14,6 +14,7 @@ const base = import.meta.env.BASE_URL;
           <img src={`${base}assets/logo.png`} alt="TelePrompter.my logo" width="120" height="120">
         </a>
         <p>{site.footer.tagline}</p>
+        <p class="foot-operated">Teleprompter.my is operated by <a href="https://sevenue.com">Sevenue Sdn Bhd</a>. Visit <a href="https://sevenue.com">sevenue.com</a> to learn more about our full event production services.</p>
       </div>
       <div class="foot-col">
         <h5>Products</h5>
@@ -40,11 +41,11 @@ const base = import.meta.env.BASE_URL;
         <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>
         <a href={site.contact.whatsapp.href}>{site.contact.whatsapp.number}</a>
         <a href={site.contact.mobileHref}>{site.contact.mobile}</a>
-      </div>
-      <div class="foot-cta">
-        <h5>Have an inquiry?</h5>
-        <p>Get a quote for your next event — we respond fast.</p>
-        <a href="#book" class="btn btn-primary" data-od-id="cta-get-quote" style="width:100%;">Get a Quote</a>
+        <div class="foot-cta">
+          <h5>Have an inquiry?</h5>
+          <p>Get a quote for your next event — we respond fast.</p>
+          <a href="#book" class="btn btn-primary" data-od-id="cta-get-quote" style="width:100%;">Get a Quote</a>
+        </div>
       </div>
     </div>
     <div class="foot-bottom">
@@ -59,16 +60,19 @@ const base = import.meta.env.BASE_URL;
 
 <style is:global>
   .site-footer { background: var(--dark); color: rgba(255,255,255,.6); padding: clamp(70px, 8vw, 110px) 0 36px; }
-  .foot-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 1.1fr; gap: 36px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .foot-top { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1.4fr; gap: 36px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,.1); }
   .foot-brand .brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: #fff; margin-bottom: 18px; }
   .foot-brand .brand img { width: 120px; height: auto; object-fit: contain; border-radius: 0; }
   .foot-brand p { font-size: .9rem; max-width: 40ch; line-height: 1.6; }
+  .foot-brand .foot-operated { margin-top: 22px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.1); font-size: .82rem; }
+  .foot-brand .foot-operated a { color: var(--accent-soft); border-bottom: 1px solid rgba(138,164,255,.4); }
+  .foot-brand .foot-operated a:hover { color: #fff; }
   .foot-col h5 { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #fff; margin-bottom: 18px; }
   .foot-col a, .foot-col p { display: block; font-size: .9rem; margin-bottom: 12px; transition: color .2s; line-height: 1.5; }
   .foot-col a:hover { color: var(--accent-soft); }
-  .foot-cta { background: var(--dark-2); border-radius: 0; padding: 26px; }
-  .foot-cta h5 { color: #fff; font-size: 1.25rem; text-transform: none; letter-spacing: 0; margin-bottom: 8px; }
-  .foot-cta p { font-size: .88rem; margin-bottom: 18px; }
+  .foot-cta { background: var(--dark-2); border-radius: 0; padding: 24px; margin-top: 20px; }
+  .foot-cta h5 { color: #fff; font-size: 1.15rem; text-transform: none; letter-spacing: 0; margin-bottom: 8px; }
+  .foot-cta p { font-size: .85rem; margin-bottom: 16px; }
   .foot-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 30px; flex-wrap: wrap; gap: 12px; }
   .foot-bottom .copy { font-size: .82rem; }
   .foot-bottom .copy a { color: var(--accent-soft); }
