@@ -32,8 +32,6 @@ jobs:
         with:
           server: ${{ secrets.CPANEL_FTP_SERVER }}
           port: 21
-          protocol: ftps
-          security: unstrict
           username: ${{ secrets.CPANEL_FTP_USERNAME }}
           password: ${{ secrets.CPANEL_FTP_PASSWORD }}
           local-dir: ./dist/
@@ -42,4 +40,5 @@ jobs:
             **/.git*
             **/.git*/**
             **/node_modules/**
+          security: loose
           timeout: 600000
