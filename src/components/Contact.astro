@@ -1,10 +1,8 @@
 ---
-import { site } from '../data/site';
 import { products } from '../data/products';
 
 const base = import.meta.env.BASE_URL;
 const quoteUrl = `${base}quote.php`;
-const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(site.contact.whatsapp.prefill)}`;
 
 const states = [
   "Kuala Lumpur", "Putrajaya", "Labuan",
@@ -22,39 +20,6 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
       <h2 class="sec-title">Book your teleprompter</h2>
     </div>
     <div class="contact-grid" id="book">
-      <div class="contact-info reveal">
-        <div class="ci-block">
-          <div class="ci-label">Address</div>
-          <div class="ci-val">
-            {site.contact.address.line1}<br>
-            {site.contact.address.line2}<br>
-            {site.contact.address.line3}<br>
-            {site.contact.address.line4}
-          </div>
-        </div>
-        <div class="ci-block">
-          <div class="ci-label">Email</div>
-          <div class="ci-val"><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></div>
-        </div>
-        <div class="ci-block">
-          <div class="ci-label">WhatsApp — preferred</div>
-          <div class="ci-val">{site.contact.whatsapp.number}</div>
-          <a class="wa-pill" href={whatsappHref} target="_blank" rel="noopener" data-od-id="cta-whatsapp-contact">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2zm0 2a8 8 0 11-4.2 14.8l-.3-.2-2.8.8.8-2.7-.2-.3A8 8 0 0112 4zm-2.8 4c-.2 0-.5.1-.7.3-.3.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.8 2.1.8 2.6.7 3 .6.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.3-.2-.6-.3-.4-.2-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1-.4-.2-1.3-.5-2.4-1.5-.9-.8-1.5-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.1-.2.2-.3.2-.5 0-.2 0-.4 0-.5 0-.1-.6-1.5-.9-2-.2-.4-.4-.4-.6-.4z"/></svg>
-            Chat on WhatsApp
-          </a>
-        </div>
-        <div class="ci-block">
-          <div class="ci-label">Mobile</div>
-          <div class="ci-val"><a href={site.contact.mobileHref}>{site.contact.mobile}</a></div>
-        </div>
-
-        <div class="quote-tip">
-          <h4>Building a quote</h4>
-          <p>Pick a preset package or build a custom combination. Prices are per day, so your total is calculated from your date range and quantities automatically.</p>
-        </div>
-      </div>
-
       <form class="enquiry-form reveal" id="quoteForm" data-od-id="enquiry-form" action={quoteUrl} method="post" novalidate>
         <h3>Request a quote</h3>
         <p class="f-sub">Tell us about your event and we'll respond with availability and a quote.</p>
@@ -104,9 +69,9 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
           <div id="customRows">
             <div class="form-row custom-row">
               <div class="field"><select class="c-product" required>
-                <option value="0" data-price={products[0].price} data-name={products[0].name} selected>{products[0].name} — RM {products[0].price.toLocaleString()}/day</option>
+                <option value={productIds[0]} selected>{products[0].name} — RM {products[0].price.toLocaleString()}/day</option>
                 {products.map((p, i) => ( i === 0 ? null : (
-                  <option value={i} data-price={p.price} data-name={p.name}>{p.name} — RM {p.price.toLocaleString()}/day</option>
+                  <option value={productIds[i]}>{p.name} — RM {p.price.toLocaleString()}/day</option>
                 ) ))}
               </select></div>
               <div class="field c-qty"><select class="c-qty">
@@ -156,20 +121,8 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
 </section>
 
 <style is:global>
-  .contact-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(30px, 4vw, 60px); max-width: 100%; overflow: hidden; }
-  .contact-info .ci-block { margin-bottom: 28px; }
-  .contact-info .ci-label { font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
-  .contact-info .ci-val { font-size: 1.05rem; margin-top: 6px; line-height: 1.5; }
-  .contact-info .ci-val a { color: var(--accent); }
-  .wa-pill { display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; padding: 13px 24px; border-radius: 0; background: var(--accent); color: #fff; font-weight: 600; font-size: .85rem; letter-spacing: .04em; transition: all .25s var(--ease); }
-  .wa-pill:hover { background: var(--accent-2); transform: translateY(-2px); box-shadow: 0 14px 30px -10px oklch(40% 0.19 264 / .5); }
-  .wa-pill svg { width: 18px; height: 18px; }
-
-  .quote-tip { margin-top: 34px; padding: 18px 20px; background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); }
-  .quote-tip h4 { font-family: var(--font-display); font-size: 1rem; margin: 0 0 6px; }
-  .quote-tip p { margin: 0; font-size: .82rem; color: var(--muted); line-height: 1.55; }
-
-  .enquiry-form { background: var(--smoke); border: 1px solid var(--border); border-radius: 0; padding: clamp(20px, 3.5vw, 44px); max-width: 100%; overflow: hidden; box-sizing: border-box; position: relative; }
+  .contact-grid { max-width: 100%; margin: 0 auto; }
+  .enquiry-form { background: var(--smoke); border: 1px solid var(--border); border-radius: 0; padding: clamp(20px, 3.5vw, 44px); max-width: 980px; margin: 0 auto; overflow: hidden; box-sizing: border-box; position: relative; }
   .enquiry-form h3 { font-size: 1.6rem; }
   .enquiry-form .f-sub { color: var(--muted); font-size: .92rem; margin: 8px 0 28px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
@@ -224,15 +177,12 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
 
   @media (max-width: 880px) {
     .contact-grid { grid-template-columns: 1fr; }
-    .contact-info { order: 2; }
-    .enquiry-form { order: 1; }
   }
   @media (max-width: 640px) {
     .form-row { grid-template-columns: 1fr; }
     .custom-row { grid-template-columns: 1fr 100px 44px; }
     .enquiry-form { padding: 22px 20px; }
     .enquiry-form h3 { font-size: 1.3rem; }
-    .quote-tip { margin-top: 22px; }
   }
 </style>
 
