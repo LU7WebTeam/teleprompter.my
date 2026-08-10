@@ -39,6 +39,8 @@ export const site = {
       ],
     },
     links: [
+      { label: "Events", href: `${import.meta.env.BASE_URL}events/` },
+      { label: "Locations", href: `${import.meta.env.BASE_URL}locations/` },
       { label: "Gallery", href: "#gallery" },
       { label: "Contact", href: "#contact-us" },
     ],

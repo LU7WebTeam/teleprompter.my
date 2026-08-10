@@ -1,6 +1,8 @@
 ---
 import { site } from '../data/site';
 import { products } from '../data/products';
+import { locations } from '../data/locations';
+import { events } from '../data/events';
 
 const base = import.meta.env.BASE_URL;
 ---
@@ -16,6 +18,16 @@ const base = import.meta.env.BASE_URL;
       <div class="foot-col">
         <h5>Products</h5>
         {products.map(p => <a href={`${base}${p.slug}/`}>{p.name}</a>)}
+      </div>
+      <div class="foot-col">
+        <h5>Events</h5>
+        <a href={`${base}events/`}>All event types</a>
+        {events.map(e => <a href={`${base}events/${e.slug}/`}>{e.name}</a>)}
+      </div>
+      <div class="foot-col">
+        <h5>Locations</h5>
+        <a href={`${base}locations/`}>All locations</a>
+        {locations.map(l => <a href={`${base}locations/${l.slug}/`}>{l.name}</a>)}
       </div>
       <div class="foot-col">
         <h5>Contact</h5>
@@ -47,7 +59,7 @@ const base = import.meta.env.BASE_URL;
 
 <style is:global>
   .site-footer { background: var(--dark); color: rgba(255,255,255,.6); padding: clamp(70px, 8vw, 110px) 0 36px; }
-  .foot-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.3fr; gap: 40px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .foot-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr 1.1fr; gap: 36px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,.1); }
   .foot-brand .brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: #fff; margin-bottom: 18px; }
   .foot-brand .brand img { width: 120px; height: auto; object-fit: contain; border-radius: 0; }
   .foot-brand p { font-size: .9rem; max-width: 40ch; line-height: 1.6; }
@@ -64,6 +76,9 @@ const base = import.meta.env.BASE_URL;
   .foot-bottom .links a { font-size: .82rem; }
   .foot-bottom .links a:hover { color: #fff; }
 
+  @media (max-width: 1100px) {
+    .foot-top { grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+  }
   @media (max-width: 880px) {
     .foot-top { grid-template-columns: 1fr 1fr; gap: 32px; }
   }

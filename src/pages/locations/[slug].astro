@@ -1,0 +1,340 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Products from '../../components/Products.astro';
+import Gallery from '../../components/Gallery.astro';
+import Terms from '../../components/Terms.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+import WhatsAppFab from '../../components/WhatsAppFab.astro';
+import { locations, getLocation } from '../../data/locations';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return locations.map((loc) => ({ params: { slug: loc.slug } }));
+}
+
+const { slug } = Astro.params;
+const loc = getLocation(slug!)!;
+
+const base = import.meta.env.BASE_URL;
+const canonicalPath = `/locations/${loc.slug}/`;
+
+const localBusinessLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: `${site.name} — ${loc.name}`,
+  description: loc.metaDescription,
+  url: new URL(canonicalPath, site.url).href,
+  image: new URL('assets/hero-2.webp', site.url).href,
+  telephone: site.contact.mobile,
+  email: site.contact.email,
+  priceRange: 'RM 1,200 - RM 2,500 /day',
+  areaServed: { '@type': 'Place', name: loc.name },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.contact.address.line3,
+    addressLocality: 'Kuala Lumpur',
+    postalCode: '50490',
+    addressCountry: 'MY',
+  },
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'Locations', item: new URL('/locations/', site.url).href },
+    { '@type': 'ListItem', position: 3, name: loc.name, item: new URL(canonicalPath, site.url).href },
+  ],
+};
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: loc.faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const jsonLd = { '@graph': [localBusinessLd, breadcrumbLd, faqLd] };
+---
+
+<BaseLayout
+  title={loc.metaTitle}
+  description={loc.metaDescription}
+  image="assets/teleprompter-hero.webp"
+  canonicalPath={canonicalPath}
+  type="website"
+  jsonLd={jsonLd}
+>
+  <Header />
+
+  <!-- Breadcrumb -->
+  <nav class="loc-crumbs cwrap" aria-label="Breadcrumb" data-od-id="loc-breadcrumb">
+    <a href={base}>Home</a><span>/</span><a href={`${base}locations/`}>Locations</a><span>/</span><span class="cur">{loc.name}</span>
+  </nav>
+
+  <!-- Hero -->
+  <section class="loc-hero" data-od-id="loc-hero">
+    <div class="bg"><img src={`${base}assets/teleprompter-hero.webp`} alt={`Teleprompter setup for events in ${loc.name}.`} width="1920" height="1080" loading="eager"></div>
+    <div class="cwrap hero-inner">
+      <span class="loc-badge reveal">{loc.heroBadge}</span>
+      <h1 class="reveal">{loc.heroH1}</h1>
+      <p class="hero-sub reveal">{loc.heroSub}</p>
+      <div class="cta-row reveal">
+        <a href="#book" class="btn btn-primary" data-od-id="loc-cta-book">Book Now</a>
+        <a href="#our-teleprompters" class="btn btn-light" data-od-id="loc-cta-range">View Teleprompters</a>
+      </div>
+      <ul class="hero-trust reveal">
+        <li>Delivery &amp; setup included</li>
+        <li>Operator on-site</li>
+        <li>Presidential &middot; Stage TV &middot; Monitor &middot; iPad</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Local intro -->
+  <section class="space" data-od-id="loc-intro">
+    <div class="cwrap">
+      <div class="loc-intro-grid">
+        <div class="media reveal">
+          <div class="frame"><img src={`${base}assets/gallery-7.jpg`} alt={`Speaker using a teleprompter at an event in ${loc.name}.`} width="800" height="640"></div>
+        </div>
+        <div class="copy reveal">
+          <span class="eyebrow">{loc.introEyebrow}</span>
+          <h2 class="sec-title">{loc.introHeading}</h2>
+          <p>{loc.introBody}</p>
+          <div class="areas">
+            <span class="areas-label">Areas we cover:</span>
+            <ul>{loc.areasCovered.map((a) => <li>{a}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why choose -->
+  <section class="space loc-why" data-od-id="loc-why">
+    <div class="cwrap">
+      <div class="why-layout">
+        <div class="title-area reveal">
+          <span class="eyebrow">{loc.whyEyebrow}</span>
+          <h2 class="sec-title">{loc.whyHeading}</h2>
+          <p class="sec-sub">{loc.whySub}</p>
+          <a href="#book" class="btn btn-dark" data-od-id="loc-why-cta">Book now</a>
+        </div>
+        <div class="why-list">
+          {loc.whyPoints.map((p, i) => (
+            <div class="why-item reveal">
+              <span class="why-num">{String(i + 1).padStart(2, '0')}</span>
+              <div class="why-body"><h4>{p.title}</h4><p>{p.desc}</p></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teleprompter range (reused) -->
+  <Products />
+
+  <!-- What's included -->
+  <section class="space loc-included" data-od-id="loc-included">
+    <div class="cwrap">
+      <div class="title-area text-center reveal">
+        <span class="eyebrow">What's included</span>
+        <h2 class="sec-title">{loc.includedHeading}</h2>
+      </div>
+      <ul class="included-grid">
+        {loc.includedItems.map((item) => (
+          <li class="reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2 0 4 .7 5.5 2"/></svg>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="space loc-steps" data-od-id="loc-steps">
+    <div class="cwrap">
+      <div class="title-area text-center reveal">
+        <span class="eyebrow">How it works</span>
+        <h2 class="sec-title">{loc.stepsHeading}</h2>
+      </div>
+      <div class="steps-grid">
+        {loc.steps.map((step, i) => (
+          <div class="step-card reveal">
+            <span class="step-num">{String(i + 1).padStart(2, '0')}</span>
+            <p>{step}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery (reused) -->
+  <Gallery />
+
+  <!-- FAQ -->
+  <section class="space loc-faq" data-od-id="loc-faq">
+    <div class="nwrap">
+      <div class="title-area text-center reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="sec-title">{loc.name} teleprompter rental</h2>
+      </div>
+      <div class="faq-list">
+        {loc.faqs.map((f) => (
+          <details class="faq-item reveal">
+            <summary>
+              <span>{f.q}</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="loc-cta" data-od-id="loc-cta">
+    <div class="cwrap cta-inner reveal">
+      <h2>{loc.ctaHeading}</h2>
+      <p>{loc.ctaSub}</p>
+      <div class="cta-row">
+        <a href="#book" class="btn btn-primary" data-od-id="loc-cta-final-quote">Request a Quote</a>
+        <a href={site.contact.whatsapp.href} class="btn btn-light" data-od-id="loc-cta-final-wa">WhatsApp Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other locations -->
+  <section class="loc-others" data-od-id="loc-others">
+    <div class="cwrap">
+      <span class="eyebrow">Also serving</span>
+      <ul>
+        {locations.filter((l) => l.slug !== loc.slug).map((l) => (
+          <li><a href={`${base}locations/${l.slug}/`}>{l.name}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Terms />
+  <Contact />
+  <Footer />
+  <WhatsAppFab />
+</BaseLayout>
+
+<style is:global>
+  .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  .sec-sub { color: var(--muted); margin-top: 18px; max-width: 40ch; }
+
+  /* Breadcrumb */
+  .loc-crumbs { display: flex; gap: 10px; align-items: center; padding-top: 28px; padding-bottom: 0; font-size: .78rem; color: var(--muted); }
+  .loc-crumbs a:hover { color: var(--accent); }
+  .loc-crumbs .cur { color: var(--fg); font-weight: 600; }
+
+  /* Hero */
+  .loc-hero { position: relative; min-height: 80vh; display: flex; align-items: flex-end; overflow: hidden; background: var(--dark); padding-top: 120px; }
+  .loc-hero .bg { position: absolute; inset: 0; z-index: 0; }
+  .loc-hero .bg img { width: 100%; height: 100%; object-fit: cover; }
+  .loc-hero .bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, rgba(8,10,30,.94) 0%, rgba(8,10,30,.72) 42%, rgba(8,10,30,.25) 72%, rgba(8,10,30,.5) 100%); }
+  .loc-hero .hero-inner { position: relative; z-index: 2; padding-bottom: clamp(60px, 8vh, 100px); max-width: 900px; }
+  .loc-hero .loc-badge { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #fff; background: rgba(24,43,158,.85); padding: 7px 16px; }
+  .loc-hero h1 { color: #fff; font-size: clamp(2.4rem, 5.6vw, 4.6rem); line-height: 1.04; margin-top: 22px; }
+  .loc-hero .hero-sub { color: rgba(255,255,255,.78); font-size: 1.05rem; max-width: 60ch; margin-top: 22px; line-height: 1.7; }
+  .loc-hero .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+  .loc-hero .hero-trust { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 34px; }
+  .loc-hero .hero-trust li { position: relative; padding-left: 22px; font-size: .82rem; color: rgba(255,255,255,.7); }
+  .loc-hero .hero-trust li::before { content: "✓"; position: absolute; left: 0; color: var(--status); font-weight: 700; }
+
+  /* Intro */
+  .loc-intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 5vw, 80px); align-items: center; }
+  .loc-intro-grid .media .frame { overflow: hidden; aspect-ratio: 5/4; box-shadow: 0 30px 70px -30px rgba(0,0,0,.25); }
+  .loc-intro-grid .media .frame img { width: 100%; height: 100%; object-fit: cover; }
+  .loc-intro-grid .sec-title { margin-top: 14px; }
+  .loc-intro-grid .copy p { color: var(--muted); margin-top: 22px; max-width: 52ch; }
+  .loc-intro-grid .areas { margin-top: 28px; }
+  .loc-intro-grid .areas-label { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .loc-intro-grid .areas ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .loc-intro-grid .areas li { font-size: .8rem; font-weight: 500; padding: 7px 14px; border: 1px solid var(--border); background: var(--smoke); }
+
+  /* Why */
+  .loc-why { background: var(--smoke); }
+  .why-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 60px; align-items: start; }
+  .why-layout .title-area { position: sticky; top: 110px; }
+  .why-list { display: grid; }
+  .why-item { display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: start; padding: 32px 0; border-top: 1px solid var(--border); }
+  .why-item:last-child { border-bottom: 1px solid var(--border); }
+  .why-item .why-num { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--accent); padding-top: 4px; }
+  .why-item .why-body h4 { font-size: 1.35rem; margin-bottom: 8px; }
+  .why-item .why-body p { color: var(--muted); font-size: .95rem; }
+
+  /* What's included */
+  .loc-included { background: var(--dark); color: #fff; }
+  .loc-included .eyebrow { color: var(--accent-soft); }
+  .loc-included .sec-title { color: #fff; }
+  .included-grid { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 48px; }
+  .included-grid li { display: flex; gap: 12px; align-items: flex-start; padding: 18px 20px; color: rgba(255,255,255,.85); font-size: .92rem; border-top: 1px solid rgba(255,255,255,.12); }
+  .included-grid li svg { width: 20px; height: 20px; color: var(--accent-soft); flex-shrink: 0; margin-top: 1px; }
+
+  /* Steps */
+  .steps-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+  .step-card { background: var(--smoke); border: 1px solid var(--border); padding: 28px 24px; }
+  .step-card .step-num { display: block; font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+  .step-card p { margin-top: 14px; color: var(--muted); font-size: .92rem; }
+
+  /* FAQ */
+  .loc-faq { background: var(--smoke); }
+  .faq-list { display: grid; gap: 14px; }
+  .faq-item { background: #fff; border: 1px solid var(--border); padding: 0; }
+  .faq-item summary { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 24px; cursor: pointer; font-weight: 600; font-size: 1rem; font-family: var(--font-display); list-style: none; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary svg { width: 22px; height: 22px; color: var(--accent); flex-shrink: 0; transition: transform .2s; }
+  .faq-item[open] summary svg { transform: rotate(180deg); }
+  .faq-item p { padding: 0 24px 22px; color: var(--muted); font-size: .92rem; line-height: 1.7; }
+
+  /* Final CTA */
+  .loc-cta { background: var(--dark); color: #fff; padding: clamp(70px, 8vw, 110px) 0; }
+  .loc-cta .cta-inner { text-align: center; }
+  .loc-cta h2 { color: #fff; font-size: clamp(2rem, 4vw, 3.2rem); }
+  .loc-cta p { color: rgba(255,255,255,.7); margin: 18px auto 0; max-width: 60ch; font-size: 1rem; }
+  .loc-cta .cta-row { justify-content: center; margin-top: 30px; }
+
+  /* Other locations */
+  .loc-others { background: var(--dark-2); color: rgba(255,255,255,.7); padding: 40px 0; }
+  .loc-others .eyebrow { color: var(--accent-soft); }
+  .loc-others ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 14px; }
+  .loc-others a { font-size: .85rem; color: rgba(255,255,255,.85); border-bottom: 1px solid rgba(255,255,255,.2); padding-bottom: 2px; }
+  .loc-others a:hover { color: #fff; border-color: var(--accent-soft); }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .why-layout { grid-template-columns: 1fr; }
+    .why-layout .title-area { position: static; }
+    .steps-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 880px) {
+    .loc-intro-grid { grid-template-columns: 1fr; gap: 30px; }
+    .loc-intro-grid .media .frame { aspect-ratio: 4/3; }
+    .included-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .why-item { grid-template-columns: auto 1fr; gap: 16px; padding: 24px 0; }
+    .why-item .why-body h4 { font-size: 1.1rem; }
+  }
+  @media (max-width: 640px) {
+    .loc-hero { min-height: auto; padding-top: 100px; padding-bottom: 40px; }
+    .loc-hero .hero-inner { padding-bottom: 0; }
+    .loc-hero h1 { font-size: clamp(2rem, 9vw, 2.8rem); }
+    .loc-hero .hero-trust { gap: 8px 20px; margin-top: 24px; }
+    .included-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+</style>

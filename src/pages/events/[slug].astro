@@ -1,0 +1,399 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Gallery from '../../components/Gallery.astro';
+import Terms from '../../components/Terms.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+import WhatsAppFab from '../../components/WhatsAppFab.astro';
+import { events, getEvent } from '../../data/events';
+import { getProduct } from '../../data/products';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return events.map((ev) => ({ params: { slug: ev.slug } }));
+}
+
+const { slug } = Astro.params;
+const ev = getEvent(slug!)!;
+
+const base = import.meta.env.BASE_URL;
+const canonicalPath = `/events/${ev.slug}/`;
+
+// Resolve recommended product objects
+const recommended = ev.recommended
+  .map((r) => ({ ...r, product: getProduct(r.slug)! }))
+  .filter((r) => r.product);
+
+const serviceLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: `${ev.name} — Teleprompter Rental`,
+  description: ev.metaDescription,
+  url: new URL(canonicalPath, site.url).href,
+  image: new URL('assets/teleprompter-hero.webp', site.url).href,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: site.name,
+    telephone: site.contact.mobile,
+    email: site.contact.email,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: site.contact.address.line3,
+      addressLocality: 'Kuala Lumpur',
+      postalCode: '50490',
+      addressCountry: 'MY',
+    },
+  },
+  areaServed: 'Malaysia',
+};
+
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+    { '@type': 'ListItem', position: 2, name: 'Events', item: new URL('/events/', site.url).href },
+    { '@type': 'ListItem', position: 3, name: ev.name, item: new URL(canonicalPath, site.url).href },
+  ],
+};
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: ev.faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const jsonLd = { '@graph': [serviceLd, breadcrumbLd, faqLd] };
+---
+
+<BaseLayout
+  title={ev.metaTitle}
+  description={ev.metaDescription}
+  image="assets/teleprompter-hero.webp"
+  canonicalPath={canonicalPath}
+  type="website"
+  jsonLd={jsonLd}
+>
+  <Header />
+
+  <!-- Breadcrumb -->
+  <nav class="ev-crumbs cwrap" aria-label="Breadcrumb" data-od-id="ev-breadcrumb">
+    <a href={base}>Home</a><span>/</span><a href={`${base}events/`}>Events</a><span>/</span><span class="cur">{ev.name}</span>
+  </nav>
+
+  <!-- Hero -->
+  <section class="ev-hero" data-od-id="ev-hero">
+    <div class="bg"><img src={`${base}assets/teleprompter-hero.webp`} alt={`Teleprompter setup for ${ev.name.toLowerCase()}.`} width="1920" height="1080" loading="eager"></div>
+    <div class="cwrap hero-inner">
+      <span class="ev-badge reveal">{ev.heroBadge}</span>
+      <h1 class="reveal">{ev.heroH1}</h1>
+      <p class="hero-sub reveal">{ev.heroSub}</p>
+      <div class="cta-row reveal">
+        <a href="#book" class="btn btn-primary" data-od-id="ev-cta-book">Book Now</a>
+        <a href="#recommended" class="btn btn-light" data-od-id="ev-cta-range">Recommended Setups</a>
+      </div>
+      <ul class="hero-trust reveal">
+        <li>Delivery &amp; setup included</li>
+        <li>Operator on-site</li>
+        <li>Presidential &middot; Stage TV &middot; Monitor &middot; iPad</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Intro -->
+  <section class="space" data-od-id="ev-intro">
+    <div class="cwrap">
+      <div class="ev-intro-grid">
+        <div class="media reveal">
+          <div class="frame"><img src={`${base}assets/gallery-7.jpg`} alt={`Teleprompter in use during ${ev.name.toLowerCase()}.`} width="800" height="640"></div>
+        </div>
+        <div class="copy reveal">
+          <span class="eyebrow">{ev.introEyebrow}</span>
+          <h2 class="sec-title">{ev.introHeading}</h2>
+          <p>{ev.introBody}</p>
+          <div class="scenarios">
+            <span class="scenarios-label">Typical scenarios:</span>
+            <ul>{ev.scenarios.map((s) => <li>{s}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recommended teleprompters -->
+  <section class="space ev-recommended" id="recommended" data-od-id="ev-recommended">
+    <div class="cwrap">
+      <div class="title-area text-center reveal">
+        <span class="eyebrow">{ev.recommendedEyebrow}</span>
+        <h2 class="sec-title">{ev.recommendedHeading}</h2>
+        <p class="sec-sub">{ev.recommendedSub}</p>
+      </div>
+      <div class="rec-grid">
+        {recommended.map(({ product, why, primary }) => (
+          <article class={`rec-card reveal${primary ? ' rec-primary' : ''}`} data-od-id={`ev-rec-${product.slug}`}>
+            <div class="rec-media">
+              <img src={`${base}${product.img}`} alt={product.alt} width="640" height="800" loading="lazy">
+              {primary && <span class="rec-pick">Recommended</span>}
+              <span class="rec-tag">{product.tag}</span>
+            </div>
+            <div class="rec-body">
+              <h3>{product.name}</h3>
+              <p class="rec-why">{why}</p>
+              <div class="rec-footer">
+                <div class="rec-price mono">
+                  <span class="cur">{product.currency}</span>{product.price.toLocaleString()}<span class="unit"> {product.unit}</span>
+                </div>
+                <a href={`${base}${product.slug}/`} class="btn btn-ghost" data-od-id={`ev-rec-read-${product.slug}`}>Details</a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Why choose -->
+  <section class="space ev-why" data-od-id="ev-why">
+    <div class="cwrap">
+      <div class="why-layout">
+        <div class="title-area reveal">
+          <span class="eyebrow">{ev.whyEyebrow}</span>
+          <h2 class="sec-title">{ev.whyHeading}</h2>
+          <p class="sec-sub">{ev.whySub}</p>
+          <a href="#book" class="btn btn-dark" data-od-id="ev-why-cta">Book now</a>
+        </div>
+        <div class="why-list">
+          {ev.whyPoints.map((p, i) => (
+            <div class="why-item reveal">
+              <span class="why-num">{String(i + 1).padStart(2, '0')}</span>
+              <div class="why-body"><h4>{p.title}</h4><p>{p.desc}</p></div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What's included -->
+  <section class="space ev-included" data-od-id="ev-included">
+    <div class="cwrap">
+      <div class="title-area text-center reveal">
+        <span class="eyebrow">What's included</span>
+        <h2 class="sec-title">{ev.includedHeading}</h2>
+      </div>
+      <ul class="included-grid">
+        {ev.includedItems.map((item) => (
+          <li class="reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M21 12c0 5-4 9-9 9s-9-4-9-9 4-9 9-9c2 0 4 .7 5.5 2"/></svg>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="space ev-steps" data-od-id="ev-steps">
+    <div class="cwrap">
+      <div class="title-area text-center reveal">
+        <span class="eyebrow">How it works</span>
+        <h2 class="sec-title">{ev.stepsHeading}</h2>
+      </div>
+      <div class="steps-grid">
+        {ev.steps.map((step, i) => (
+          <div class="step-card reveal">
+            <span class="step-num">{String(i + 1).padStart(2, '0')}</span>
+            <p>{step}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <Gallery />
+
+  <!-- FAQ -->
+  <section class="space ev-faq" data-od-id="ev-faq">
+    <div class="nwrap">
+      <div class="title-area text-center reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="sec-title">{ev.name} teleprompter rental</h2>
+      </div>
+      <div class="faq-list">
+        {ev.faqs.map((f) => (
+          <details class="faq-item reveal">
+            <summary>
+              <span>{f.q}</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="ev-cta" data-od-id="ev-cta">
+    <div class="cwrap cta-inner reveal">
+      <h2>{ev.ctaHeading}</h2>
+      <p>{ev.ctaSub}</p>
+      <div class="cta-row">
+        <a href="#book" class="btn btn-primary" data-od-id="ev-cta-final-quote">Request a Quote</a>
+        <a href={site.contact.whatsapp.href} class="btn btn-light" data-od-id="ev-cta-final-wa">WhatsApp Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other events -->
+  <section class="ev-others" data-od-id="ev-others">
+    <div class="cwrap">
+      <span class="eyebrow">Other event types</span>
+      <ul>
+        {events.filter((e) => e.slug !== ev.slug).map((e) => (
+          <li><a href={`${base}events/${e.slug}/`}>{e.name}</a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Terms />
+  <Contact />
+  <Footer />
+  <WhatsAppFab />
+</BaseLayout>
+
+<style is:global>
+  .eyebrow { font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  .sec-sub { color: var(--muted); margin-top: 18px; max-width: 56ch; margin-left: auto; margin-right: auto; }
+
+  /* Breadcrumb */
+  .ev-crumbs { display: flex; gap: 10px; align-items: center; padding-top: 28px; font-size: .78rem; color: var(--muted); }
+  .ev-crumbs a:hover { color: var(--accent); }
+  .ev-crumbs .cur { color: var(--fg); font-weight: 600; }
+
+  /* Hero */
+  .ev-hero { position: relative; min-height: 80vh; display: flex; align-items: flex-end; overflow: hidden; background: var(--dark); padding-top: 120px; }
+  .ev-hero .bg { position: absolute; inset: 0; z-index: 0; }
+  .ev-hero .bg img { width: 100%; height: 100%; object-fit: cover; }
+  .ev-hero .bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, rgba(8,10,30,.94) 0%, rgba(8,10,30,.72) 42%, rgba(8,10,30,.25) 72%, rgba(8,10,30,.5) 100%); }
+  .ev-hero .hero-inner { position: relative; z-index: 2; padding-bottom: clamp(60px, 8vh, 100px); max-width: 900px; }
+  .ev-hero .ev-badge { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #fff; background: rgba(24,43,158,.85); padding: 7px 16px; }
+  .ev-hero h1 { color: #fff; font-size: clamp(2.4rem, 5.6vw, 4.6rem); line-height: 1.04; margin-top: 22px; }
+  .ev-hero .hero-sub { color: rgba(255,255,255,.78); font-size: 1.05rem; max-width: 64ch; margin-top: 22px; line-height: 1.7; }
+  .ev-hero .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+  .ev-hero .hero-trust { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 26px; margin-top: 34px; }
+  .ev-hero .hero-trust li { position: relative; padding-left: 22px; font-size: .82rem; color: rgba(255,255,255,.7); }
+  .ev-hero .hero-trust li::before { content: "✓"; position: absolute; left: 0; color: var(--status); font-weight: 700; }
+
+  /* Intro */
+  .ev-intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 5vw, 80px); align-items: center; }
+  .ev-intro-grid .media .frame { overflow: hidden; aspect-ratio: 5/4; box-shadow: 0 30px 70px -30px rgba(0,0,0,.25); }
+  .ev-intro-grid .media .frame img { width: 100%; height: 100%; object-fit: cover; }
+  .ev-intro-grid .sec-title { margin-top: 14px; }
+  .ev-intro-grid .copy p { color: var(--muted); margin-top: 22px; max-width: 56ch; }
+  .ev-intro-grid .scenarios { margin-top: 28px; }
+  .ev-intro-grid .scenarios-label { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .ev-intro-grid .scenarios ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .ev-intro-grid .scenarios li { font-size: .8rem; font-weight: 500; padding: 7px 14px; border: 1px solid var(--border); background: var(--smoke); }
+
+  /* Recommended products */
+  .ev-recommended { background: var(--smoke); }
+  .rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .rec-card { position: relative; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--border); overflow: hidden; transition: transform .3s var(--ease), border-color .3s; }
+  .rec-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .rec-card.rec-primary { border-color: var(--accent); border-width: 2px; }
+  .rec-media { position: relative; aspect-ratio: 4/5; overflow: hidden; }
+  .rec-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
+  .rec-card:hover .rec-media img { transform: scale(1.05); }
+  .rec-pick { position: absolute; top: 16px; right: 16px; z-index: 2; font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #fff; background: var(--accent); padding: 6px 12px; }
+  .rec-tag { position: absolute; top: 16px; left: 16px; z-index: 2; font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #fff; background: rgba(8,10,30,.7); padding: 6px 12px; }
+  .rec-body { padding: 26px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .rec-body h3 { font-size: 1.4rem; }
+  .rec-why { color: var(--muted); font-size: .92rem; line-height: 1.6; flex: 1; }
+  .rec-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 8px; }
+  .rec-price { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; color: var(--fg); }
+  .rec-price .cur { font-size: .85rem; color: var(--muted); margin-right: 2px; }
+  .rec-price .unit { font-size: .8rem; color: var(--muted); font-weight: 400; }
+  .rec-footer .btn-ghost { background: transparent; color: var(--fg); border: 1px solid var(--border); padding: 12px 20px; font-size: .76rem; }
+  .rec-footer .btn-ghost:hover { background: var(--smoke); border-color: var(--accent); }
+
+  /* Why */
+  .why-layout { display: grid; grid-template-columns: .85fr 1.15fr; gap: 60px; align-items: start; }
+  .why-layout .title-area { position: sticky; top: 110px; }
+  .why-list { display: grid; }
+  .why-item { display: grid; grid-template-columns: auto 1fr; gap: 26px; align-items: start; padding: 32px 0; border-top: 1px solid var(--border); }
+  .why-item:last-child { border-bottom: 1px solid var(--border); }
+  .why-item .why-num { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--accent); padding-top: 4px; }
+  .why-item .why-body h4 { font-size: 1.35rem; margin-bottom: 8px; }
+  .why-item .why-body p { color: var(--muted); font-size: .95rem; }
+
+  /* What's included */
+  .ev-included { background: var(--dark); color: #fff; }
+  .ev-included .eyebrow { color: var(--accent-soft); }
+  .ev-included .sec-title { color: #fff; }
+  .included-grid { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 48px; }
+  .included-grid li { display: flex; gap: 12px; align-items: flex-start; padding: 18px 20px; color: rgba(255,255,255,.85); font-size: .92rem; border-top: 1px solid rgba(255,255,255,.12); }
+  .included-grid li svg { width: 20px; height: 20px; color: var(--accent-soft); flex-shrink: 0; margin-top: 1px; }
+
+  /* Steps */
+  .steps-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+  .step-card { background: var(--smoke); border: 1px solid var(--border); padding: 28px 24px; }
+  .step-card .step-num { display: block; font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; color: var(--accent); }
+  .step-card p { margin-top: 14px; color: var(--muted); font-size: .92rem; }
+
+  /* FAQ */
+  .ev-faq { background: var(--smoke); }
+  .faq-list { display: grid; gap: 14px; }
+  .faq-item { background: #fff; border: 1px solid var(--border); padding: 0; }
+  .faq-item summary { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 24px; cursor: pointer; font-weight: 600; font-size: 1rem; font-family: var(--font-display); list-style: none; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary svg { width: 22px; height: 22px; color: var(--accent); flex-shrink: 0; transition: transform .2s; }
+  .faq-item[open] summary svg { transform: rotate(180deg); }
+  .faq-item p { padding: 0 24px 22px; color: var(--muted); font-size: .92rem; line-height: 1.7; }
+
+  /* Final CTA */
+  .ev-cta { background: var(--dark); color: #fff; padding: clamp(70px, 8vw, 110px) 0; }
+  .ev-cta .cta-inner { text-align: center; }
+  .ev-cta h2 { color: #fff; font-size: clamp(2rem, 4vw, 3.2rem); }
+  .ev-cta p { color: rgba(255,255,255,.7); margin: 18px auto 0; max-width: 64ch; font-size: 1rem; }
+  .ev-cta .cta-row { justify-content: center; margin-top: 30px; }
+
+  /* Other events */
+  .ev-others { background: var(--dark-2); color: rgba(255,255,255,.7); padding: 40px 0; }
+  .ev-others .eyebrow { color: var(--accent-soft); }
+  .ev-others ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 14px; }
+  .ev-others a { font-size: .85rem; color: rgba(255,255,255,.85); border-bottom: 1px solid rgba(255,255,255,.2); padding-bottom: 2px; }
+  .ev-others a:hover { color: #fff; border-color: var(--accent-soft); }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .why-layout { grid-template-columns: 1fr; }
+    .why-layout .title-area { position: static; }
+    .steps-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 880px) {
+    .ev-intro-grid { grid-template-columns: 1fr; gap: 30px; }
+    .ev-intro-grid .media .frame { aspect-ratio: 4/3; }
+    .rec-grid { grid-template-columns: 1fr 1fr; }
+    .included-grid { grid-template-columns: 1fr 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .why-item { grid-template-columns: auto 1fr; gap: 16px; padding: 24px 0; }
+    .why-item .why-body h4 { font-size: 1.1rem; }
+  }
+  @media (max-width: 640px) {
+    .ev-hero { min-height: auto; padding-top: 100px; padding-bottom: 40px; }
+    .ev-hero .hero-inner { padding-bottom: 0; }
+    .ev-hero h1 { font-size: clamp(2rem, 9vw, 2.8rem); }
+    .ev-hero .hero-trust { gap: 8px 20px; margin-top: 24px; }
+    .rec-grid { grid-template-columns: 1fr; }
+    .included-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+</style>
