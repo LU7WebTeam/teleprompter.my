@@ -17,6 +17,10 @@ pnpm-debug.log*
 .env
 .env.production
 
+# server-side secrets & manually-uploaded vendor (never commit)
+public/sendgrid_config.php
+public/vendor/
+
 # macOS-specific files
 .DS_Store
 

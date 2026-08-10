@@ -2,8 +2,20 @@
 import { site } from '../data/site';
 import { products } from '../data/products';
 
+const base = import.meta.env.BASE_URL;
+const quoteUrl = `${base}quote.php`;
 const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(site.contact.whatsapp.prefill)}`;
+
+const states = [
+  "Kuala Lumpur", "Putrajaya", "Labuan",
+  "Johor", "Kedah", "Kelantan", "Melaka", "Negeri Sembilan",
+  "Pahang", "Penang", "Perak", "Perlis", "Sabah", "Sarawak",
+  "Selangor", "Terengganu",
+];
+
+const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
 ---
+
 <section class="space" data-od-id="section-contact" id="contact-us" style="background:var(--smoke);">
   <div class="nwrap">
     <div class="title-area text-center reveal">
@@ -36,28 +48,107 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
           <div class="ci-label">Mobile</div>
           <div class="ci-val"><a href={site.contact.mobileHref}>{site.contact.mobile}</a></div>
         </div>
+
+        <div class="quote-tip">
+          <h4>Building a quote</h4>
+          <p>Pick a preset package or build a custom combination. Prices are per day, so your total is calculated from your date range and quantities automatically.</p>
+        </div>
       </div>
-      <form class="enquiry-form reveal" data-od-id="enquiry-form" action="#" method="post">
-        <h3>Enquiry form</h3>
+
+      <form class="enquiry-form reveal" id="quoteForm" data-od-id="enquiry-form" action={quoteUrl} method="post" novalidate>
+        <h3>Request a quote</h3>
         <p class="f-sub">Tell us about your event and we'll respond with availability and a quote.</p>
+
         <div class="form-row">
           <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" type="text" placeholder="Your full name" required></div>
-          <div class="field"><label for="f-contact">Email / Phone</label><input id="f-contact" name="contact" type="text" placeholder="you@email.com or +60…" required></div>
+          <div class="field"><label for="f-email">Email</label><input id="f-email" name="email" type="email" placeholder="you@email.com" required></div>
         </div>
+
         <div class="form-row">
-          <div class="field"><label for="f-date">Event Date</label><input id="f-date" name="event_date" type="date"></div>
-          <div class="field"><label for="f-product">Product of interest</label>
-            <select id="f-product" name="product">
-              <option value="" selected> Select a package</option>
-              {products.map((p, i) => {
-                const ids = ['presidential', 'stage-tv', 'monitor', 'ipad'];
-                return <option value={ids[i]}>{p.name} — {p.currency} {p.price.toLocaleString()}{p.unit}</option>;
-              })}
+          <div class="field"><label for="f-date-start">Start date</label><input id="f-date-start" name="event_date_start" type="date" required></div>
+          <div class="field"><label for="f-date-end">End date</label><input id="f-date-end" name="event_date_end" type="date" required></div>
+        </div>
+        <p class="f-err" id="dateErr" hidden>End date must be on or after the start date.</p>
+
+        <div class="seg">
+          <div class="seg-label"><label>Selection</label></div>
+          <div class="seg-toggle" role="tablist">
+            <button type="button" class="seg-btn active" data-mode="package" aria-selected="true">Package</button>
+            <button type="button" class="seg-btn" data-mode="custom" aria-selected="false">Custom combination</button>
+          </div>
+        </div>
+
+        <div class="mode-pane" data-pane="package">
+          <div class="form-row">
+            <div class="field"><label for="f-product">Product</label>
+              <select id="f-product" name="product">
+                <option value="" selected disabled>Select a package</option>
+                {products.map((p, i) => (
+                  <option value={productIds[i]} data-price={p.price} data-name={p.name}>{p.name} — {p.currency} {p.price.toLocaleString()}{p.unit}</option>
+                ))}
+              </select>
+            </div>
+            <div class="field"><label for="f-pkg-qty">Quantity</label>
+              <select id="f-pkg-qty">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="mode-pane" data-pane="custom" hidden>
+          <div id="customRows">
+            <div class="form-row custom-row">
+              <div class="field"><select class="c-product" required>
+                <option value="0" data-price={products[0].price} data-name={products[0].name} selected>{products[0].name} — RM {products[0].price.toLocaleString()}/day</option>
+                {products.map((p, i) => ( i === 0 ? null : (
+                  <option value={i} data-price={p.price} data-name={p.name}>{p.name} — RM {p.price.toLocaleString()}/day</option>
+                ) ))}
+              </select></div>
+              <div class="field c-qty"><select class="c-qty">
+                <option value="1">1</option>
+                <option value="2">2</option><option value="3">3</option>
+                <option value="4">4</option><option value="5">5</option>
+              </select></div>
+              <div class="field c-remove"><button type="button" class="rm-row" aria-label="Remove row">&times;</button></div>
+            </div>
+          </div>
+          <button type="button" class="add-row" id="addRow">+ Add another</button>
+        </div>
+
+        <div class="form-row">
+          <div class="field"><label for="f-location">Location / venue</label><input id="f-location" name="location" type="text" placeholder="Venue or address (event day)" required></div>
+          <div class="field"><label for="f-state">State</label>
+            <select id="f-state" name="state" required>
+              <option value="" selected disabled>Select state</option>
+              {states.map(s => <option value={s}>{s}</option>)}
             </select>
           </div>
         </div>
-        <div class="field full" style="margin-bottom:16px;"><label for="f-msg">Message</label><textarea id="f-msg" name="message" placeholder="Event details, location, duration, any special requirements…"></textarea></div>
-        <button type="submit" class="btn btn-primary" data-od-id="cta-submit-enquiry">Send Enquiry</button>
+
+        <div class="field full"><label for="f-msg">Message</label><textarea id="f-msg" name="message" placeholder="Event details, duration, any special requirements…"></textarea></div>
+
+        <div class="delivery">
+          <div class="seg-label"><label>Send the quote by</label></div>
+          <label class="d-opt"><input type="radio" name="delivery" value="email" checked><span>Email</span></label>
+          <label class="d-opt"><input type="radio" name="delivery" value="whatsapp"><span>WhatsApp</span></label>
+        </div>
+
+        <div class="quote-summary" id="quoteSummary">
+          <div class="qs-head"><h4>Your quote</h4><span class="qs-days" id="qsDays"></span></div>
+          <ul class="qs-list" id="qsList"></ul>
+          <div class="qs-total"><span>Estimated total</span><span class="qs-amt" id="qsAmt">RM 0</span></div>
+          <p class="qs-note">Estimate for planning only — final quote confirmed by our team.</p>
+        </div>
+
+        <input type="text" name="website" class="hp" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <button type="submit" class="btn btn-primary" id="submitBtn" data-od-id="cta-submit-enquiry">Request Quote</button>
+        <p class="f-msg-status" id="formStatus" hidden></p>
         <p class="f-note">We'll confirm availability and send a quote within one business day.</p>
       </form>
     </div>
@@ -73,7 +164,12 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
   .wa-pill { display: inline-flex; align-items: center; gap: 10px; margin-top: 14px; padding: 13px 24px; border-radius: 0; background: var(--accent); color: #fff; font-weight: 600; font-size: .85rem; letter-spacing: .04em; transition: all .25s var(--ease); }
   .wa-pill:hover { background: var(--accent-2); transform: translateY(-2px); box-shadow: 0 14px 30px -10px oklch(40% 0.19 264 / .5); }
   .wa-pill svg { width: 18px; height: 18px; }
-  .enquiry-form { background: var(--smoke); border: 1px solid var(--border); border-radius: 0; padding: clamp(20px, 3.5vw, 44px); max-width: 100%; overflow: hidden; box-sizing: border-box; }
+
+  .quote-tip { margin-top: 34px; padding: 18px 20px; background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--accent); }
+  .quote-tip h4 { font-family: var(--font-display); font-size: 1rem; margin: 0 0 6px; }
+  .quote-tip p { margin: 0; font-size: .82rem; color: var(--muted); line-height: 1.55; }
+
+  .enquiry-form { background: var(--smoke); border: 1px solid var(--border); border-radius: 0; padding: clamp(20px, 3.5vw, 44px); max-width: 100%; overflow: hidden; box-sizing: border-box; position: relative; }
   .enquiry-form h3 { font-size: 1.6rem; }
   .enquiry-form .f-sub { color: var(--muted); font-size: .92rem; margin: 8px 0 28px; }
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
@@ -83,7 +179,47 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
   .field input, .field select, .field textarea { background: #fff; border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; color: var(--fg); font-family: var(--font-body); font-size: .95rem; transition: border-color .2s; width: 100%; box-sizing: border-box; }
   .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
   .field textarea { resize: vertical; min-height: 120px; }
+  .f-err { color: #c53030; font-size: .8rem; margin: -8px 0 14px; }
+
+  .seg { margin-bottom: 16px; }
+  .seg-label label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .seg-toggle { display: flex; gap: 0; margin-top: 8px; border: 1px solid var(--border); background: #fff; width: 100%; max-width: 100%; }
+  .seg-btn { flex: 1; padding: 13px 12px; border: none; background: transparent; color: var(--muted); font-weight: 600; font-size: .85rem; cursor: pointer; transition: all .2s var(--ease); font-family: var(--font-body); }
+  .seg-btn:not(.active):hover { color: var(--fg); }
+  .seg-btn.active { background: var(--accent); color: #fff; }
+  .mode-pane { margin-bottom: 4px; }
+  .custom-row { grid-template-columns: 1fr 120px 46px; align-items: end; margin-bottom: 12px; }
+  .c-remove .rm-row { width: 46px; height: 48px; border: 1px solid var(--border); border-radius: 5px; background: #fff; color: #c53030; font-size: 1.3rem; line-height: 1; cursor: pointer; }
+  .c-remove .rm-row:hover { background: #fdecec; }
+  .add-row { background: transparent; border: 1px dashed var(--border); color: var(--accent); font-weight: 600; font-size: .82rem; padding: 12px 16px; cursor: pointer; margin-bottom: 18px; border-radius: 5px; transition: all .2s; font-family: var(--font-body); }
+  .add-row:hover { border-color: var(--accent); background: rgba(255,255,255,.6); }
+
+  .delivery { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 20px 0 16px; }
+  .delivery .seg-label { width: 100%; }
+  .d-opt { display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border: 1px solid var(--border); background: #fff; cursor: pointer; font-size: .88rem; font-weight: 500; transition: all .2s; }
+  .d-opt input { accent-color: var(--accent); }
+  .d-opt:has(input:checked) { border-color: var(--accent); color: var(--accent); }
+
+  .quote-summary { border: 1px solid var(--border); background: var(--bg); padding: 18px 20px; margin-bottom: 16px; }
+  .qqs-head { }
+  .quote-summary .qs-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .quote-summary .qs-head h4 { font-family: var(--font-display); font-size: 1.05rem; margin: 0; }
+  .quote-summary .qs-days { font-size: .78rem; color: var(--muted); }
+  .quote-summary .qs-list { list-style: none; margin: 0 0 14px; padding: 0; border-top: 1px solid var(--border); }
+  .quote-summary .qs-list li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: .88rem; }
+  .quote-summary .qs-list li .q { color: var(--muted); }
+  .quote-summary .qs-list li .r { font-weight: 600; white-space: nowrap; }
+  .quote-summary .qs-total { display: flex; justify-content: space-between; align-items: center; border-top: 2px solid var(--fg); padding-top: 12px; font-weight: 700; }
+  .quote-summary .qs-total .qs-amt { font-size: 1.25rem; color: var(--accent); font-family: var(--font-display); }
+  .quote-summary .qs-note { margin: 10px 0 0; font-size: .72rem; color: var(--muted); }
+  .quote-summary .qs-empty { color: var(--muted); font-size: .85rem; padding: 4px 0 10px; }
+
+  .hp { position: absolute !important; left: -9999px !important; top: -9999px !important; opacity: 0; height: 1px; width: 1px; }
+  .f-msg-status { margin: 10px 0 0; padding: 12px 16px; font-size: .88rem; font-weight: 600; text-align: center; }
+  .f-msg-status.ok { background: #e6f4ea; color: #1a7f37; border: 1px solid #b7e4c7; }
+  .f-msg-status.err { background: #fdecec; color: #c53030; border: 1px solid #f3c1c1; }
   .enquiry-form .btn { width: 100%; margin-top: 8px; }
+  .btn:disabled { opacity: .6; cursor: not-allowed; }
   .f-note { font-size: .78rem; color: var(--muted); margin-top: 14px; text-align: center; }
 
   @media (max-width: 880px) {
@@ -93,7 +229,235 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
   }
   @media (max-width: 640px) {
     .form-row { grid-template-columns: 1fr; }
+    .custom-row { grid-template-columns: 1fr 100px 44px; }
     .enquiry-form { padding: 22px 20px; }
     .enquiry-form h3 { font-size: 1.3rem; }
+    .quote-tip { margin-top: 22px; }
   }
 </style>
+
+<script>
+  (function() {
+    const form = document.getElementById('quoteForm');
+    if (!form) return;
+
+    const products = {
+      presidential: { name: "Presidential Teleprompter", price: 2500 },
+      'stage-tv': { name: "Stage TV Teleprompter", price: 2100 },
+      monitor: { name: '22" Monitor Teleprompter', price: 2000 },
+      ipad: { name: "Ultralight iPad Teleprompter", price: 1200 },
+    };
+    const currency = "RM";
+
+    const productSelect = document.getElementById('f-product');
+    const pkgQty = document.getElementById('f-pkg-qty');
+    const dateStart = document.getElementById('f-date-start');
+    const dateEnd = document.getElementById('f-date-end');
+    const dateErr = document.getElementById('dateErr');
+    const customRows = document.getElementById('customRows');
+    const elLocation = document.getElementById('f-location');
+    const elState = document.getElementById('f-state');
+    const elMsg = document.getElementById('f-msg');
+
+    const modeBtns = document.querySelectorAll('.seg-btn');
+    const panes = document.querySelectorAll('.mode-pane');
+
+    let mode = 'package';
+
+    function switchMode(m) {
+      mode = m;
+      modeBtns.forEach(b => {
+        const on = b.dataset.mode === m;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      panes.forEach(p => { p.hidden = p.dataset.pane !== m; });
+      updateSummary();
+    }
+    modeBtns.forEach(b => b.addEventListener('click', () => switchMode(b.dataset.mode)));
+
+    document.getElementById('addRow').addEventListener('click', () => {
+      const first = customRows.querySelector('.custom-row');
+      const clone = first.cloneNode(true);
+      clone.querySelectorAll('select').forEach(s => s.selectedIndex = 0);
+      customRows.appendChild(clone);
+      bindRow(clone);
+      updateSummary();
+    });
+
+    function bindRow(row) {
+      row.querySelector('.rm-row').addEventListener('click', () => {
+        if (customRows.querySelectorAll('.custom-row').length > 1) {
+          row.remove();
+          updateSummary();
+        }
+      });
+      row.querySelectorAll('select').forEach(s => s.addEventListener('change', updateSummary));
+    }
+    customRows.querySelectorAll('.custom-row').forEach(bindRow);
+
+    function getDays() {
+      if (!dateStart.value || !dateEnd.value) return 0;
+      const s = new Date(dateStart.value);
+      const e = new Date(dateEnd.value);
+      if (e < s) return -1;
+      const diff = Math.round((e - s) / (1000 * 60 * 60 * 24)) + 1;
+      return Math.max(diff, 1);
+    }
+
+    function getSelection() {
+      const items = [];
+      const days = getDays();
+      const mult = days > 0 ? days : 1;
+      if (mode === 'package') {
+        const opt = productSelect.selectedOptions[0];
+        if (!opt || !opt.value) return items;
+        const p = products[opt.value];
+        const qty = parseInt(pkgQty.value, 10) || 1;
+        items.push({ name: p.name, qty, price: p.price, line: (p.price * qty * mult) });
+      } else {
+        customRows.querySelectorAll('.custom-row').forEach(row => {
+          const sel = row.querySelector('.c-product');
+          const po = sel.selectedOptions[0];
+          if (!po) return;
+          const p = products[po.value];
+          const qty = parseInt(row.querySelector('.c-qty').value, 10) || 1;
+          items.push({ name: p.name, qty, price: p.price, line: (p.price * qty * mult) });
+        });
+      }
+      return items;
+    }
+
+    function fmt(n) { return currency + ' ' + n.toLocaleString(); }
+
+    function updateSummary() {
+      const days = getDays();
+      const daysEl = document.getElementById('qsDays');
+      if (days > 0) daysEl.textContent = days + (days === 1 ? ' day' : ' days');
+      else if (days === -1) daysEl.textContent = 'Invalid dates';
+      else daysEl.textContent = '';
+
+      const list = document.getElementById('qsList');
+      const items = getSelection();
+      const total = items.reduce((s, i) => s + i.line, 0);
+      document.getElementById('qsAmt').textContent = fmt(total);
+
+      if (!items.length) {
+        list.innerHTML = '<li class="qs-empty">Select a product or add custom items to preview your quote.</li>';
+        return;
+      }
+      const mult = days > 0 ? days : 1;
+      list.innerHTML = items.map(i =>
+        `<li><span class="q">${i.name} × ${i.qty} @ ${fmt(i.price)}/day</span><span class="r">${fmt(i.line)}</span></li>`
+      ).join('');
+    }
+
+    [productSelect, pkgQty, dateStart, dateEnd].forEach(el => el && el.addEventListener('change', updateSummary));
+    updateSummary();
+
+    function buildMessage() {
+      const days = getDays();
+      const mult = days > 0 ? days : 1;
+      const items = getSelection();
+      const total = items.reduce((s, i) => s + i.line, 0);
+      const name = form.querySelector('[name="name"]').value;
+      const email = form.querySelector('[name="email"]').value;
+      const location = elLocation.value;
+      const state = elState.value;
+      const msg = elMsg.value;
+      const dateStr = (dateStart.value && dateEnd.value) ? `${dateStart.value} to ${dateEnd.value} (${days} day(s))` : '';
+
+      let selText = items.map(i => `- ${i.name} × ${i.qty} @ ${fmt(i.price)}/day = ${fmt(i.line)}`).join('\n');
+      if (!selText) selText = '- (none)';
+
+      return [
+        "QUOTE REQUEST — TelePrompter.my",
+        "================================",
+        `Name: ${name}`,
+        `Email: ${email}`,
+        `Event dates: ${dateStr}`,
+        `Location: ${location}${state ? ', ' + state : ''}`,
+        "",
+        "Selection:",
+        selText,
+        "",
+        `Estimated total: ${fmt(total)}`,
+        "",
+        "Message:",
+        (msg || "-"),
+      ].join('\n');
+    }
+
+    function setStatus(text, ok) {
+      const el = document.getElementById('formStatus');
+      el.hidden = false;
+      el.className = 'f-msg-status ' + (ok ? 'ok' : 'err');
+      el.textContent = text;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      document.getElementById('formStatus').hidden = true;
+
+      if (document.getElementById('hp').value) { return; }
+
+      const days = getDays();
+      if (days === -1) {
+        dateErr.hidden = false;
+        setStatus('Please check your dates.', false);
+        return;
+      }
+      dateErr.hidden = true;
+
+      if (mode === 'custom' && !getSelection().length) {
+        setStatus('Please add at least one product to your custom combination.', false);
+        return;
+      }
+
+      const delivery = form.querySelector('input[name="delivery"]:checked').value;
+      const body = {
+        name: form.querySelector('[name="name"]').value,
+        email: form.querySelector('[name="email"]').value,
+        date_start: dateStart.value,
+        date_end: dateEnd.value,
+        location: elLocation.value,
+        state: elState.value,
+        message: elMsg.value,
+        mode,
+        items: getSelection().map(i => ({ name: i.name, qty: i.qty, price: i.price })),
+        total: getSelection().reduce((s, i) => s + i.line, 0),
+      };
+
+      if (delivery === 'whatsapp') {
+        const text = encodeURIComponent(buildMessage());
+        window.open(`https://wa.me/601133078724?text=${text}`, '_blank', 'noopener');
+        setStatus('Opening WhatsApp with your quote. Review and tap send to finish.', true);
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (data.success) {
+          setStatus(data.message || 'Thank you! Your quote request has been sent — expect a reply within one business day.', true);
+          form.reset();
+          updateSummary();
+        } else {
+          setStatus(data.message || 'Something went wrong. Please try again or contact us directly.', false);
+        }
+      } catch (err) {
+        setStatus('Could not send your request. Please try again or contact us directly.', false);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Request Quote';
+      }
+    });
+  })();
+</script>
