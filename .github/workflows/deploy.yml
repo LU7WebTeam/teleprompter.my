@@ -41,3 +41,5 @@ jobs:
             **/.git*/**
             **/node_modules/**
           dangerous-disable-ssl: true
+          timeout: 600000
+          retry: 3
