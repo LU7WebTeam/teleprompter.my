@@ -6,8 +6,7 @@ const base = import.meta.env.BASE_URL;
 <header class="site-header" data-od-id="site-header">
   <div class="cwrap inner">
     <a href={base} class="brand" data-od-id="brand-logo">
-      <img src={`${base}assets/logo.png`} alt="TelePrompter.my logo" width="40" height="40">
-      <span>TelePrompter<span class="dot">.my</span></span>
+      <img src={`${base}assets/logo.png`} alt="TelePrompter.my logo" width="120" height="120">
     </a>
     <nav class="nav" data-od-id="main-nav" aria-label="Primary">
       <div class="nav-drop">
@@ -41,9 +40,9 @@ const base = import.meta.env.BASE_URL;
 
 <style is:global>
   .site-header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-  .site-header .inner { display: flex; align-items: center; justify-content: space-between; height: 88px; }
+  .site-header .inner { display: flex; align-items: center; justify-content: space-between; height: 130px; }
   .brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; }
-  .brand img { width: 40px; height: 40px; object-fit: contain; border-radius: 0; }
+  .brand img { width: 120px; height: 120px; object-fit: contain; border-radius: 0; }
   .brand .dot { color: var(--accent); }
   .nav { display: flex; align-items: center; gap: 4px; }
   .nav a, .nav .nav-drop > button {
@@ -69,11 +68,12 @@ const base = import.meta.env.BASE_URL;
     .burger { display: grid; place-items: center; }
     .mobile-nav.open { display: flex; }
     .mobile-nav {
-      position: fixed; inset: 72px 0 auto 0; flex-direction: column; gap: 4px; padding: 16px 20px 24px;
+      position: fixed; inset: 110px 0 auto 0; flex-direction: column; gap: 4px; padding: 16px 20px 24px;
       background: #fff; border-bottom: 1px solid var(--border); z-index: 99;
     }
     .mobile-nav a { padding: 14px 8px; border-bottom: 1px solid var(--border); color: #333; font-weight: 600; font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; }
     .mobile-nav .btn { margin-top: 10px; }
-    .site-header .inner { height: 72px; }
+    .site-header .inner { height: 110px; }
+    .brand img { width: 90px; height: 90px; }
   }
 </style>
