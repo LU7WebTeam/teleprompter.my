@@ -83,10 +83,9 @@ const allItems = [...galleryItems, ...galleryItems, ...galleryItems];
     position: relative; display: block; overflow: hidden; cursor: pointer;
     aspect-ratio: 4/3; background: var(--smoke);
     border: none; padding: 0; color: inherit; text-align: left;
-    transition: transform .6s var(--ease), opacity .4s var(--ease);
-    opacity: .6;
+    transition: transform .6s var(--ease);
+    opacity: 1;
   }
-  .pf-item:hover { opacity: 1; }
   .pf-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease); }
   .pf-item:hover img { transform: scale(1.05); }
   .pf-item .pf-meta {
