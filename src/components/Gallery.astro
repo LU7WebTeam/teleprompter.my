@@ -28,13 +28,13 @@ const allItems = [...galleryItems, ...galleryItems, ...galleryItems];
     <div class="gal-viewport" id="galViewport">
       <div class="gal-track" id="galTrack">
         {allItems.map((item, i) => (
-          <a href={`${base}${item.img}`} class="pf-item" data-index={i}>
+          <button type="button" class="pf-item" data-index={i} data-title={item.title} data-cat={item.cat}>
             <img src={`${base}${item.img}`} alt={item.alt} width="600" height="800">
             <div class="pf-meta">
               <span class="pf-cat">{item.cat}</span>
               <h3 class="pf-title">{item.title}</h3>
             </div>
-          </a>
+          </button>
         ))}
       </div>
     </div>
@@ -43,6 +43,27 @@ const allItems = [...galleryItems, ...galleryItems, ...galleryItems];
     </button>
   </div>
 </section>
+
+<div class="lightbox" id="galLightbox" aria-modal="true" role="dialog" aria-label="Image viewer">
+  <div class="lb-backdrop" data-lb-close></div>
+  <button class="lb-close" data-lb-close aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <button class="lb-arrow lb-prev" data-lb-prev aria-label="Previous image">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button class="lb-arrow lb-next" data-lb-next aria-label="Next image">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+  <figure class="lb-figure">
+    <img id="lbImg" src="" alt="">
+    <figcaption class="lb-caption">
+      <span class="lb-count" id="lbCount"></span>
+      <span class="lb-cat" id="lbCat"></span>
+      <h3 class="lb-title" id="lbTitle"></h3>
+    </figcaption>
+  </figure>
+</div>
 
 <style is:global>
   .gallery-carousel-wrap {
@@ -61,6 +82,7 @@ const allItems = [...galleryItems, ...galleryItems, ...galleryItems];
     flex: 0 0 calc((100% - 66px) / 4); min-width: 0;
     position: relative; display: block; overflow: hidden; cursor: pointer;
     aspect-ratio: 3/4; background: var(--smoke);
+    border: none; padding: 0; color: inherit; text-align: left;
     transition: transform .6s var(--ease), opacity .4s var(--ease);
     opacity: .6;
   }
@@ -100,6 +122,57 @@ const allItems = [...galleryItems, ...galleryItems, ...galleryItems];
     .gal-arrow svg { width: 18px; height: 18px; }
     .gal-prev { left: 10px; }
     .gal-next { right: 10px; }
+  }
+
+  .lightbox {
+    position: fixed; inset: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+    visibility: hidden; opacity: 0; pointer-events: none;
+    transition: opacity .35s var(--ease), visibility .35s;
+  }
+  .lightbox.open { visibility: visible; opacity: 1; pointer-events: auto; }
+  .lb-backdrop { position: absolute; inset: 0; background: rgba(5,7,22,.94); }
+  .lb-figure {
+    position: relative; z-index: 2; margin: 0;
+    max-width: min(92vw, 1080px); max-height: 82vh;
+    display: flex; flex-direction: column; gap: 16px;
+    transform: scale(.96); transition: transform .3s var(--ease);
+  }
+  .lightbox.open .lb-figure { transform: scale(1); }
+  #lbImg {
+    width: 100%; max-height: 72vh; object-fit: contain;
+    border-radius: 6px; background: #000; box-shadow: 0 24px 80px rgba(0,0,0,.6);
+  }
+  .lb-caption { color: #fff; text-align: center; }
+  .lb-caption .lb-count { font-size: .75rem; letter-spacing: .1em; color: #8aa4ff; }
+  .lb-caption .lb-cat { font-size: .72rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #8aa4ff; }
+  .lb-caption .lb-title { font-family: var(--font-display); font-size: 1.05rem; margin: 6px 0 0; }
+  .lb-close {
+    position: absolute; top: 22px; right: 26px; z-index: 3;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(255,255,255,.1); border: none; cursor: pointer;
+    display: grid; place-items: center; color: #fff;
+    transition: background .2s, transform .2s;
+  }
+  .lb-close:hover { background: rgba(255,255,255,.22); transform: rotate(90deg); }
+  .lb-close svg { width: 22px; height: 22px; }
+  .lb-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: rgba(255,255,255,.1); border: none; cursor: pointer;
+    display: grid; place-items: center; color: #fff;
+    transition: background .2s, transform .2s;
+  }
+  .lb-arrow:hover { background: rgba(255,255,255,.22); transform: translateY(-50%) scale(1.08); }
+  .lb-arrow svg { width: 26px; height: 26px; }
+  .lb-prev { left: 22px; }
+  .lb-next { right: 22px; }
+  @media (max-width: 640px) {
+    .lb-arrow { width: 42px; height: 42px; }
+    .lb-arrow svg { width: 22px; height: 22px; }
+    .lb-prev { left: 10px; }
+    .lb-next { right: 10px; }
+    .lb-close { top: 14px; right: 16px; }
   }
 </style>
 
@@ -144,5 +217,57 @@ const allItems = [...galleryItems, ...galleryItems, ...galleryItems];
     nextBtn?.addEventListener('click', () => scrollByItems(1));
 
     viewport.scrollLeft = viewport.scrollWidth / 3;
+
+    const lightbox = document.getElementById('galLightbox');
+    if (!lightbox) return;
+    const lbImg = document.getElementById('lbImg');
+    const lbCount = document.getElementById('lbCount');
+    const lbCat = document.getElementById('lbCat');
+    const lbTitle = document.getElementById('lbTitle');
+    const uniqueItems = Array.from(track.querySelectorAll('.pf-item')).slice(0, totalOrig);
+    let current = 0;
+
+    function showLb(index) {
+      const item = uniqueItems[((index % totalOrig) + totalOrig) % totalOrig];
+      if (!item) return;
+      current = ((index % totalOrig) + totalOrig) % totalOrig;
+      const img = item.querySelector('img');
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      if (lbCount) lbCount.textContent = (current + 1) + ' / ' + totalOrig;
+      if (lbCat) lbCat.textContent = item.dataset.cat;
+      if (lbTitle) lbTitle.textContent = item.dataset.title;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLb() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      lbImg.src = '';
+    }
+
+    document.querySelector('.gal-track')?.addEventListener('click', (e) => {
+      const btn = e.target.closest('.pf-item');
+      if (!btn) return;
+      showLb(parseInt(btn.dataset.index, 10));
+    });
+
+    lightbox.querySelector('[data-lb-close]')?.addEventListener('click', closeLb);
+    lightbox.querySelector('[data-lb-prev]')?.addEventListener('click', (e) => {
+      e.stopPropagation(); showLb(current - 1);
+    });
+    lightbox.querySelector('[data-lb-next]')?.addEventListener('click', (e) => {
+      e.stopPropagation(); showLb(current + 1);
+    });
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox || e.target.classList.contains('lb-backdrop')) closeLb();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLb();
+      if (e.key === 'ArrowLeft') showLb(current - 1);
+      if (e.key === 'ArrowRight') showLb(current + 1);
+    });
   })();
 </script>
