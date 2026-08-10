@@ -40,9 +40,9 @@ const base = import.meta.env.BASE_URL;
 
 <style is:global>
   .site-header { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
-  .site-header .inner { display: flex; align-items: center; justify-content: space-between; height: 130px; }
+  .site-header .inner { display: flex; align-items: center; justify-content: space-between; height: 90px; }
   .brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; }
-  .brand img { width: 120px; height: 120px; object-fit: contain; border-radius: 0; }
+  .brand img { width: 120px; height: auto; object-fit: contain; border-radius: 0; }
   .brand .dot { color: var(--accent); }
   .nav { display: flex; align-items: center; gap: 4px; }
   .nav a, .nav .nav-drop > button {
