@@ -26,16 +26,18 @@ const base = import.meta.env.BASE_URL;
       {site.nav.links.map(link => <a href={link.href}>{link.label}</a>)}
       <a href="#book" class="btn btn-primary" data-od-id="cta-book-now">Book Now</a>
     </nav>
-    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-    </button>
+    <div class="nav-mobile-actions">
+      <a href="#book" class="btn btn-primary nav-cta-mobile" data-od-id="cta-book-now-mobile">Book Now</a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
   </div>
 </header>
 <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
   {site.nav.products.onCamera.map(item => <a href={item.href}>{item.label}</a>)}
   {site.nav.products.onStage.map(item => <a href={item.href}>{item.label}</a>)}
   {site.nav.links.map(link => <a href={link.href}>{link.label}</a>)}
-  <a href="#book" class="btn btn-primary">Book Now</a>
 </nav>
 
 <style is:global>
@@ -62,18 +64,23 @@ const base = import.meta.env.BASE_URL;
   .burger { display: none; background: none; border: 1.5px solid var(--border); border-radius: 0; width: 48px; height: 48px; cursor: pointer; color: var(--fg); }
   .burger svg { width: 22px; height: 22px; }
   .mobile-nav { display: none; }
+  .nav-mobile-actions { display: flex; align-items: center; gap: 12px; }
+  .nav-cta-mobile { display: none; }
 
   @media (max-width: 880px) {
     .nav, .nav-drop { display: none; }
+    .nav-cta-mobile { display: inline-flex; padding: 10px 20px; font-size: .72rem; }
     .burger { display: grid; place-items: center; }
+    .mobile-nav { display: none; }
     .mobile-nav.open { display: flex; }
     .mobile-nav {
-      position: fixed; inset: 110px 0 auto 0; flex-direction: column; gap: 4px; padding: 16px 20px 24px;
+      position: fixed; inset: 70px 0 auto 0; flex-direction: column; gap: 4px; padding: 12px 20px 20px;
       background: #fff; border-bottom: 1px solid var(--border); z-index: 99;
     }
-    .mobile-nav a { padding: 14px 8px; border-bottom: 1px solid var(--border); color: #333; font-weight: 600; font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; }
-    .mobile-nav .btn { margin-top: 10px; }
-    .site-header .inner { height: 110px; }
-    .brand img { width: 90px; height: 90px; }
+    .mobile-nav a { padding: 12px 8px; border-bottom: 1px solid var(--border); color: #333; font-weight: 600; font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; }
+    .site-header .inner { height: 70px; }
+    .brand img { width: 56px; height: 56px; }
+    .burger { width: 42px; height: 42px; }
+    .burger svg { width: 20px; height: 20px; }
   }
 </style>
