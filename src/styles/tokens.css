@@ -1,7 +1,7 @@
 /* ============================================================
    TOKENS — single source of truth
    Brand blue sampled from logo (#182B9E). Light theme with
-   Unbounded display + Poppins body, pulled from Frisk home-17.
+   Bricolage Grotesque display + Poppins body, pulled from Frisk home-17.
    ============================================================ */
 :root {
   --bg:        oklch(99% 0.002 255);
@@ -17,7 +17,7 @@
   --accent-soft: oklch(60% 0.13 262);
   --status:    oklch(52% 0.16 151);
 
-  --font-display: 'Unbounded', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
   --font-body:    'Poppins', system-ui, -apple-system, sans-serif;
   --font-mono:    'Poppins', ui-monospace, monospace;
 
