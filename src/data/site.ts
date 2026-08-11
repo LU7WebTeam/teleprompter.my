@@ -2,7 +2,7 @@ export const site = {
   name: "TelePrompter.my",
   title: "TelePrompter.my — Rent a Teleprompter Anywhere in Malaysia",
   description:
-    'Rent professional teleprompters anywhere in Malaysia. Presidential, Stage TV, 22" Monitor and iPad teleprompter rental for corporate events, broadcasts and video shoots. Operated by Video Production KL Sdn Bhd.',
+    'Rent professional teleprompters anywhere in Malaysia. Presidential, Stage TV, 22" Monitor and iPad teleprompter rental for corporate events, broadcasts and video shoots. Operated by Sevenue Sdn Bhd.',
   url: "https://teleprompter.my",
   base: import.meta.env.BASE_URL,
   ogImage: "assets/hero-2.webp",
@@ -48,9 +48,9 @@ export const site = {
   footer: {
     tagline:
       "Professional teleprompter rental services designed to ensure seamless delivery for speeches, presentations, and productions — reliable and user-friendly solutions for events, broadcasts, and video shoots of any scale.",
-    copyright: "© 2026 TelePrompter.my by Video Production KL Sdn Bhd | All Rights Reserved.",
-    managedBy: "Video Production KL Sdn Bhd",
-    managedByHref: "https://www.videoproductionkl.com",
+    copyright: "© 2026 TelePrompter.my by Sevenue Sdn Bhd | All Rights Reserved.",
+    managedBy: "Sevenue Sdn Bhd",
+    managedByHref: "https://sevenue.com",
     termsLink: "https://teleprompter.my/terms-services/",
     privacyLink: "https://teleprompter.my/privacy-policy/",
   },

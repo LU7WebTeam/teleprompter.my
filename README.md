@@ -106,4 +106,4 @@ The quote form also supports a **WhatsApp** option. When selected, it opens a pr
 
 ## License
 
-© 2026 TelePrompter.my by Video Production KL Sdn Bhd | All Rights Reserved.
+© 2026 TelePrompter.my by Sevenue Sdn Bhd | All Rights Reserved.
