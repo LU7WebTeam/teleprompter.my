@@ -27,7 +27,6 @@ const base = import.meta.env.BASE_URL;
       <a href="#book" class="btn btn-primary" data-od-id="cta-book-now">Book Now</a>
     </nav>
     <div class="nav-mobile-actions">
-      <a href="#book" class="btn btn-primary nav-cta-mobile" data-od-id="cta-book-now-mobile">Book Now</a>
       <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
@@ -65,11 +64,9 @@ const base = import.meta.env.BASE_URL;
   .burger svg { width: 22px; height: 22px; }
   .mobile-nav { display: none; }
   .nav-mobile-actions { display: flex; align-items: center; gap: 12px; }
-  .nav-cta-mobile { display: none; }
 
   @media (max-width: 880px) {
     .nav, .nav-drop { display: none; }
-    .nav-cta-mobile { display: inline-flex; padding: 10px 20px; font-size: .72rem; min-height: 42px; height: 42px; }
     .burger { display: grid; place-items: center; }
     .mobile-nav { display: none; }
     .mobile-nav.open { display: flex; }
