@@ -86,6 +86,20 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
         </div>
 
         <div class="form-row">
+          <div class="field full"><label for="f-rehearsal">Rehearsal days (optional)</label>
+            <select id="f-rehearsal" name="rehearsal_days">
+              <option value="0" selected>None</option>
+              <option value="1">1 day</option>
+              <option value="2">2 days</option>
+              <option value="3">3 days</option>
+              <option value="4">4 days</option>
+              <option value="5">5 days</option>
+            </select>
+            <p class="f-hint">Screen and operator available for rehearsal at 30% of the day rate per day.</p>
+          </div>
+        </div>
+
+        <div class="form-row">
           <div class="field"><label for="f-location">Location / venue</label><input id="f-location" name="location" type="text" placeholder="Venue or address (event day)" required></div>
           <div class="field"><label for="f-state">State</label>
             <select id="f-state" name="state" required>
@@ -107,7 +121,7 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
           <div class="qs-head"><h4>Your quote</h4><span class="qs-days" id="qsDays"></span></div>
           <ul class="qs-list" id="qsList"></ul>
           <div class="qs-total"><span>Estimated total</span><span class="qs-amt" id="qsAmt">RM 0</span></div>
-          <p class="qs-note">Estimate for planning only — final quote confirmed by our team.</p>
+          <p class="qs-note">Instant estimate based on standard event conditions and the options selected. Final quotation is subject to venue access, setup timing, technical requirements and availability.</p>
         </div>
 
         <input type="text" name="website" class="hp" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -129,6 +143,7 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
   .field { display: flex; flex-direction: column; gap: 8px; }
   .field.full { grid-column: 1 / -1; }
   .field label { font-size: .68rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .f-hint { margin: 6px 0 0; font-size: .78rem; color: var(--muted); }
   .field input, .field select, .field textarea { background: #fff; border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; color: var(--fg); font-family: var(--font-body); font-size: .95rem; transition: border-color .2s; width: 100%; box-sizing: border-box; }
   .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--accent); }
   .field textarea { resize: vertical; min-height: 120px; }
@@ -208,6 +223,7 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
     const elLocation = document.getElementById('f-location');
     const elState = document.getElementById('f-state');
     const elMsg = document.getElementById('f-msg');
+    const elRehearsal = document.getElementById('f-rehearsal');
 
     const modeBtns = document.querySelectorAll('.seg-btn');
     const panes = document.querySelectorAll('.mode-pane');
@@ -280,6 +296,15 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
 
     function fmt(n) { return currency + ' ' + n.toLocaleString(); }
 
+    function getRehearsal() {
+      const rDays = parseInt(elRehearsal.value, 10) || 0;
+      const items = getSelection();
+      if (rDays <= 0 || !items.length) return null;
+      const dayRate = items.reduce((s, i) => s + (i.price * i.qty), 0);
+      const line = Math.round(dayRate * rDays * 0.3);
+      return { name: `Rehearsal × ${rDays} day${rDays === 1 ? '' : 's'} @ 30% of day rate`, line };
+    }
+
     function updateSummary() {
       const days = getDays();
       const daysEl = document.getElementById('qsDays');
@@ -289,7 +314,8 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
 
       const list = document.getElementById('qsList');
       const items = getSelection();
-      const total = items.reduce((s, i) => s + i.line, 0);
+      const rehearsal = getRehearsal();
+      const total = items.reduce((s, i) => s + i.line, 0) + (rehearsal ? rehearsal.line : 0);
       document.getElementById('qsAmt').textContent = fmt(total);
 
       if (!items.length) {
@@ -299,26 +325,31 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
       const mult = days > 0 ? days : 1;
       list.innerHTML = items.map(i =>
         `<li><span class="q">${i.name} × ${i.qty} @ ${fmt(i.price)}/day</span><span class="r">${fmt(i.line)}</span></li>`
-      ).join('');
+      ).join('') + (rehearsal
+        ? `<li><span class="q">${rehearsal.name}</span><span class="r">${fmt(rehearsal.line)}</span></li>`
+        : '');
     }
 
-    [productSelect, pkgQty, dateStart, dateEnd].forEach(el => el && el.addEventListener('change', updateSummary));
+    [productSelect, pkgQty, dateStart, dateEnd, elRehearsal].forEach(el => el && el.addEventListener('change', updateSummary));
     updateSummary();
 
     function buildMessage() {
       const days = getDays();
       const mult = days > 0 ? days : 1;
       const items = getSelection();
-      const total = items.reduce((s, i) => s + i.line, 0);
+      const rehearsal = getRehearsal();
+      const total = items.reduce((s, i) => s + i.line, 0) + (rehearsal ? rehearsal.line : 0);
       const name = form.querySelector('[name="name"]').value;
       const email = form.querySelector('[name="email"]').value;
       const location = elLocation.value;
       const state = elState.value;
       const msg = elMsg.value;
       const dateStr = (dateStart.value && dateEnd.value) ? `${dateStart.value} to ${dateEnd.value} (${days} day(s))` : '';
+      const rehearsalDays = parseInt(elRehearsal.value, 10) || 0;
 
       let selText = items.map(i => `- ${i.name} × ${i.qty} @ ${fmt(i.price)}/day = ${fmt(i.line)}`).join('\n');
       if (!selText) selText = '- (none)';
+      if (rehearsal) selText += `\n- ${rehearsal.name} = ${fmt(rehearsal.line)}`;
 
       return [
         "QUOTE REQUEST — TelePrompter.my",
@@ -326,6 +357,7 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
         `Name: ${name}`,
         `Email: ${email}`,
         `Event dates: ${dateStr}`,
+        `Rehearsal days: ${rehearsalDays}`,
         `Location: ${location}${state ? ', ' + state : ''}`,
         "",
         "Selection:",
@@ -374,8 +406,9 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
         state: elState.value,
         message: elMsg.value,
         mode,
+        rehearsal_days: parseInt(elRehearsal.value, 10) || 0,
         items: getSelection().map(i => ({ name: i.name, qty: i.qty, price: i.price })),
-        total: getSelection().reduce((s, i) => s + i.line, 0),
+        total: getSelection().reduce((s, i) => s + i.line, 0) + ((getRehearsal() || {}).line || 0),
       };
 
       if (delivery === 'whatsapp') {
