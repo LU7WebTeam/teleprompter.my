@@ -11,7 +11,7 @@ const whatsappHref = `${site.contact.whatsapp.href}?text=${encodeURIComponent(si
 </div>
 
 <style is:global>
-  .fab-stack { position: fixed; right: 24px; bottom: 24px; z-index: 90; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+  .fab-stack { position: fixed; right: 24px; bottom: 24px; z-index: 90; display: flex; flex-direction: row; align-items: center; gap: 12px; }
   .fab-book { display: none; align-items: center; justify-content: center; height: 42px; padding: 0 22px; background: var(--accent); color: #fff; font-family: var(--font-body); font-weight: 600; font-size: .8rem; letter-spacing: .06em; cursor: pointer; text-decoration: none; transition: background .2s; }
   .fab-book:hover { background: #000; }
   .wa-fab { position: relative; width: 62px; height: 62px; border-radius: 0; background: #25D366; color: #fff; display: grid; place-items: center; cursor: pointer; box-shadow: 0 12px 36px -8px rgba(37,211,102,.6); transition: transform .25s var(--ease); }
