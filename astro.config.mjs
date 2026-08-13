@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://teleprompter.my',
-  base: '/preview/',
+  base: '/',
   output: 'static',
   integrations: [sitemap()],
   build: {

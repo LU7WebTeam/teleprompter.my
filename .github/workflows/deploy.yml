@@ -1,44 +1,20 @@
-name: Deploy to cPanel
+name: Deploy to Replit
 
 on:
   push:
     branches: [main]
-  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: SSH into Replit and rebuild
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          node-version: '22'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build Astro site
-        run: npm run build
-
-      - name: List build output
-        run: ls -la dist/
-
-      - name: Deploy to cPanel via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.CPANEL_FTP_SERVER }}
-          port: 21
-          username: ${{ secrets.CPANEL_FTP_USERNAME }}
-          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
-          local-dir: ./dist/
-          server-dir: teleprompter.my/preview/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-          security: loose
-          timeout: 600000
+          host: ${{ secrets.REPLIT_SSH_HOST }}
+          username: ${{ secrets.REPLIT_SSH_USERNAME }}
+          key: ${{ secrets.REPLIT_SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/workspace/artifacts/teleprompter
+            git pull origin main
+            npm run build
