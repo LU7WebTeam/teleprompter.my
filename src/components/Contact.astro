@@ -95,7 +95,7 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
               <option value="4">4 days</option>
               <option value="5">5 days</option>
             </select>
-            <p class="f-hint">Screen and operator available for rehearsal at 30% of the day rate per day.</p>
+            <p class="f-hint">Screen and operator available for rehearsal at 50% of the day rate per day.</p>
           </div>
         </div>
 
@@ -304,8 +304,8 @@ const productIds = ['presidential', 'stage-tv', 'monitor', 'ipad'];
       const items = getSelection();
       if (rDays <= 0 || !items.length) return null;
       const dayRate = items.reduce((s, i) => s + (i.price * i.qty), 0);
-      const line = Math.round(dayRate * rDays * 0.3);
-      return { name: `Rehearsal × ${rDays} day${rDays === 1 ? '' : 's'} @ 30% of day rate`, line };
+      const line = Math.round(dayRate * rDays * 0.5);
+      return { name: `Rehearsal × ${rDays} day${rDays === 1 ? '' : 's'} @ 50% of day rate`, line };
     }
 
     function updateSummary() {
